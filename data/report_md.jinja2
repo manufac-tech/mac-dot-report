@@ -1,0 +1,30 @@
+# mac dot report
+
+{% for item in csv_data %}
+{% if loop.first or item.tp_cat_1 != loop.previtem.tp_cat_1 %}
+
+### {{ item.tp_cat_1_name }}
+{% endif %}
+
+{% if loop.first or item.tp_cat_2 != loop.previtem.tp_cat_2 %}
+#### {{ item.tp_cat_1 }}: {{ item.tp_cat_2 }}
+{% endif %}
+
+- {% if item.item_type == 'folder' %}**{{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %} (ƒ)**{% else %}{{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %}{% endif %}
+{% endfor %}
+
+---  
+
+### Unmatched Items
+
+#### _Items not in Template (but in Home Folder)_
+{% for item in fs_not_in_tp %}
+- {{ item.item_name }}{% if item.item_type == 'folder' %} (ƒ){% endif %}
+{% endfor %}
+
+#### _Items not in Home Folder (but in Template)_
+
+{% for item in tp_not_in_fs %}
+
+- {{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %}{% if item.item_type == 'folder' %} (ƒ){% endif %}
+{% endfor %}

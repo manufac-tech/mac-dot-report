@@ -1,0 +1,78 @@
+tp_item_name,tp_item_type,tp_cat_1,tp_cat_1_name,tp_comment,tp_cat_2,no_show
+._dotfiles,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,false
+.zshrc,file,term,Terminal,,zshrc,false
+.ABCD_TEST123,file,term,Terminal,,zshrc,false
+.AB_TEST_EDGE,folder,term,Terminal,(tp_item_type should be [NO FILETYPE]).,zshrc,false
+.zsh_history,file,term,Terminal,,zshrc,false
+.zshrc_aliases,file,term,Terminal,,zshrc,false
+.zsh_history.bak,file,term,Terminal,,zshrc,false
+.zshrc_scripts,file,term,Terminal,,zshrc,false
+.zshrc_themes_omp,file,term,Terminal,,zshrc,false
+.zshrc_autocomplete1,file,term,Terminal,,zshrc,false
+.zprofile,file,term,Terminal,zsh profile file,zsh other,false
+.zcompdump-srb_mbp23-5.9,file,term,Terminal,zsh completion dump file,zsh other,false
+.zsh_sessions,folder,term,Terminal,Command history and state from previous zsh sessions,zsh other,false
+.zcompdump,file,term,Terminal,,zsh other,false
+.zcompdump-srb_mbp23-5.9.zwc,file,term,Terminal,,zsh other,false
+.oh-my-posh,folder,term,Terminal,,zsh themes,false
+.bashrc,file,term,Terminal,,bash,false
+.bash_history,file,term,Terminal,,bash,false
+.bash_sessions,folder,term,Terminal,Command history and state from previous bash sessions,bash,false
+.sh_history,file,term,Terminal,Shell history file,bash,false
+.iterm2_shell_integration.zsh,file,term,Terminal,iTerm2 shell integration file,other,false
+.iterm2,folder,term,Terminal,iTerm2 configuration files,other,false
+.viminfo,file,term,Terminal,,other,false
+.npm,folder,swd,Software Development,Node.js package manager,package managers plus,false
+.npmrc,file,swd,Software Development,Node.js package manager configuration file,package managers plus,false
+.nvm,folder,swd,Software Development,Node.js version manager,package managers plus,false
+.yarnrc,file,swd,Software Development,Yarn package manager,package managers plus,false
+.node-gyp,folder,swd,Software Development,Node.js native addon build tool,package managers plus,false
+.docker,folder,swd,Software Development,Docker containerization platform,package managers plus,false
+.gem,folder,swd,Software Development,Ruby Gems (Ruby libraries and packages),package managers plus,false
+.vuerc,file,swd,Software Development,Vue.js configuration file,frameworks,false
+.vue-cli-ui,folder,swd,Software Development,Vue.js CLI User Interface config,frameworks,false
+.nuxtrc,file,swd,Software Development,Nuxt.js configuration file,frameworks,false
+.python_history,file,swd,Software Development,,python,false
+.pyenv,folder,swd,Software Development,Python version manager,python,false
+.ipython,folder,swd,Software Development,Python interactive shell,python,false
+.pylint.d,folder,swd,Software Development,Python linting tool,python,false
+.matplotlib,folder,swd,Software Development,Python plotting library,python,false
+.streamlit,folder,swd,Software Development,Python framework for creating interactive web apps,python,false
+.jupyter,folder,swd,Software Development,Python interactive computing,python,false
+.vscode,folder,swd,Software Development,,microsoft,false
+.vscode-react-native,folder,swd,Software Development,Visual Studio Code extension for React Native,microsoft,false
+.dotnet,folder,swd,Software Development,.NET SDK,microsoft,false
+.nuget,folder,swd,Software Development,.NET package manager,microsoft,false
+.mono,folder,swd,Software Development,Mono runtime (cross-platform .NET),microsoft,false
+.aspnet,folder,swd,Software Development,ASP.NET Core,microsoft,false
+.ms_eclipsetemurinjdk_config,file,swd,Software Development,Microsoft Eclipse Temurin JDK configuration file,microsoft,false
+.ms_openjdk_config,file,swd,Software Development,Microsoft OpenJDK configuration file,microsoft,false
+.quokka,folder,swd,Software Development,debugging tool for JavaScript & TypeScript,other,false
+.sonar,folder,swd,Software Development,"SonarQube, a tool for continuous inspection of code quality",other,false
+.flowise,folder,swd,Software Development,LLM AI No-code coding tool,other,false
+.installbuilder,folder,swd,Software Development,dev tool for building cross-platform installers for dtop & server sw,other,false
+.android,folder,swd,Software Development,Android SDK,other,false
+.degit,folder,swd,Software Development,quickly scaffold projects by downloading/extracting a repo,other,false
+.gitignore_global,file,swd,Software Development,Global .gitignore file,vcs git,false
+.gitflow_export,file,swd,Software Development,GitFlow configuration file,vcs git,false
+.gitconfig,file,swd,Software Development,Git configuration file,vcs git,false
+.hgignore_global,file,swd,Software Development,Global .hgignore file,vcs other,false
+.subversion,folder,swd,Software Development,Subversion configuration files,vcs other,false
+.config,folder,sys,System,,general,false
+.cache,folder,sys,System,,general,false
+.local,folder,sys,System,,general,false
+.IdentityService,folder,sys,System,,macos,false
+.DS_Store,file,sys,System,,macos,false
+.Trash,folder,sys,System,,macos,false
+.CFUserTextEncoding,file,sys,System,macOS - stores the user’s preferred text encoding settings,macos,false
+.netrc,file,sys,System,Unix file stores login & init info for connecting to remote systems,unix,false
+.thumbnails,folder,sys,System,Thumbnail cache,unix,false
+.ssh,folder,sys,System,Unix SSH configuration files,unix,false
+.fontconfig,folder,sys,System,Unix font configuration,unix,false
+.lesshst,file,sys,System,command history file for the Unix less text viewer command,unix,false
+.cups,folder,sys,System,Common Unix Printing System,unix,false
+.Xencelabs,folder,apps,Applications,Xencelabs dedicated controller config,regular,false
+.adobe,folder,apps,Applications,,regular,false
+.dropbox,folder,apps,Applications,,cloud,false
+.pcloud,folder,apps,Applications,,cloud,false
+.omniboard,folder,oth,Other,Omniboard project management tool,projects,false
