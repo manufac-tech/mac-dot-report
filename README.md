@@ -63,7 +63,7 @@ The template includes fields that allow the user to associate information and co
 
 ---
 
-|                      | **fs_item_name** | **fs*item_type*** | **tp_item_name** | **tp_item_type** | **item_name**    | **is_folder**  |
+|                      | **fs\_item_name** | **fs*item\_type*** | **tp\_item\_name** | **tp\_item\_type** | **item\_name**    | **item\_type**  |
 | -------------------- | ---------------- | ----------------- | ---------------- | ---------------- | ---------------- | -------------- |
 | **Scenario 1 IN**    | .zshrc           | TRUE              | NaN              | NaN              |                  |                |
 | **Scenario 1 NAMES** | .zshrc           | TRUE              | [NO TP ITEM]     | [NO TP ITEM]     | .zshrc           | TRUE           |
