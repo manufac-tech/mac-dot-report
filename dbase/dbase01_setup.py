@@ -3,9 +3,9 @@ import logging
 import pandas as pd
 import numpy as np
 
-from .dbase04_load_fs import load_fs_dataframe
-from .dbase05_load_tp import load_tp_dataframe
+from .dbase04_load_hm import load_hm_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
+from .dbase07_load_tp import load_tp_dataframe
 from .dbase08_validate import validate_dataframes
 from .dbase09_merge import merge_dataframes
 from .dbase10_org import (
@@ -16,7 +16,7 @@ from .dbase10_org import (
     sort_items_2_indiv,
 )
 def build_main_dataframe(template_file_path, dotbot_yaml_path):
-    dot_items_df = load_fs_dataframe()  # Only get the DataFrame
+    dot_items_df = load_hm_dataframe()  # Only get the DataFrame
 
     # YAML data frame loading is muted out for now
     dotbot_yaml_df = load_dotbot_yaml_dataframe(dotbot_yaml_path)
@@ -37,6 +37,6 @@ def build_main_dataframe(template_file_path, dotbot_yaml_path):
     main_dataframe = sort_items_1_out_group(main_dataframe)
     main_dataframe = sort_items_2_indiv(main_dataframe)
 
-    # logging.debug("Main DataFrame at current stage:\n%s", main_dataframe.to_string())
+    logging.debug("Main DataFrame at current stage:\n%s", main_dataframe.to_string())
 
     return main_dataframe

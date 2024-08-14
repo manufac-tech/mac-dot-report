@@ -1,20 +1,19 @@
 from .dbase01_setup import build_main_dataframe
 from .dbase02_id_gen import get_next_unique_id
-# from .dbase03_item_type import (
-#     determine_item_type,
-#     is_symlink,
-#     is_alias,
-#     get_file_type,
-#     get_folder_type,
-#     resolve_item_type,
-#     detect_alias_type,
-#     detect_symlink_target_type,
-#     handle_unexpected_types
-# )
-from .dbase04_load_fs import load_fs_dataframe
-from .dbase05_load_tp import load_tp_dataframe
+from .dbase03_item_type import (
+    determine_item_type,
+    is_symlink,
+    is_alias,
+    get_file_type,
+    get_folder_type,
+    resolve_item_type,
+    detect_alias_type,
+    detect_symlink_target_type
+)
+from .dbase04_load_hm import load_hm_dataframe
+# from .dbase05_load_rp import load_repo_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
-# from .dbase07_load_rp import load_repo_dataframe
+from .dbase07_load_tp import load_tp_dataframe
 from .dbase08_validate import validate_dataframes
 from .dbase09_merge import merge_dataframes
 from .dbase10_org import (
@@ -29,19 +28,18 @@ from .dbase10_org import (
 __all__ = [
     "build_main_dataframe",
     "get_next_unique_id",
-    # "determine_item_type",
-    # "is_symlink",
-    # "is_alias",
-    # "get_file_type",
-    # "get_folder_type",
-    # "resolve_item_type",
-    # "detect_alias_type",
-    # "detect_symlink_target_type",
-    # "handle_unexpected_types",
-    "load_fs_dataframe",
-    "load_tp_dataframe",
-    "load_dotbot_yaml_dataframe",
+    "determine_item_type",
+    "is_symlink",
+    "is_alias",
+    "get_file_type",
+    "get_folder_type",
+    "resolve_item_type",
+    "detect_alias_type",
+    "detect_symlink_target_type",
+    "load_hm_dataframe",
     # "load_repo_dataframe",
+    "load_dotbot_yaml_dataframe",
+    "load_tp_dataframe",
     "validate_dataframes",
     "merge_dataframes",
     "add_and_populate_out_group",

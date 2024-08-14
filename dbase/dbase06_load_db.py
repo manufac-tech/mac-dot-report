@@ -39,6 +39,6 @@ def load_dotbot_yaml_dataframe(dotbot_yaml_path):
     dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type','db_unique_id'])
 
     # Log the final DataFrame for debugging purposes
-    logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
+    # logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
 
     return dotbot_yaml_df

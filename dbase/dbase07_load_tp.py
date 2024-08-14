@@ -4,9 +4,8 @@ import pandas as pd
 import numpy as np
 
 from .dbase02_id_gen import get_next_unique_id
-from .dbase08_validate import (
-    validate_values
-)
+from .dbase03_item_type import determine_item_type  # Import the new item type detection function
+from .dbase08_validate import validate_values
 
 def load_tp_dataframe(template_file_path, start_id=None):
     try:
@@ -20,10 +19,13 @@ def load_tp_dataframe(template_file_path, start_id=None):
             "no_show": bool  # Ensure no_show is read as boolean
         })
 
+        # Apply item type detection using the new function
+        template_df['tp_item_type'] = template_df['tp_item_name'].apply(determine_item_type)
+
         # Correct specific values in the DataFrame according to the given rules.
         validate_values(template_df, {
             "tp_item_type": {
-                "valid_types": ['folder', 'file', '[NO FILETYPE]'],
+                "valid_types": ['folder', 'file', 'file_sym', 'folder_sym', 'file_alias', 'folder_alias', '[NO FILETYPE]'],
             },
             "original_order": {
                 "assign_sequence": True,

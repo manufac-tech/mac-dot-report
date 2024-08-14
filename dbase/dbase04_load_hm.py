@@ -4,17 +4,16 @@ import pandas as pd
 import numpy as np
 
 from .dbase02_id_gen import get_next_unique_id
+from .dbase03_item_type import determine_item_type
 
-
-def load_fs_dataframe():
-    # Your existing code to create the DataFrame
+def load_hm_dataframe():
     dot_items = []
     home_dir_path = os.path.expanduser("~")
 
     for item in os.listdir(home_dir_path):
         if item.startswith("."):
             item_path = os.path.join(home_dir_path, item)
-            item_type = 'folder' if os.path.isdir(item_path) else 'file'
+            item_type = determine_item_type(item_path)
             dot_items.append({
                 "fs_item_name": item, 
                 "fs_item_type": item_type, 
@@ -22,8 +21,5 @@ def load_fs_dataframe():
             })
 
     df = pd.DataFrame(dot_items)
-
-    # Calculate the starting ID for template items
-    # id_start_tp = df['fs_unique_id'].max() + 1
 
     return df
