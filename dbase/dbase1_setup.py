@@ -34,6 +34,6 @@ def build_main_dataframe(template_file_path, dotbot_yaml_path):
     main_dataframe = sort_items_1_out_group(main_dataframe)
     main_dataframe = sort_items_2_indiv(main_dataframe)
 
-    # logging.debug("Main DataFrame at current stage:\n%s", main_dataframe.to_string())
+    logging.debug("Main DataFrame at current stage:\n%s", main_dataframe.to_string())
 
     return main_dataframe

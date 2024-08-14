@@ -52,13 +52,17 @@ def load_dotbot_yaml_dataframe(dotbot_yaml_path):
                         db_name_dst = os.path.basename(dst)
                         db_name_src = os.path.basename(src.split()[0])
 
+                        # Get the next unique ID
+                        db_unique_id = get_next_unique_id()
+
                         dotbot_entries.append({
                             'db_name_dst': db_name_dst,
                             'db_name_src': db_name_src,
-                            'db_type': db_type
+                            'db_type': db_type,
+                            'db_unique_id': db_unique_id
                         })
 
-    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type'])
+    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type', 'db_unique_id'])
 
     # Log the final DataFrame for debugging purposes
     # logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
