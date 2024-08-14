@@ -26,7 +26,7 @@ def load_fs_dataframe():
     # Calculate the starting ID for template items
     # id_start_tp = df['fs_unique_id'].max() + 1
 
-    return df, id_start_tp
+    return df
 
 def load_dotbot_yaml_dataframe(dotbot_yaml_path):
     """Extract file or folder names from YAML paths and determine item type by processing the file as plain text."""
@@ -55,12 +55,13 @@ def load_dotbot_yaml_dataframe(dotbot_yaml_path):
                         dotbot_entries.append({
                             'db_name_dst': db_name_dst,
                             'db_name_src': db_name_src,
-                            'db_type': db_type
+                            'db_type': db_type,
+                            'db_unique_id': get_next_unique_id(), # Assign a unique ID
                         })
 
-    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type'])
+    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type','db_unique_id'])
 
     # Log the final DataFrame for debugging purposes
-    # logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
+    logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
 
     return dotbot_yaml_df

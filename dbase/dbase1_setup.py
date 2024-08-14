@@ -15,22 +15,24 @@ from .dbase6_org import (
     sort_items_2_indiv,
 )
 def build_main_dataframe(template_file_path, dotbot_yaml_path):
-    """Master function to set up the database with dot items, template data, and YAML config data."""
-    dot_items_df, id_start_tp = load_fs_dataframe()
-    dotbot_yaml_df = load_dotbot_yaml_dataframe(dotbot_yaml_path)  # New line to load YAML data
-    template_df = load_tp_dataframe(template_file_path, start_id=id_start_tp)
+    dot_items_df = load_fs_dataframe()  # Only get the DataFrame
+
+    # YAML data frame loading is muted out for now
+    dotbot_yaml_df = load_dotbot_yaml_dataframe(dotbot_yaml_path)
+
+    template_df = load_tp_dataframe(template_file_path)
+
+    # Validate only two DataFrames since YAML is muted out
     dot_items_df, template_df = validate_dataframes(dot_items_df, template_df)
 
-    # --------------------- THE MERGE
+    # Merging and processing
     main_dataframe = merge_dataframes(dot_items_df, template_df)
     
-    # Add & populate out_group
+    # If the YAML integration is to be done later:
+    # main_dataframe = pd.merge(main_dataframe, dotbot_yaml_df, how='outer', left_on='fs_item_name', right_on='db_name_dst')
+
     main_dataframe = add_and_populate_out_group(main_dataframe)
-
-    # Reorder columns
     main_dataframe = reorder_columns(main_dataframe)
-
-    # Sort by out_group and within each group
     main_dataframe = sort_items_1_out_group(main_dataframe)
     main_dataframe = sort_items_2_indiv(main_dataframe)
 

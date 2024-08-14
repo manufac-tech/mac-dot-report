@@ -9,15 +9,6 @@ from .dbase4_validate import (
 from .dbase7_id_gen import get_next_unique_id
 
 def load_tp_dataframe(template_file_path, start_id=None):
-    """
-    Load the CSV template into a staging DataFrame with index and prepare it.
-
-    Args:
-        template_file_path (str): Path to the template CSV file.
-
-    Returns:
-        DataFrame: A DataFrame containing the template data with an original order index.
-    """
     try:
         template_df = pd.read_csv(template_file_path, dtype={
             "tp_item_name": object,
