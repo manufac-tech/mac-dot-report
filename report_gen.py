@@ -41,9 +41,9 @@ def export_to_markdown(template_path, template_file, output_file, df=None):
         group1_df, group2_df, group3_df = prepare_output_dataframes(df)
 
         # Logging to inspect the DataFrames (you can keep this for debugging)
-        logging.debug("Group 1 DataFrame (FS items not in template):\n%s", group1_df.to_string())
-        logging.debug("Group 2 DataFrame (Matched items):\n%s", group2_df.to_string())
-        logging.debug("Group 3 DataFrame (Template items not in FS):\n%s", group3_df.to_string())
+        # logging.debug("Group 1 DataFrame (FS items not in template):\n%s", group1_df.to_string())
+        # logging.debug("Group 2 DataFrame (Matched items):\n%s", group2_df.to_string())
+        # logging.debug("Group 3 DataFrame (Template items not in FS):\n%s", group3_df.to_string())
 
         # Jinja2 setup
         env = Environment(

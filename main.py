@@ -8,10 +8,11 @@ from report_gen import export_dataframe_to_csv, export_to_markdown, generate_tim
 # Configure logging to show DEBUG level messages 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.INFO  # Change to DEBUG to capture more detailed output (INFO is the default level)
+    level=logging.DEBUG  # Change to DEBUG to capture more detailed output (INFO is the default level)
 )
 
 template_path = "./data/mac-dot-template.csv" # template contains dot item metadata & user comments
+dotbot_yaml_path = os.path.expanduser("~/._dotfiles/dotfiles_srb_repo/install.conf.yaml")  # DotBot YAML file contains dot item paths
 
 # Set output file names/paths
 output_base_name_csv = "mac-dot-report"
@@ -33,7 +34,7 @@ def main():
     csv_output_path, markdown_output_path = generate_timestamped_output_paths(user_path_csv, output_base_name_csv, user_path_md, output_base_name_md)
 
     # Setup the database and get the dot items DataFrame
-    main_dataframe = build_main_dataframe(template_path)
+    main_dataframe = build_main_dataframe(template_path, dotbot_yaml_path)
     
     # Export the DataFrame to a CSV file
     export_dataframe_to_csv(main_dataframe, filename=csv_output_path)
