@@ -3,10 +3,10 @@ import logging
 import pandas as pd
 import numpy as np
 
-from .dbase03_load_fs import load_fs_dataframe
-from .dbase04_load_tp import load_tp_dataframe
-from .dbase07_validate import validate_dataframes
-from .dbase08_merge import merge_dataframes
+from .dbase04_load_fs import load_fs_dataframe
+from .dbase05_load_tp import load_tp_dataframe
+from .dbase08_validate import validate_dataframes
+from .dbase09_merge import merge_dataframes
 
 
 def add_and_populate_out_group(df):

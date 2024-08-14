@@ -3,10 +3,10 @@ import logging
 import pandas as pd
 import numpy as np
 
-from .dbase07_validate import (
+from .dbase02_id_gen import get_next_unique_id
+from .dbase08_validate import (
     validate_values
 )
-from .dbase02_id_gen import get_next_unique_id
 
 def load_tp_dataframe(template_file_path, start_id=None):
     try:
