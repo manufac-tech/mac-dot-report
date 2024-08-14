@@ -6,6 +6,7 @@ import numpy as np
 from .dbase4_validate import (
     validate_values
 )
+from .dbase7_id_gen import get_next_unique_id
 
 def load_tp_dataframe(template_file_path, start_id=None):
     """
@@ -13,7 +14,6 @@ def load_tp_dataframe(template_file_path, start_id=None):
 
     Args:
         template_file_path (str): Path to the template CSV file.
-        start_id (int, optional): The starting unique ID for unmatched template items.
 
     Returns:
         DataFrame: A DataFrame containing the template data with an original order index.
@@ -29,7 +29,7 @@ def load_tp_dataframe(template_file_path, start_id=None):
             "no_show": bool  # Ensure no_show is read as boolean
         })
 
-        # Corrects specific values in the DataFrame according to the given rules.
+        # Correct specific values in the DataFrame according to the given rules.
         validate_values(template_df, {
             "tp_item_type": {
                 "valid_types": ['folder', 'file', '[NO FILETYPE]'],
@@ -44,12 +44,9 @@ def load_tp_dataframe(template_file_path, start_id=None):
                 "ensure_not_null": True,
             }
         })
-     
-        # Assign unique IDs to unmatched template items starting from start_id if provided
-        if start_id is not None:
-            template_df['tp_unique_id'] = np.arange(start_id, start_id + len(template_df))
-        else:
-            template_df['tp_unique_id'] = np.nan  # Ensure the column exists
+
+        # Assign unique IDs using the centralized function
+        template_df['tp_unique_id'] = template_df.apply(lambda row: get_next_unique_id(), axis=1)
 
         return template_df
     except Exception as e:

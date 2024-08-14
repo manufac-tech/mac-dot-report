@@ -4,13 +4,10 @@ import numpy as np
 def validate_dataframes(dot_items_df, template_df):
     """
     Validate and correct data types for both the dot items and template DataFrames.
-
     Args:
         dot_items_df (DataFrame): DataFrame containing dot items from the file system.
         template_df (DataFrame): DataFrame containing template data from the CSV.
-
-    Returns:
-        Tuple[DataFrame, DataFrame]: The validated and corrected dot items and template DataFrames.
+    Returns:Tuple[DataFrame, DataFrame]: The validated and corrected dot items and template DataFrames.
     """
     dot_items_expected_types = {
         "fs_item_name": 'object',

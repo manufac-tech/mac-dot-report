@@ -2,15 +2,12 @@ import os
 import logging
 import pandas as pd
 import numpy as np
-# import yaml
+
+from .dbase7_id_gen import get_next_unique_id
+
 
 def load_fs_dataframe():
-    """
-    Create a DataFrame from the dot items in the home directory and calculate the starting ID for template items.
-
-    Returns:
-        tuple: A tuple containing the DataFrame with filesystem items and the starting unique ID for template items.
-    """
+    # Your existing code to create the DataFrame
     dot_items = []
     home_dir_path = os.path.expanduser("~")
 
@@ -18,18 +15,17 @@ def load_fs_dataframe():
         if item.startswith("."):
             item_path = os.path.join(home_dir_path, item)
             item_type = 'folder' if os.path.isdir(item_path) else 'file'
-            dot_items.append({"fs_item_name": item, "fs_item_type": item_type})
+            dot_items.append({
+                "fs_item_name": item, 
+                "fs_item_type": item_type, 
+                "fs_unique_id": get_next_unique_id()
+            })
 
     df = pd.DataFrame(dot_items)
 
-    # Assign sequential unique ID
-    df['fs_unique_id'] = np.arange(1, len(df) + 1)
-
     # Calculate the starting ID for template items
-    id_max_fs = df['fs_unique_id'].max()
-    id_start_tp = id_max_fs + 1
+    id_start_tp = df['fs_unique_id'].max() + 1
 
-    # Return both the DataFrame and the starting ID
     return df, id_start_tp
 
 def load_dotbot_yaml_dataframe(dotbot_yaml_path):
