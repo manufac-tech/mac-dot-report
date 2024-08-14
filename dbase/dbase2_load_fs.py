@@ -24,7 +24,7 @@ def load_fs_dataframe():
     df = pd.DataFrame(dot_items)
 
     # Calculate the starting ID for template items
-    id_start_tp = df['fs_unique_id'].max() + 1
+    # id_start_tp = df['fs_unique_id'].max() + 1
 
     return df, id_start_tp
 
