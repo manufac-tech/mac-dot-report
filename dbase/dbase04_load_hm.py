@@ -6,7 +6,7 @@ import numpy as np
 from .dbase02_id_gen import get_next_unique_id
 from .dbase03_item_type import determine_item_type
 
-def load_hm_dataframe():
+def load_home_items():
     dot_items = []
     home_dir_path = os.path.expanduser("~")
 
@@ -21,5 +21,8 @@ def load_hm_dataframe():
             })
 
     df = pd.DataFrame(dot_items)
+
+    # Create unified 'unique_id'
+    df['unique_id'] = df['fs_unique_id']
 
     return df
