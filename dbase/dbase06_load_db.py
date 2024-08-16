@@ -1,12 +1,11 @@
 import os
-import logging
 import pandas as pd
-import numpy as np
-
 from .dbase02_id_gen import get_next_unique_id
 
-def load_dotbot_yaml_dataframe(dotbot_yaml_path):
-    """Extract file or folder names from YAML paths and determine item type by processing the file as plain text."""
+def load_dotbot_yaml_dataframe():
+    dotbot_yaml_path = os.path.join(os.path.expanduser("~"), "._dotfiles/dotfiles_srb_repo/install.conf.yaml")
+    # Load the YAML DataFrame using the provided path
+    # Add your existing logic here
     dotbot_entries = []
 
     with open(dotbot_yaml_path, 'r') as file:
@@ -23,22 +22,19 @@ def load_dotbot_yaml_dataframe(dotbot_yaml_path):
                     # Ensure src is not empty before attempting to process it
                     if src:
                         # Determine if the item is a folder based on the inline comment
-                        db_type = 'folder' if '# folder' in src else 'file'
+                        item_type = 'folder' if '# folder' in src else 'file'
 
                         # Extract just the file or folder name from the paths
-                        db_name_dst = os.path.basename(dst)
-                        db_name_src = os.path.basename(src.split()[0])
+                        name_dst = os.path.basename(dst)
+                        name_src = os.path.basename(src.split()[0])
 
                         dotbot_entries.append({
-                            'db_name_dst': db_name_dst,
-                            'db_name_src': db_name_src,
-                            'db_type': db_type,
-                            'db_unique_id': get_next_unique_id(), # Assign a unique ID
+                            'item_name_dst': name_dst,
+                            'item_name_src': name_src,
+                            'item_type': item_type,
+                            'unique_id': get_next_unique_id(), # Assign a unique ID
                         })
 
-    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['db_name_dst', 'db_name_src', 'db_type','db_unique_id'])
-
-    # Log the final DataFrame for debugging purposes
-    # logging.debug("DotBot YAML DataFrame:\n%s", dotbot_yaml_df.to_string())
+    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_dst', 'item_name_src', 'item_type', 'unique_id'])
 
     return dotbot_yaml_df

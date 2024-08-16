@@ -1,36 +1,30 @@
+
 import pandas as pd
 import logging
-import pandas as pd
+import numpy as np
 
-import pandas as pd
-
-def validate_dataframes(df1, df2):
-    required_columns = ['unique_id', 'item_name', 'item_type']
-    for col in required_columns:
-        if col not in df1.columns:
-            raise KeyError(f"Missing required column in df1: {col}")
-        if col not in df2.columns:
-            raise KeyError(f"Missing required column in df2: {col}")
+def validate_dataframes(config, *dataframes):
+    required_columns = ['item_name', 'item_type', 'unique_id']
     
-    # Validate data types
-    if not pd.api.types.is_string_dtype(df1['item_name']):
-        raise TypeError(f"Field 'item_name' should be of type string.")
-    if not pd.api.types.is_string_dtype(df2['item_name']):
-        raise TypeError(f"Field 'item_name' should be of type string.")
-    if not pd.api.types.is_string_dtype(df1['item_type']):
-        raise TypeError(f"Field 'item_type' should be of type string.")
-    if not pd.api.types.is_string_dtype(df2['item_type']):
-        raise TypeError(f"Field 'item_type' should be of type string.")
-    if not pd.api.types.is_numeric_dtype(df1['unique_id']):
-        raise TypeError(f"Field 'unique_id' should be of type numeric.")
-    if not pd.api.types.is_numeric_dtype(df2['unique_id']):
-        raise TypeError(f"Field 'unique_id' should be of type numeric.")
+    for df in dataframes:
+        # Check for required columns
+        for col in required_columns:
+            if col not in df.columns:
+                raise KeyError(f"Missing required column: {col}")
 
-    # Additional validation logic can be added here as needed
-    
+        # Validate data types
+        if not pd.api.types.is_string_dtype(df['item_name']):
+            raise TypeError(f"Field 'item_name' should be of type string.")
+        if not pd.api.types.is_string_dtype(df['item_type']):
+            raise TypeError(f"Field 'item_type' should be of type string.")
+        if not pd.api.types.is_numeric_dtype(df['unique_id']):
+            raise TypeError(f"Field 'unique_id' should be of type numeric.")
+
+        # Call validate_values to handle NaN and other value corrections
+        df = validate_values(df, config)
+
     print("DataFrame validation passed.")
-
-    return df1, df2
+    return dataframes
 
 def validate_values(df, config):
     """

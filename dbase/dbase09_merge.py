@@ -2,27 +2,56 @@ import logging
 import pandas as pd
 import numpy as np
 
-def merge_dataframes(home_items_df, repo_items_df):
-    """Merge the home items DataFrame with the repo items DataFrame."""
+import pandas as pd
+
+def merge_dataframes(df1, df2, suffix_mapping, merge_type='outer', verbose=False):
+    """Merge two DataFrames using dynamic suffix mapping with error handling and additional functionality."""
     
-    main_dataframe = pd.merge(
-        home_items_df, repo_items_df,
-        left_on=['fs_item_name', 'fs_item_type'],
-        right_on=['rp_item_name', 'rp_item_type'],
-        how='outer',
-        indicator=True
-    )
-
+    # Basic validation
+    if not isinstance(df1, pd.DataFrame) or not isinstance(df2, pd.DataFrame):
+        raise ValueError("Both inputs must be pandas DataFrames.")
+    if not isinstance(suffix_mapping, dict) or 'df1' not in suffix_mapping or 'df2' not in suffix_mapping:
+        raise ValueError("suffix_mapping must be a dictionary with 'df1' and 'df2' keys.")
+    
+    suffix1, df1 = suffix_mapping['df1']
+    suffix2, df2 = suffix_mapping['df2']
+    
+    if not isinstance(suffix1, str) or not isinstance(suffix2, str):
+        raise ValueError("Suffixes must be strings.")
+    
+    required_columns = [f'{suffix1}_item_name', f'{suffix1}_item_type', f'{suffix2}_item_name', f'{suffix2}_item_type']
+    for col in required_columns:
+        if col not in df1.columns or col not in df2.columns:
+            raise KeyError(f"Missing required column '{col}' in one of the DataFrames.")
+    
+    # Perform the merge operation with error handling
+    try:
+        main_dataframe = pd.merge(
+            df1, df2,
+            left_on=[f'{suffix1}_item_name', f'{suffix1}_item_type'],
+            right_on=[f'{suffix2}_item_name', f'{suffix2}_item_type'],
+            how=merge_type,
+            indicator=True
+        )
+    except Exception as e:
+        raise RuntimeError(f"Error during merge: {e}")
+    
     # Create a unified unique_id column
-    main_dataframe['unique_id'] = main_dataframe.apply(merge_fields_unique_id, axis=1, df1_prefix='fs', df2_prefix='rp')
-
+    main_dataframe['unique_id'] = main_dataframe.apply(
+        merge_fields_unique_id, axis=1, df1_prefix=suffix1, df2_prefix=suffix2
+    )
+    
     # Match and consolidate rows based on item names and types
-    main_dataframe['item_name'] = main_dataframe.apply(merge_fields_name, axis=1, df1_prefix='fs', df2_prefix='rp')
-    main_dataframe['item_type'] = main_dataframe.apply(merge_fields_type, axis=1, df1_prefix='fs', df2_prefix='rp')
-
-    # Debug: Print columns after creating item_name, item_type, and unique_id
-    print("Columns after creating item_name, item_type, and unique_id:", main_dataframe.columns)
-
+    main_dataframe['item_name'] = main_dataframe.apply(
+        merge_fields_name, axis=1, df1_prefix=suffix1, df2_prefix=suffix2
+    )
+    main_dataframe['item_type'] = main_dataframe.apply(
+        merge_fields_type, axis=1, df1_prefix=suffix1, df2_prefix=suffix2
+    )
+    
+    if verbose:
+        print("Columns after creating item_name, item_type, and unique_id:", main_dataframe.columns)
+    
     return main_dataframe
 
 def merge_fields_name(row, df1_prefix, df2_prefix):
