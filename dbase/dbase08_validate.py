@@ -23,7 +23,7 @@ def validate_dataframes(config, *dataframes):
         # Call validate_values to handle NaN and other value corrections
         df = validate_values(df, config)
 
-    print("DataFrame validation passed.")
+    print("db8️⃣ DataFrame validation passed.")
     return dataframes
 
 def validate_values(df, config):
