@@ -25,6 +25,8 @@ def load_rp_dataframe():
             })
 
     df = pd.DataFrame(repo_items)
+    df["unique_id"] = df["unique_id"].astype("Int64")  # Ensure unique_id is Int64
+
 
     return df
 

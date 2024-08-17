@@ -36,5 +36,7 @@ def load_dotbot_yaml_dataframe():
                         })
 
     dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_dst', 'item_name_src', 'item_type', 'unique_id'])
+    # print("DataFrame contents:\n", dotbot_yaml_df.head())
+
 
     return dotbot_yaml_df

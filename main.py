@@ -36,15 +36,17 @@ def main():
         user_path_csv, output_base_name_csv, user_path_md, output_base_name_md
     )
 
-    print("csv_output_path: ", csv_output_path)
+    # print("csv_output_path: ", csv_output_path)
     # Setup the database and get the dot items DataFrame
     main_dataframe = build_main_dataframe()
     
     # Debug: Print columns before validation
-    print("Columns before validation:", main_dataframe.columns)
+    # print("Columns before validation:", main_dataframe.columns)
 
     # Debug: Display the DataFrame to examine its contents
-    print("DataFrame contents:\n", main_dataframe.head())
+    # print("DataFrame contents:\n", main_dataframe.head())
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print("DataFrame contents:\n", main_dataframe)
 
     # Validate the final DataFrame (this step should occur after merging)
     # main_dataframe = validate_dataframes(main_dataframe, main_dataframe)

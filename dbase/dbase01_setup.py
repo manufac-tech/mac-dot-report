@@ -24,10 +24,10 @@ def build_main_dataframe():
             'suffix': 'rp'
         },
         # Uncomment for additional dataframes
-        # 'dotbot': {
-        #     'load_function': load_dotbot_yaml_dataframe, 
-        #     'suffix': 'db'
-        # },
+        'dotbot': {
+            'load_function': load_dotbot_yaml_dataframe, 
+            'suffix': 'db'
+        },
         # 'template': {
         #     'load_function': load_tp_dataframe, 
         #     'suffix': 'tp'
@@ -35,7 +35,7 @@ def build_main_dataframe():
     }
 
     # Step 2: Initialize the main dataframe using the first DataFrame
-    main_dataframe, suffix1 = initialize_main_dataframe(dataframes_to_merge)
+    main_dataframe = initialize_main_dataframe(dataframes_to_merge)
     # print(f"🟧Initial main DataFrame ({first_df_name}):\n{home_dataframe}")
 
     # Step 3: Load all dataframes into a dictionary
@@ -47,18 +47,20 @@ def build_main_dataframe():
     # Step 4: Perform the merges with subsequent DataFrames
     for df_name in list(dataframes_to_merge.keys())[1:]:  # Iterate through remaining DataFrames
         validate_dataframes(main_dataframe, loaded_dataframes[df_name])  # Validate both dataframes
-        suffix2 = dataframes_to_merge[df_name]['suffix']
+        df2_field_suffix = dataframes_to_merge[df_name]['suffix']
 
-        # Directly pass the suffixes to the merge function
-        main_dataframe = merge_dataframes(main_dataframe, loaded_dataframes[df_name], suffix1, suffix2)
-
+        # Directly pass the current DataFrame and its suffix to the merge function
+        main_dataframe = merge_dataframes(main_dataframe, loaded_dataframes[df_name], df2_field_suffix)
+    
+    # print(f"🟧 Final Main DataFrame after merging all DataFrames:\n{main_dataframe}")
+    
     return main_dataframe
 
 def initialize_main_dataframe(dataframes_to_merge):
     # Step 1: Identify the first DataFrame programmatically
     first_df_name = list(dataframes_to_merge.keys())[0]  # Get the first DataFrame name
     first_df_info = dataframes_to_merge[first_df_name]
-    suffix1 = first_df_info['suffix']
+    df1_field_suffix = first_df_info['suffix']
 
     # Step 2: Load the first DataFrame
     home_dataframe = first_df_info['load_function']()
@@ -71,13 +73,13 @@ def initialize_main_dataframe(dataframes_to_merge):
             raise ValueError(f"Column '{col}' not found in the DataFrame '{first_df_name}'")
 
     # Step 4: Duplicate item_name and item_type with a suffix for the first DataFrame
-    home_dataframe[f'item_name_{suffix1}'] = home_dataframe['item_name']
-    home_dataframe[f'item_type_{suffix1}'] = home_dataframe['item_type']
+    home_dataframe[f'item_name_{df1_field_suffix}'] = home_dataframe['item_name']
+    home_dataframe[f'item_type_{df1_field_suffix}'] = home_dataframe['item_type']
 
     # Step 5: Create the global item_name and item_type fields
-    home_dataframe['item_name'] = home_dataframe[f'item_name_{suffix1}']  # Initially use the first DataFrame's values
-    home_dataframe['item_type'] = home_dataframe[f'item_type_{suffix1}']
+    home_dataframe['item_name'] = home_dataframe[f'item_name_{df1_field_suffix}']  # Initially use the first DataFrame's values
+    home_dataframe['item_type'] = home_dataframe[f'item_type_{df1_field_suffix}']
 
     # print(f"Initialization complete. Main DataFrame after initializing:\n{home_dataframe}")
 
-    return home_dataframe, suffix1
+    return home_dataframe
