@@ -5,6 +5,8 @@ import numpy as np
 def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=True):
     # Extract the DataFrames from the dictionary sections
     main_df = main_df_dict['dataframe']
+
+    print(f"🟩 main_df: {main_df}")
     input_df = input_df_dict_section['dataframe']
     merge_field = input_df_dict_section['merge_field']
 

@@ -39,7 +39,7 @@ def validate_df_current_and_main(input_df_dict_section, main_df_dict_section):
     # Update the main_df_dict_section with the validated DataFrame
     main_df_dict_section['dataframe'] = main_dataframe
     
-    return main_df_dict_section
+    return main_df_dict
 
 def validate_values(df, config):
     """

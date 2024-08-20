@@ -60,7 +60,7 @@ def build_main_dataframe():
         print(f"Main DataFrame:\n{main_df_dict['dataframe'].head()}")
 
         # Perform validation
-        validate_df_current_and_main(main_df_dict, input_df_dict_section)
+        # validate_df_current_and_main(main_df_dict, input_df_dict_section)
 
         # Directly pass the current DataFrame and its suffix to the merge function
         main_df_dict['dataframe'] = merge_dataframes(main_df_dict['dataframe'], input_df_dict_section['dataframe'])
