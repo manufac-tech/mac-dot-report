@@ -1,6 +1,6 @@
 
 import pandas as pd
-from .dbase08_validate import validate_dataframes
+from .dbase08_validate import validate_df_current_and_main
 
 current_unique_id = 1
 
@@ -19,7 +19,7 @@ def get_next_unique_id():
 #     }
     
 #     # Validate the two DataFrames
-#     validate_dataframes(config, df1, df2)
+#     validate_dataframe(config, df1, df2)
 
 #     # Create a dictionary to map each DataFrame's suffix and DataFrame
 #     suffix_mapping = {

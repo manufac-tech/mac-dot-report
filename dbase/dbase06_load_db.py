@@ -29,10 +29,10 @@ def load_dotbot_yaml_dataframe():
                         name_src = os.path.basename(src.split()[0])
 
                         dotbot_entries.append({
-                            'item_name_dst': name_dst,
-                            'item_name_src': name_src,
-                            'item_type': item_type,
-                            'unique_id': get_next_unique_id(), # Assign a unique ID
+                            'item_name_hm_db': name_dst,  # Destination in the Home folder
+                            'item_name_rp_db': name_src,  # Source from the Repo folder
+                            'item_type_db': item_type,
+                            'unique_id_db': get_next_unique_id(), # Assign a unique ID
                         })
 
     dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_dst', 'item_name_src', 'item_type', 'unique_id'])

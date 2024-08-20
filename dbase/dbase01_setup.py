@@ -5,7 +5,7 @@ from .dbase05_load_rp import load_rp_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
 from .dbase07_load_tp import load_tp_dataframe
 from .dbase09_merge import merge_dataframes
-from .dbase08_validate import validate_dataframes
+from .dbase08_validate import validate_df_current_and_main
 
 pd.set_option('display.max_rows', None)  # Display all rows
 pd.set_option('display.max_columns', None)  # Display all columns
@@ -14,73 +14,85 @@ pd.set_option('display.max_colwidth', None)  # Set the max column width to None
 
 def build_main_dataframe():
     # Step 1: Define DataFrames and paths
-    dataframes_to_merge = {
+    input_df_dict = {
         'home': {
-            'load_function': load_hm_dataframe, 
-            'suffix': 'hm'
+            'dataframe': load_hm_dataframe(),
+            'suffix': 'hm',
+            'merge_field': 'item_name_hm',
+            'name_field': 'item_name_hm',
+            'type_field': 'item_type_hm'
         },
         'repo': {
-            'load_function': load_rp_dataframe, 
-            'suffix': 'rp'
+            'dataframe': load_rp_dataframe(),
+            'suffix': 'rp',
+            'merge_field': 'item_name_rp',
+            'name_field': 'item_name_rp',
+            'type_field': 'item_type_rp'
         },
-        # Uncomment for additional dataframes
+        # Additional DataFrames that were muted can be reintroduced as needed
         # 'dotbot': {
-        #     'load_function': load_dotbot_yaml_dataframe, 
-        #     'suffix': 'db'
+        #     'dataframe': load_dotbot_yaml_dataframe(),
+        #     'suffix': 'db',
+        #     'merge_field': 'item_name_rp_db',
+        #     'name_field': 'item_name_rp_db',
+        #     'type_field': 'item_type_db'
         # },
         # 'template': {
-        #     'load_function': load_tp_dataframe, 
-        #     'suffix': 'tp'
+        #     'dataframe': load_tp_dataframe(),
+        #     'suffix': 'tp',
+        #     'merge_field': 'item_name_tp',
+        #     'name_field': 'item_name_tp',
+        #     'type_field': 'item_type_tp'
         # }
     }
 
     # Step 2: Initialize the main dataframe using the first DataFrame
-    main_dataframe = initialize_main_dataframe(dataframes_to_merge)
-    print(f"🟧 Initial Main DataFrame after initialization:\n{main_dataframe}")
+    first_df_section = list(input_df_dict.values())[0]  # Get the first dictionary section
+    main_df_dict = initialize_main_dataframe(first_df_section)
 
-    # Step 3: Load all dataframes into a dictionary
-    loaded_dataframes = {}
-    for df_name, df_info in dataframes_to_merge.items():
-        loaded_dataframes[df_name] = df_info['load_function']()
-        print(f"db1️⃣ {df_name} DataFrame loaded:\n{loaded_dataframes[df_name]}")
+    # Step 3: Perform the merges with subsequent DataFrames
+    for df_name in list(input_df_dict.keys())[1:]:  # Iterate through remaining DataFrames
+        input_df_dict_section = input_df_dict[df_name]
 
-    # Step 4: Perform the merges with subsequent DataFrames
-    for df_name in list(dataframes_to_merge.keys())[1:]:  # Iterate through remaining DataFrames
-        validate_dataframes(main_dataframe, loaded_dataframes[df_name])  # Validate both dataframes
-        df2_field_suffix = dataframes_to_merge[df_name]['suffix']
+        # Print statements to show the data being sent for validation
+        print(f"Validating current_input_df_section: {df_name}")
+        print(f"DataFrame:\n{input_df_dict_section['dataframe'].head()}")
+        print(f"Main DataFrame:\n{main_df_dict['dataframe'].head()}")
+
+        # Perform validation
+        validate_df_current_and_main(main_df_dict, input_df_dict_section)
 
         # Directly pass the current DataFrame and its suffix to the merge function
-        main_dataframe = merge_dataframes(main_dataframe, loaded_dataframes[df_name], df2_field_suffix)
-        print(f"🟧 Main DataFrame after merging with {df_name}:\n{main_dataframe}")
-    
-    print(f"🟧 Final Main DataFrame after merging all DataFrames:\n{main_dataframe}")
-    
-    return main_dataframe
+        main_df_dict['dataframe'] = merge_dataframes(main_df_dict['dataframe'], input_df_dict_section['dataframe'])
 
-def initialize_main_dataframe(dataframes_to_merge):
-    # Step 1: Identify the first DataFrame programmatically
-    first_df_name = list(dataframes_to_merge.keys())[0]  # Get the first DataFrame name
-    first_df_info = dataframes_to_merge[first_df_name]
-    df1_field_suffix = first_df_info['suffix']
+    print(f"Final Main DataFrame after merging all DataFrames:\n{main_df_dict['dataframe'].head()}")
 
-    # Step 2: Load the first DataFrame
-    home_dataframe = first_df_info['load_function']()
-    print(f"db1️⃣ {first_df_name} DataFrame loaded:\n{home_dataframe}")
+    return main_df_dict
 
-    # Step 3: Check if required columns exist
-    required_columns = ['item_name', 'item_type']
-    for col in required_columns:
-        if col not in home_dataframe.columns:
-            raise ValueError(f"Column '{col}' not found in the DataFrame '{first_df_name}'")
+def initialize_main_dataframe(first_df_section):
+    # Extract the actual DataFrame from the section
+    first_df = first_df_section['dataframe']
+    df_suffix = first_df_section['suffix']
 
-    # Step 4: Duplicate item_name and item_type with a suffix for the first DataFrame
-    home_dataframe[f'item_name_{df1_field_suffix}'] = home_dataframe['item_name']
-    home_dataframe[f'item_type_{df1_field_suffix}'] = home_dataframe['item_type']
+    # Print the DataFrame before making changes
+    print(f"🟪 INIT - First DataFrame before adding global fields:\n{first_df.head()}")
 
-    # Step 5: Create the global item_name and item_type fields
-    home_dataframe['item_name'] = home_dataframe[f'item_name_{df1_field_suffix}']  # Initially use the first DataFrame's values
-    home_dataframe['item_type'] = home_dataframe[f'item_type_{df1_field_suffix}']
+    # Duplicate item_name, item_type, and unique_id without the suffix to create global fields
+    first_df['item_name'] = first_df[f'item_name_{df_suffix}']
+    first_df['item_type'] = first_df[f'item_type_{df_suffix}']
+    first_df['unique_id'] = first_df[f'unique_id_{df_suffix}']
 
-    print(f"Initialization complete. Main DataFrame after initializing:\n{home_dataframe}")
+    # Create the dictionary section for the main DataFrame
+    main_df_dict = {
+        'dataframe': first_df,
+        'suffix': '', 
+        'merge_field': 'item_name',
+        'name_field': 'item_name',
+        'type_field': 'item_type'
+    }
 
-    return home_dataframe
+    # Print the DataFrame after adding global fields
+    print(f"🟪 INIT - Main DataFrame after adding global fields:\n{first_df.head()}")
+
+    # Return the dictionary section for the main DataFrame
+    return main_df_dict

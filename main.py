@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from dbase.dbase01_setup import build_main_dataframe
-from dbase.dbase08_validate import validate_dataframes
+from dbase.dbase08_validate import validate_df_current_and_main
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
@@ -49,7 +49,7 @@ def main():
         print("DataFrame contents:\n", main_dataframe)
 
     # Validate the final DataFrame (this step should occur after merging)
-    # main_dataframe = validate_dataframes(main_dataframe, main_dataframe)
+    # main_dataframe = validate_dataframe(main_dataframe, main_dataframe)
 
     # Export the DataFrame to a CSV file
     export_dataframe_to_csv(main_dataframe, filename=csv_output_path)

@@ -1,30 +1,45 @@
-
+import numpy as np
 import pandas as pd
 import logging
-import numpy as np
 
-def validate_dataframes(config, *dataframes):
-    required_columns = ['item_name', 'item_type', 'unique_id']
+def validate_df_current_and_main(input_df_dict_section, main_df_dict_section):
+    # Extract the DataFrame from the dictionary section
+    current_input_df = input_df_dict_section['dataframe']
+    main_dataframe = main_df_dict_section['dataframe']
+
+    # Debug: Print the columns of the main_dataframe
+    print("Columns in main_dataframe:", main_dataframe.columns.tolist())
+
+    # Now you can access the columns correctly
+    # Example of checking columns
+    name_field = input_df_dict_section['name_field']
+    type_field = input_df_dict_section['type_field']
     
-    for df in dataframes:
-        # Check for required columns
-        for col in required_columns:
-            if col not in df.columns:
-                raise KeyError(f"Missing required column: {col}")
+    # Debug: Print the values of name_field and type_field
+    print("name_field:", name_field)
+    print("type_field:", type_field)
 
-        # Validate data types
-        if not pd.api.types.is_string_dtype(df['item_name']):
-            raise TypeError(f"Field 'item_name' should be of type string.")
-        if not pd.api.types.is_string_dtype(df['item_type']):
-            raise TypeError(f"Field 'item_type' should be of type string.")
-        if not pd.api.types.is_numeric_dtype(df['unique_id']):
-            raise TypeError(f"Field 'unique_id' should be of type numeric.")
-
-        # Call validate_values to handle NaN and other value corrections
-        df = validate_values(df, config)
-
-    print("db8️⃣ DataFrame validation passed.")
-    return dataframes
+    required_columns = [name_field, type_field]
+    
+    for col in required_columns:
+        if col not in main_dataframe.columns:
+            raise KeyError(f"Missing required column: {col}")
+    
+    # Validate data types, assuming fields are extracted correctly
+    if not pd.api.types.is_string_dtype(main_dataframe[name_field]):
+        raise TypeError(f"Field '{name_field}' should be of type string.")
+    if not pd.api.types.is_string_dtype(main_dataframe[type_field]):
+        raise TypeError(f"Field '{type_field}' should be of type string.")
+    
+    # Call validate_values or other necessary operations on the actual DataFrame
+    main_dataframe = validate_values(main_dataframe, input_df_dict_section)
+    
+    print("Validation passed.")
+    
+    # Update the main_df_dict_section with the validated DataFrame
+    main_df_dict_section['dataframe'] = main_dataframe
+    
+    return main_df_dict_section
 
 def validate_values(df, config):
     """
@@ -55,5 +70,4 @@ def validate_values(df, config):
         if 'assign_sequence' in rules and rules['assign_sequence']:
             df[column] = np.arange(1, len(df) + 1)
     
-    logging.debug("Value validation and correction complete.")
     return df
