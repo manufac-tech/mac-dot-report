@@ -9,18 +9,19 @@ def load_tp_dataframe():
         # Define the path directly in the module
         template_file_path = "./data/mac-dot-template.csv"
         
+        # Load the CSV with explicit data types for the columns
         template_df = pd.read_csv(template_file_path, dtype={
-            "item_name": object,
-            "item_type": object,
-            "cat_1": object,
-            "cat_1_name": object,
-            "comment": object,
-            "cat_2": object,
-            "no_show": bool  # Ensure no_show is read as boolean
+            "item_name": "string",
+            "item_type": "string",
+            "cat_1": "string",
+            "cat_1_name": "string",
+            "comment": "string",
+            "cat_2": "string",
+            "no_show": "bool"  # Ensure no_show is read as boolean
         })
 
-        # Correct specific values in the DataFrame according to the given rules.
-        validate_values(template_df, {
+        # Validate and correct values in the DataFrame
+        template_df = validate_values(template_df, {
             "item_type": {
                 "valid_types": ['folder', 'file', 'alias'],
             },
@@ -37,6 +38,7 @@ def load_tp_dataframe():
 
         # Assign unique IDs using the centralized function
         template_df['unique_id'] = template_df.apply(lambda row: get_next_unique_id(), axis=1)
+        template_df["unique_id"] = template_df["unique_id"].astype("Int64")  # Ensure unique_id is Int64
 
         return template_df
     except Exception as e:

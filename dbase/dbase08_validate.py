@@ -2,46 +2,68 @@ import numpy as np
 import pandas as pd
 import logging
 
-def validate_df_current_and_main(input_df_dict_section, main_df_dict_section):
+def validate_df_dict_current_and_main(input_df_dict_section, main_df_dict, df_name):
+    # Ensure the 'dataframe' key points to an actual DataFrame
+    if isinstance(input_df_dict_section['dataframe'], dict):
+        input_df_dict_section['dataframe'] = pd.DataFrame(input_df_dict_section['dataframe'])
+
+    if isinstance(main_df_dict['dataframe'], dict):
+        main_df_dict['dataframe'] = pd.DataFrame(main_df_dict['dataframe'])
+
     # Extract the DataFrame from the dictionary section
     current_input_df = input_df_dict_section['dataframe']
-    main_dataframe = main_df_dict_section['dataframe']
-
-    # Debug: Print the columns of the main_dataframe
-    print("Columns in main_dataframe:", main_dataframe.columns.tolist())
+    main_dataframe = main_df_dict['dataframe']
 
     # Now you can access the columns correctly
-    # Example of checking columns
     name_field = input_df_dict_section['name_field']
     type_field = input_df_dict_section['type_field']
-    
-    # Debug: Print the values of name_field and type_field
-    print("name_field:", name_field)
-    print("type_field:", type_field)
 
-    required_columns = [name_field, type_field]
+    # Extract the unique_id field from the columns of the current_input_df
+    unique_id_field = [col for col in current_input_df.columns if 'unique_id' in col][0]
+
+    required_columns = [name_field, type_field, unique_id_field]
     
+    # Validate columns in current_input_df
     for col in required_columns:
-        if col not in main_dataframe.columns:
-            raise KeyError(f"Missing required column: {col}")
+        if col not in current_input_df.columns:
+            raise KeyError(f"Missing required column '{col}' in DataFrame section '{df_name}'")
+
+    # Validate data types in current_input_df
+    if not pd.api.types.is_string_dtype(current_input_df[name_field]):
+        raise TypeError(f"Field '{name_field}' in '{df_name}' should be of type string.")
+    if not pd.api.types.is_string_dtype(current_input_df[type_field]):
+        raise TypeError(f"Field '{type_field}' in '{df_name}' should be of type string.")
+    if not pd.api.types.is_int64_dtype(current_input_df[unique_id_field]):
+        raise TypeError(f"Field '{unique_id_field}' in '{df_name}' should be of type Int64.")
+
+    # Create a universal config dictionary for validate_values
+    config = {
+        name_field: {
+            'valid_types': [str],
+            'ensure_not_null': True,
+        },
+        type_field: {
+            'valid_types': ['file', 'folder', 'file_sym', 'folder_sym', 'alias', 'unknown'],
+            'ensure_not_null': True,
+        },
+        unique_id_field: {
+            'valid_types': [pd.Int64Dtype()],
+            'ensure_not_null': True,
+        }
+    }
     
-    # Validate data types, assuming fields are extracted correctly
-    if not pd.api.types.is_string_dtype(main_dataframe[name_field]):
-        raise TypeError(f"Field '{name_field}' should be of type string.")
-    if not pd.api.types.is_string_dtype(main_dataframe[type_field]):
-        raise TypeError(f"Field '{type_field}' should be of type string.")
+    # Call validate_values with the universal config
+    main_dataframe = validate_values(main_dataframe, config)
     
-    # Call validate_values or other necessary operations on the actual DataFrame
-    main_dataframe = validate_values(main_dataframe, input_df_dict_section)
+    # Print the validation passed message with the section name
+    print(f"Validation passed for DataFrame section: {df_name}")
     
-    print("Validation passed.")
-    
-    # Update the main_df_dict_section with the validated DataFrame
-    main_df_dict_section['dataframe'] = main_dataframe
+    # Update the main_df_dict with the validated DataFrame
+    main_df_dict['dataframe'] = main_dataframe
     
     return main_df_dict
 
-def validate_values(df, config):
+def validate_values(df, config): # USED BY BOTH: dbase/dbase08_validate.py and dbase/dbase07_load_tp.py
     """
     Validate and correct values in the DataFrame based on provided configuration.
 

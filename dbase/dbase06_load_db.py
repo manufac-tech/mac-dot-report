@@ -4,8 +4,6 @@ from .dbase02_id_gen import get_next_unique_id
 
 def load_dotbot_yaml_dataframe():
     dotbot_yaml_path = os.path.join(os.path.expanduser("~"), "._dotfiles/dotfiles_srb_repo/install.conf.yaml")
-    # Load the YAML DataFrame using the provided path
-    # Add your existing logic here
     dotbot_entries = []
 
     with open(dotbot_yaml_path, 'r') as file:
@@ -32,11 +30,29 @@ def load_dotbot_yaml_dataframe():
                             'item_name_hm_db': name_dst,  # Destination in the Home folder
                             'item_name_rp_db': name_src,  # Source from the Repo folder
                             'item_type_db': item_type,
-                            'unique_id_db': get_next_unique_id(), # Assign a unique ID
+                            'unique_id_db': get_next_unique_id(),  # Assign a unique ID
                         })
 
-    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_dst', 'item_name_src', 'item_type', 'unique_id'])
-    # print("DataFrame contents:\n", dotbot_yaml_df.head())
+    # Create the DataFrame with both home and repo item names
+    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_hm_db', 'item_name_rp_db', 'item_type_db', 'unique_id_db'])
 
+    # Explicitly set data types
+    dotbot_yaml_df["item_name_hm_db"] = dotbot_yaml_df["item_name_hm_db"].astype("string")
+    dotbot_yaml_df["item_name_rp_db"] = dotbot_yaml_df["item_name_rp_db"].astype("string")
+    dotbot_yaml_df["item_type_db"] = dotbot_yaml_df["item_type_db"].astype("string")
+    dotbot_yaml_df["unique_id_db"] = dotbot_yaml_df["unique_id_db"].astype("Int64")
 
-    return dotbot_yaml_df
+    # Create the dictionary that includes the DataFrame and additional info
+    dotbot_dict = {
+        'dataframe': dotbot_yaml_df,
+        'suffix': 'db',
+        'merge_field': 'item_name_rp_db',
+        'name_field': 'item_name_rp_db',
+        'type_field': 'item_type_db'
+    }
+
+    # Print the structure of the dictionary
+    print("DotBot dictionary structure:\n", dotbot_dict)
+    print(dotbot_dict['dataframe'])
+
+    return dotbot_dict

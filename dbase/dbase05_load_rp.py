@@ -22,26 +22,10 @@ def load_rp_dataframe():
             })
 
     df = pd.DataFrame(repo_items)
+
+    # Explicitly set data types
+    df["item_name_rp"] = df["item_name_rp"].astype("string")
+    df["item_type_rp"] = df["item_type_rp"].astype("string")
     df["unique_id_rp"] = df["unique_id_rp"].astype("Int64")  # Ensure unique_id_rp is Int64
 
     return df
-
-
-# def load_rp_dataframe():
-#     # Define the home directory path
-#     home_dir_path = os.path.expanduser("~")
-
-#     # Combine the home directory path with the relative repo path
-#     repo_path = os.path.join(home_dir_path, "._dotfiles/dotfiles_srb_repo")
-    
-#     # Create a test DataFrame with three rows
-#     data = {
-#         "item_name": ["repo_item1", "repo_item2", "repo_item3"],
-#         "item_type": ["file", "file", "file"],
-#         "unique_id": [101, 102, 103]  # Manually assign unique IDs for the test
-#     }
-
-#     df = pd.DataFrame(data, dtype="object")
-#     df["unique_id"] = df["unique_id"].astype("Int64")  # Ensure unique_id is Int64
-
-#     return df

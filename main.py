@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from dbase.dbase01_setup import build_main_dataframe
-from dbase.dbase08_validate import validate_df_current_and_main
+from dbase.dbase08_validate import validate_df_dict_current_and_main
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
@@ -36,20 +36,18 @@ def main():
         user_path_csv, output_base_name_csv, user_path_md, output_base_name_md
     )
 
-    # print("csv_output_path: ", csv_output_path)
-    # Setup the database and get the dot items DataFrame
-    main_dataframe = build_main_dataframe()
+    main_dataframe = build_main_dataframe() # Build the main DataFrame
     
     # Debug: Print columns before validation
     # print("Columns before validation:", main_dataframe.columns)
 
     # Debug: Display the DataFrame to examine its contents
     # print("DataFrame contents:\n", main_dataframe.head())
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print("DataFrame contents:\n", main_dataframe)
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    #     print("DataFrame contents:\n", main_dataframe['dataframe'].to_string(index=False))
 
     # Validate the final DataFrame (this step should occur after merging)
-    # main_dataframe = validate_dataframe(main_dataframe, main_dataframe)
+    # main_dataframe = validate_df_dict_current_and_main(main_dataframe, main_dataframe)
 
     # Export the DataFrame to a CSV file
     export_dataframe_to_csv(main_dataframe, filename=csv_output_path)

@@ -1,6 +1,6 @@
 
 import pandas as pd
-from .dbase08_validate import validate_df_current_and_main
+from .dbase08_validate import validate_df_dict_current_and_main
 
 current_unique_id = 1
 
