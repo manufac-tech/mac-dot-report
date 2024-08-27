@@ -4,8 +4,9 @@ from .dbase04_load_hm import load_hm_dataframe
 from .dbase05_load_rp import load_rp_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
 from .dbase07_load_tp import load_tp_dataframe
-from .dbase09_merge import merge_dataframes
 from .dbase08_validate import validate_df_dict_current_and_main
+from .dbase09_merge import merge_dataframes
+from .dbase11_debug import print_debug_info
 
 pd.set_option('display.max_rows', None)  # Display all rows
 pd.set_option('display.max_columns', None)  # Display all columns
@@ -13,7 +14,7 @@ pd.set_option('display.width', None)  # Set the display width to None
 pd.set_option('display.max_colwidth', None)  # Set the max column width to None
 
 def build_main_dataframe():
-    # Step 1: Define DataFrames and paths
+    # Define DataFrames and paths
     input_df_dict = {
         'home': {
             'dataframe': load_hm_dataframe(),
@@ -45,28 +46,19 @@ def build_main_dataframe():
         }
     }
 
-    # Debug: Output full dictionaries for all sections (home, repo, dotbot, template)
-    for section_name, section_dict in input_df_dict.items():
-        print(f"\n1️⃣ Dictionary for '{section_name}' section:")
-        print(f"  dataframe_name: '{section_name}_dataframe'")
-        print(f"  dataframe_shape: {section_dict['dataframe'].shape}")
-        print(f"  suffix: '{section_dict['suffix']}'")
-        print(f"  merge_field: '{section_dict['merge_field']}'")
-        print(f"  name_field: '{section_dict['name_field']}'")
-        print(f"  type_field: '{section_dict['type_field']}'")
+    # Initialize the main DataFrame
+    main_df_dict = initialize_main_dataframe(input_df_dict['home'])
 
-    # Step 2: Initialize the main dataframe using the first DataFrame
-    first_df_section = list(input_df_dict.items())[0][1]  # Get the first dictionary section
-    main_df_dict = initialize_main_dataframe(first_df_section)
+    # Specify the output level here: 'full', 'short', or 'none'
+    print_df = 'full'  # User sets this
 
-    # Step 3: Perform the merges with subsequent DataFrames and output the result of each merge
-
+    # Perform the merges with subsequent DataFrames and output the result of each merge
     max_iterations = 3  # Set the maximum number of iterations for merging
     for iteration, df_name in enumerate(list(input_df_dict.keys())[1:], start=1):  # Start from the second DataFrame
         if iteration > max_iterations:
             break
 
-        print(f"\n1️⃣ Iteration {iteration}: Merging with '{df_name}' DataFrame")
+        print(f"\n 1️⃣ Iteration {iteration}: Merging with '{df_name}' DataFrame")
         
         input_df_dict_section = input_df_dict[df_name]
 
@@ -77,60 +69,36 @@ def build_main_dataframe():
         # Merge the validated DataFrames
         main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section)
 
-        # Debug: Output the result of the merge
-        print(f"\n1️⃣ Result of the merge (Iteration {iteration}) with '{df_name}':\n{main_df_dict['dataframe'].head()}")
+        # Call the print function to display the result of each merge
+        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df=print_df)
 
-        # Final printout after all merges are completed
-        print("1️⃣ 🟩 [Final] Final Main DataFrame after all merges:\n", main_df_dict['dataframe'].head())
-        print("1️⃣ 🟩 [Final] Final Main DataFrame Dictionary Summary:")
-        print(f"  dataframe_shape: {main_df_dict['dataframe'].shape}")
-        print(f"  suffix: {main_df_dict['suffix']}")
-        print(f"  merge_field: {main_df_dict['merge_field']}")
-        print(f"  name_field: {main_df_dict['name_field']}")
-        print(f"  type_field: {main_df_dict['type_field']}")
+    # Final printout after all merges are completed
+    print_debug_info(section_name='final', section_dict=main_df_dict, print_df=print_df)
 
     return main_df_dict
 
 def initialize_main_dataframe(first_df_section):
-    # Step 1: Extract the necessary information
+    # Extract information
     main_dataframe = first_df_section['dataframe']
     df1_field_suffix = first_df_section['suffix']
 
-    # Step 2: Duplicate item_name, item_type, and unique_id without the suffix to create global fields
+    # Create global fields
     main_dataframe['item_name'] = main_dataframe[f'item_name_{df1_field_suffix}']
     main_dataframe['item_type'] = main_dataframe[f'item_type_{df1_field_suffix}']
     main_dataframe['unique_id'] = main_dataframe[f'unique_id_{df1_field_suffix}']
 
-    # Toggle output directly within the function
-    show_output = True  # Change to False to disable output
-    show_full_df = False  # Change to True to show the full DataFrame
+    print_df = 'short'  # Specify the output level here: 'full', 'short', or 'none'
 
-    if show_output:
-        if show_full_df:
-            print("1️⃣ 🟩 [Initialize] Main DataFrame after initialization:\n", main_dataframe)
-        else:
-            print("1️⃣ 🟩 [Initialize] Main DataFrame after initialization (First 5 rows):\n", main_dataframe.head())
-
-    # Step 3: Create the dictionary section for the main DataFrame with consistent structure
+    # Create the main DataFrame dictionary
     main_df_dict = {
         'dataframe': main_dataframe,
-        'suffix': '',  # No suffix for the global fields
-        'merge_field': 'item_name',  # Global merge field
-        'name_field': 'item_name',   # Global name field
-        'type_field': 'item_type'    # Global type field
+        'suffix': '',  # No suffix for global fields
+        'merge_field': 'item_name',
+        'name_field': 'item_name',
+        'type_field': 'item_type'
     }
 
-    # Toggle output for the main_df_dict
-    show_dict_output = True  # Change to False to disable output
-
-    if show_dict_output:
-        # Print a summary instead of the full DataFrame
-        print(f"1️⃣ 🟩 [Initialize] Main DataFrame Dictionary (Summary):")
-        print(f"  dataframe_name: 'main_dataframe'")
-        print(f"  dataframe_shape: {main_dataframe.shape}")
-        print(f"  suffix: ''")
-        print(f"  merge_field: 'item_name'")
-        print(f"  name_field: 'item_name'")
-        print(f"  type_field: 'item_type'")
+    # Call the print function
+    print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
 
     return main_df_dict

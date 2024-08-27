@@ -85,3 +85,12 @@ def validate_values(df, config):
             logging.error(f"Field 'unique_id' should be of type Int64.")
     
     return df
+
+def replace_string_blanks(df):
+    # Iterate over all columns
+    for column in df.columns:
+        if pd.api.types.is_string_dtype(df[column]):
+            # Replace NaN or <NA> with an empty string
+            df[column] = df[column].fillna('')
+    
+    return df

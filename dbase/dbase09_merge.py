@@ -2,7 +2,9 @@ import logging
 import pandas as pd
 import numpy as np
 
-def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=False):
+from .dbase08_validate import replace_string_blanks
+
+def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=True):
     # Extract the DataFrames from the dictionary sections
     main_df = main_df_dict['dataframe']
     input_df = input_df_dict_section['dataframe']
@@ -24,4 +26,6 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
 
+    merged_dataframe = replace_string_blanks(merged_dataframe)
+    
     return merged_dataframe

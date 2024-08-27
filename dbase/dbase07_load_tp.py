@@ -6,7 +6,7 @@ from .dbase08_validate import validate_values
 
 def correct_and_validate_template_df(template_df):
     # Correct values: Replace NaN with empty strings in 'comment_tp' field
-    template_df['comment_tp'].fillna('', inplace=True)
+    template_df['comment_tp'] = template_df['comment_tp'].fillna('')
 
     # Validate primary fields (item_name_tp, item_type_tp)
     # if template_df['item_name_tp'].isnull().any():
@@ -35,6 +35,9 @@ def load_tp_dataframe():
             "no_show": "bool"
         })
 
+        # Record the original order of rows
+        template_df['original_order'] = (template_df.index + 1).astype("Int64")  # Convert to Int64 explicitly
+
         # Assign unique IDs
         template_df['unique_id_tp'] = template_df.apply(lambda row: get_next_unique_id(), axis=1)
         template_df["unique_id_tp"] = template_df["unique_id_tp"].astype("Int64")
@@ -44,7 +47,7 @@ def load_tp_dataframe():
 
         # Toggle output directly within the function
         show_output = True  # Change to False to disable output
-        show_full_df = True  # Change to False to show only the first 5 rows
+        show_full_df = False  # Change to True to show the full DataFrame
 
         if show_output:
             if show_full_df:
