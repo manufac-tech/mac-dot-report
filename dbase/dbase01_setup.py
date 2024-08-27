@@ -80,6 +80,15 @@ def build_main_dataframe():
         # Debug: Output the result of the merge
         print(f"\n1️⃣ Result of the merge (Iteration {iteration}) with '{df_name}':\n{main_df_dict['dataframe'].head()}")
 
+        # Final printout after all merges are completed
+        print("1️⃣ 🟩 [Final] Final Main DataFrame after all merges:\n", main_df_dict['dataframe'].head())
+        print("1️⃣ 🟩 [Final] Final Main DataFrame Dictionary Summary:")
+        print(f"  dataframe_shape: {main_df_dict['dataframe'].shape}")
+        print(f"  suffix: {main_df_dict['suffix']}")
+        print(f"  merge_field: {main_df_dict['merge_field']}")
+        print(f"  name_field: {main_df_dict['name_field']}")
+        print(f"  type_field: {main_df_dict['type_field']}")
+
     return main_df_dict
 
 def initialize_main_dataframe(first_df_section):
@@ -98,9 +107,9 @@ def initialize_main_dataframe(first_df_section):
 
     if show_output:
         if show_full_df:
-            print("1️⃣ 🟩 Main DataFrame after initialization:\n", main_dataframe)
+            print("1️⃣ 🟩 [Initialize] Main DataFrame after initialization:\n", main_dataframe)
         else:
-            print("1️⃣ 🟩 Main DataFrame after initialization (First 5 rows):\n", main_dataframe.head())
+            print("1️⃣ 🟩 [Initialize] Main DataFrame after initialization (First 5 rows):\n", main_dataframe.head())
 
     # Step 3: Create the dictionary section for the main DataFrame with consistent structure
     main_df_dict = {
@@ -116,7 +125,7 @@ def initialize_main_dataframe(first_df_section):
 
     if show_dict_output:
         # Print a summary instead of the full DataFrame
-        print(f"1️⃣ 🟩 Main DataFrame Dictionary (Summary):")
+        print(f"1️⃣ 🟩 [Initialize] Main DataFrame Dictionary (Summary):")
         print(f"  dataframe_name: 'main_dataframe'")
         print(f"  dataframe_shape: {main_dataframe.shape}")
         print(f"  suffix: ''")
