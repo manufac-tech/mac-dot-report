@@ -42,17 +42,14 @@ def load_dotbot_yaml_dataframe():
     dotbot_yaml_df["item_type_db"] = dotbot_yaml_df["item_type_db"].astype("string")
     dotbot_yaml_df["unique_id_db"] = dotbot_yaml_df["unique_id_db"].astype("Int64")
 
-    # Create the dictionary that includes the DataFrame and additional info
-    dotbot_dict = {
-        'dataframe': dotbot_yaml_df,
-        'suffix': 'db',
-        'merge_field': 'item_name_rp_db',
-        'name_field': 'item_name_rp_db',
-        'type_field': 'item_type_db'
-    }
+    # Toggle output directly within the function
+    show_output = True  # Change to False to disable output
+    show_full_df = False  # Change to True to show the full DataFrame
 
-    # Print the structure of the dictionary
-    print("DotBot dictionary structure:\n", dotbot_dict)
-    print(dotbot_dict['dataframe'])
+    if show_output:
+        if show_full_df:
+            print("6️⃣ DotBot DataFrame:\n", dotbot_yaml_df)
+        else:
+            print("6️⃣ DotBot DataFrame (First 5 rows):\n", dotbot_yaml_df.head())
 
-    return dotbot_dict
+    return dotbot_yaml_df

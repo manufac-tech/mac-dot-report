@@ -56,40 +56,32 @@ def validate_df_dict_current_and_main(input_df_dict_section, main_df_dict, df_na
     main_dataframe = validate_values(main_dataframe, config)
     
     # Print the validation passed message with the section name
-    print(f"Validation passed for DataFrame section: {df_name}")
+    # print(f"Validation passed for DataFrame section: {df_name}")
     
     # Update the main_df_dict with the validated DataFrame
     main_df_dict['dataframe'] = main_dataframe
     
     return main_df_dict
 
-def validate_values(df, config): # USED BY BOTH: dbase/dbase08_validate.py and dbase/dbase07_load_tp.py
-    """
-    Validate and correct values in the DataFrame based on provided configuration.
+def validate_values(df, config):
+    # Manually check for 'item_name' column to ensure it is non-null and of type string
+    if 'item_name' in df.columns:
+        if df['item_name'].isnull().any():
+            logging.error(f"Some rows in 'item_name' have missing or empty values.")
+            df = df[df['item_name'].notnull() & (df['item_name'] != '')]
+        if not pd.api.types.is_string_dtype(df['item_name']):
+            logging.error(f"Field 'item_name' should be of type string.")
+    
+    # Manually check for 'item_type' column to ensure it contains valid types
+    valid_item_types = ['file', 'folder', 'file_sym', 'folder_sym', 'alias', 'unknown']
+    if 'item_type' in df.columns:
+        invalid_values = df['item_type'][~df['item_type'].isin(valid_item_types)]
+        if not invalid_values.empty:  # Corrected: Access .empty as a property
+            logging.warning(f"Invalid values found in 'item_type': {invalid_values.tolist()}")
 
-    Args:
-        df (DataFrame): The DataFrame to validate and correct.
-        config (dict): A dictionary containing the validation and correction rules.
-
-    Returns:
-        DataFrame: The DataFrame with corrected values.
-    """
-    for column, rules in config.items():
-        if 'valid_types' in rules:
-            valid_types = rules['valid_types']
-            invalid_values = df[column][~df[column].isin(valid_types)]
-            if not invalid_values.empty:
-                logging.warning(f"Invalid values found in column '{column}': {invalid_values.tolist()}")
-        
-        if 'fillna' in rules:
-            df[column] = df[column].fillna(rules['fillna'])
-        
-        if 'ensure_not_null' in rules and rules['ensure_not_null']:
-            if df[column].isnull().any() or (df[column] == '').any():
-                logging.error(f"Some rows in column '{column}' have missing or empty values. These rows will be removed.")
-                df = df[df[column].notnull() & (df[column] != '')]
-        
-        if 'assign_sequence' in rules and rules['assign_sequence']:
-            df[column] = np.arange(1, len(df) + 1)
+    # Manually check for 'unique_id' column to ensure it is of type Int64
+    if 'unique_id' in df.columns:
+        if not pd.api.types.is_int64_dtype(df['unique_id']):
+            logging.error(f"Field 'unique_id' should be of type Int64.")
     
     return df

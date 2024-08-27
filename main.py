@@ -9,7 +9,7 @@ from report_gen import generate_timestamped_output_paths, prepare_output_datafra
 # Configure logging to show DEBUG level messages 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG  # Change to DEBUG to capture more detailed output (INFO is the default level)
+    level=logging.INFO  # Change to DEBUG to capture more detailed output (INFO is the default level)
 )
 
 # Define the home directory
@@ -44,7 +44,7 @@ def main():
     # Debug: Display the DataFrame to examine its contents
     # print("DataFrame contents:\n", main_dataframe.head())
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #     print("DataFrame contents:\n", main_dataframe['dataframe'].to_string(index=False))
+        # print("DataFrame contents:\n", main_dataframe['dataframe'].to_string(index=False))
 
     # Validate the final DataFrame (this step should occur after merging)
     # main_dataframe = validate_df_dict_current_and_main(main_dataframe, main_dataframe)

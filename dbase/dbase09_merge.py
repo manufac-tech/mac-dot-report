@@ -9,30 +9,13 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
     left_merge_field = main_df_dict['merge_field']
     right_merge_field = input_df_dict_section['merge_field']
 
-    # print("Main DataFrame:", main_df)
-    # print("Input DataFrame:", input_df)
-
-    # Debug output to check columns before merge
-    # if verbose:
-        # print(f"Columns in main_df: {main_df.columns}")
-        # print(f"Columns in input_df: {input_df.columns}")
-    
-    # print(f"Left Merge Field: {left_merge_field}")
-    # print(f"Right Merge Field: {right_merge_field}")
-
-    # print(f"Columns in Main DataFrame: {main_df.columns}")
-    # print(f"Columns in Input DataFrame: {input_df.columns}")
-
-
-
-    # Perform the merge operation with error handling
+    # Perform the merge operation without the indicator column
     try:
         merged_dataframe = pd.merge(
             main_df, input_df,
             left_on=left_merge_field,
             right_on=right_merge_field,
-            how=merge_type,
-            indicator=True
+            how=merge_type
         )
         
         # Rename the right merge field to retain it with a suffix
@@ -40,11 +23,5 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
-
-    # print(f"Merged DataFrame Columns: {merged_dataframe.columns}")
-    # print(f"First 5 rows of Merged DataFrame:\n{merged_dataframe.head()}")
-
-    # if verbose:
-        # print(f"First 5 rows of Merged DataFrame after merge:\n{merged_dataframe.head()}")
 
     return merged_dataframe

@@ -28,4 +28,14 @@ def load_rp_dataframe():
     df["item_type_rp"] = df["item_type_rp"].astype("string")
     df["unique_id_rp"] = df["unique_id_rp"].astype("Int64")  # Ensure unique_id_rp is Int64
 
+    # Toggle output directly within the function
+    show_output = True  # Change to False to disable output
+    show_full_df = False  # Change to True to show the full DataFrame
+
+    if show_output:
+        if show_full_df:
+            print("5️⃣ Repo DataFrame:\n", df)
+        else:
+            print("5️⃣ Repo DataFrame (First 5 rows):\n", df.head())
+
     return df
