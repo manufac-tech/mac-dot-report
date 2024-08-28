@@ -19,13 +19,10 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
             right_on=right_merge_field,
             how=merge_type
         )
-        
-        # Rename the right merge field to retain it with a suffix
-        merged_dataframe = merged_dataframe.rename(columns={right_merge_field: f"{right_merge_field}_suffix"})
-
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
 
+    # Apply the blank replacement after the merge
     merged_dataframe = replace_string_blanks(merged_dataframe)
     
     return merged_dataframe

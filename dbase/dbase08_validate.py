@@ -89,8 +89,17 @@ def validate_values(df, config):
 def replace_string_blanks(df):
     for column in df.columns:
         if pd.api.types.is_string_dtype(df[column]):
-            # Replace NaN or <NA> with an empty string
-            df[column] = df[column].fillna('')  # Handle NaN and <NA>
-            # Replace string representations of NaN and None with an empty string
-            df[column] = df[column].replace({'None': '', 'nan': '', '<NA>': ''})
+            # Convert everything to string to ensure consistency in replacement
+            df[column] = df[column].astype(str)
+            # Replace various forms of null values with an empty string
+            df[column] = df[column].replace({
+                'None': '', 
+                'none': '', 
+                'NaN': '', 
+                'nan': '', 
+                '<NA>': '', 
+                '<na>': ''
+            }, regex=True)
+            # Handle remaining NaN and <NA> values
+            df[column] = df[column].fillna('')
     return df
