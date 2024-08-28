@@ -8,17 +8,20 @@ def correct_and_validate_template_df(template_df):
     # Correct values: Replace NaN with empty strings in 'comment_tp' field
     template_df['comment_tp'] = template_df['comment_tp'].fillna('')
 
-    # Validate primary fields (item_name_tp, item_type_tp)
-    # if template_df['item_name_tp'].isnull().any():
-    #     logging.error("Some rows in 'item_name_tp' have missing or empty values.")
-    #     template_df = template_df[template_df['item_name_tp'].notnull() & (template_df['item_name_tp'] != '')]
-
-    # valid_item_types = ['folder', 'file', 'alias']
-    # if not template_df['item_type_tp'].isin(valid_item_types).all():
-    #     invalid_values = template_df['item_type_tp'][~template_df['item_type_tp'].isin(valid_item_types)]
-    #     logging.warning(f"Invalid values found in 'item_type_tp': {invalid_values.tolist()}")
-
     return template_df
+
+def replace_string_blanks(df):
+    for column in df.columns:
+        if pd.api.types.is_string_dtype(df[column]):
+            # Convert everything to string to ensure we can replace all forms of NA
+            df[column] = df[column].astype(str)
+            # Replace all variations of NA, including case-insensitive matches
+            df[column] = df[column].str.replace(r'(?i)^<na>$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^nan$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^none$', '', regex=True)
+            # Fill remaining NaN values with empty string
+            df[column] = df[column].fillna('')
+    return df
 
 def load_tp_dataframe():
     try:
@@ -44,6 +47,9 @@ def load_tp_dataframe():
 
         # Apply the correction and validation function
         template_df = correct_and_validate_template_df(template_df)
+
+        # Apply the enhanced blank replacement function
+        template_df = replace_string_blanks(template_df)
 
         # Toggle output directly within the function
         show_output = True  # Change to False to disable output
