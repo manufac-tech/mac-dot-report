@@ -89,17 +89,10 @@ def validate_values(df, config):
 def replace_string_blanks(df):
     for column in df.columns:
         if pd.api.types.is_string_dtype(df[column]):
-            # Convert everything to string to ensure consistency in replacement
-            df[column] = df[column].astype(str)
-            # Replace various forms of null values with an empty string
-            df[column] = df[column].replace({
-                'None': '', 
-                'none': '', 
-                'NaN': '', 
-                'nan': '', 
-                '<NA>': '', 
-                '<na>': ''
-            }, regex=True)
-            # Handle remaining NaN and <NA> values
-            df[column] = df[column].fillna('')
+            # print(f"Before cleaning: {df[column].unique()}")
+            df[column] = df[column].astype(str).replace({
+                'None': '', 'none': '', 'NaN': '', 'nan': '', 
+                '<NA>': '', '<na>': '', 'pd.NA': ''
+            }, regex=True).replace({pd.NA: '', np.nan: ''}).fillna('')
+            # print(f"After cleaning: {df[column].unique()}")
     return df

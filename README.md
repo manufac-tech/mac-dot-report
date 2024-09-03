@@ -63,7 +63,7 @@ The template includes fields that allow the user to associate information and co
 
 ---
 
-|                      | **fs\_item_name** | **fs*item\_type*** | **tp\_item\_name** | **tp\_item\_type** | **item\_name**    | **item\_type**  |
+|                      | **fs_item_name** | **fs*item_type*** | **tp_item_name** | **tp_item_type** | **item_name**    | **item_type**  |
 | -------------------- | ---------------- | ----------------- | ---------------- | ---------------- | ---------------- | -------------- |
 | **Scenario 1 IN**    | .zshrc           | TRUE              | NaN              | NaN              |                  |                |
 | **Scenario 1 NAMES** | .zshrc           | TRUE              | [NO TP ITEM]     | [NO TP ITEM]     | .zshrc           | TRUE           |
@@ -73,3 +73,5 @@ The template includes fields that allow the user to associate information and co
 |                      |                  |                   |                  |                  |                  |                |
 | **Scenario 3 IN**    | NaN              | NaN               | .zshrc           | NaN              |                  |                |
 | **Scenario 3 NAMES** | [NO FS ITEM]     | [NO FS ITEM]      | .zshrc [NO TYPE] | [NO ITEM DATA]   | .zshrc [NO TYPE] | [NO ITEM DATA] |
+
+- Maybe use rcm somehow...https://thoughtbot.github.io/rcm/rcm.7.html

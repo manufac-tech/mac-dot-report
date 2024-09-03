@@ -18,11 +18,22 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
             left_on=left_merge_field,
             right_on=right_merge_field,
             how=merge_type
-        )
+        ).copy()
+        
+        # Debugging step: Check the DataFrame state before cleaning
+        # if verbose:
+        #     print("\nBefore cleaning:")
+        #     print(merged_dataframe.isna().sum())
+
+        # Apply the blank replacement after the merge
+        merged_dataframe = replace_string_blanks(merged_dataframe)
+
+        # Debugging step: Check the DataFrame state after cleaning
+        # if verbose:
+        #     print("\nAfter cleaning:")
+        #     print(merged_dataframe.isna().sum())
+
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
-
-    # Apply the blank replacement after the merge
-    merged_dataframe = replace_string_blanks(merged_dataframe)
     
     return merged_dataframe

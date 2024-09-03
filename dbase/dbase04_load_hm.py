@@ -21,7 +21,7 @@ def load_hm_dataframe():
                 "unique_id_hm": get_next_unique_id()
             })
 
-    df = pd.DataFrame(dot_items)
+    df = pd.DataFrame(dot_items).copy()
 
     # Explicitly set data types
     df["item_name_hm"] = df["item_name_hm"].astype("string")

@@ -36,7 +36,7 @@ def load_tp_dataframe():
             "comment": "string",
             "cat_2": "string",
             "no_show": "bool"
-        })
+        }).copy()
 
         # Record the original order of rows
         template_df['original_order'] = (template_df.index + 1).astype("Int64")  # Convert to Int64 explicitly

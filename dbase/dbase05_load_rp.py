@@ -21,7 +21,7 @@ def load_rp_dataframe():
                 "unique_id_rp": get_next_unique_id()  # Use the suffix '_rp' consistently
             })
 
-    df = pd.DataFrame(repo_items)
+    df = pd.DataFrame(repo_items).copy()
 
     # Explicitly set data types
     df["item_name_rp"] = df["item_name_rp"].astype("string")

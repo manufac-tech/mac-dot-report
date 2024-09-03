@@ -50,7 +50,7 @@ def build_main_dataframe():
     main_df_dict = initialize_main_dataframe(input_df_dict['home'])
 
     # Specify the output level here: 'full', 'short', or 'none'
-    print_df = 'full'  # User sets this
+    print_df = 'short'  # User sets this
 
     # Perform the merges with subsequent DataFrames and output the result of each merge
     max_iterations = 3  # Set the maximum number of iterations for merging
@@ -70,7 +70,7 @@ def build_main_dataframe():
         main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section)
 
         # Call the print function to display the result of each merge
-        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df=print_df)
+        # print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df=print_df)
 
     # Final printout after all merges are completed
     print_debug_info(section_name='final', section_dict=main_df_dict, print_df=print_df)
@@ -79,7 +79,7 @@ def build_main_dataframe():
 
 def initialize_main_dataframe(first_df_section):
     # Extract information
-    main_dataframe = first_df_section['dataframe']
+    main_dataframe = first_df_section['dataframe'].copy()
     df1_field_suffix = first_df_section['suffix']
 
     # Create global fields

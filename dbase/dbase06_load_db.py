@@ -35,7 +35,7 @@ def load_dotbot_yaml_dataframe():
                         })
 
     # Create the DataFrame with both home and repo item names
-    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_hm_db', 'item_name_rp_db', 'item_type_db', 'unique_id_db'])
+    dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=['item_name_hm_db', 'item_name_rp_db', 'item_type_db', 'unique_id_db']).copy()
 
     # Explicitly set data types
     dotbot_yaml_df["item_name_hm_db"] = dotbot_yaml_df["item_name_hm_db"].astype("string")
