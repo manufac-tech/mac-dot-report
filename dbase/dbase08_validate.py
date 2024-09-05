@@ -64,35 +64,35 @@ def validate_df_dict_current_and_main(input_df_dict_section, main_df_dict, df_na
     return main_df_dict
 
 def validate_values(df, config):
-    # Manually check for 'item_name' column to ensure it is non-null and of type string
-    if 'item_name' in df.columns:
-        if df['item_name'].isnull().any():
-            logging.error(f"Some rows in 'item_name' have missing or empty values.")
-            df = df[df['item_name'].notnull() & (df['item_name'] != '')]
-        if not pd.api.types.is_string_dtype(df['item_name']):
-            logging.error(f"Field 'item_name' should be of type string.")
+    # # Manually check for 'item_name' column to ensure it is non-null and of type string
+    # if 'item_name' in df.columns:
+    #     if df['item_name'].isnull().any():
+    #         logging.error(f"Some rows in 'item_name' have missing or empty values.")
+    #         df = df[df['item_name'].notnull() & (df['item_name'] != '')]
+    #     if not pd.api.types.is_string_dtype(df['item_name']):
+    #         logging.error(f"Field 'item_name' should be of type string.")
     
-    # Manually check for 'item_type' column to ensure it contains valid types
-    valid_item_types = ['file', 'folder', 'file_sym', 'folder_sym', 'alias', 'unknown']
-    if 'item_type' in df.columns:
-        invalid_values = df['item_type'][~df['item_type'].isin(valid_item_types)]
-        if not invalid_values.empty:  # Corrected: Access .empty as a property
-            logging.warning(f"Invalid values found in 'item_type': {invalid_values.tolist()}")
+    # # Manually check for 'item_type' column to ensure it contains valid types
+    # valid_item_types = ['file', 'folder', 'file_sym', 'folder_sym', 'alias', 'unknown']
+    # if 'item_type' in df.columns:
+    #     invalid_values = df['item_type'][~df['item_type'].isin(valid_item_types)]
+    #     if not invalid_values.empty:  # Corrected: Access .empty as a property
+    #         logging.warning(f"Invalid values found in 'item_type': {invalid_values.tolist()}")
 
-    # Manually check for 'unique_id' column to ensure it is of type Int64
-    if 'unique_id' in df.columns:
-        if not pd.api.types.is_int64_dtype(df['unique_id']):
-            logging.error(f"Field 'unique_id' should be of type Int64.")
+    # # Manually check for 'unique_id' column to ensure it is of type Int64
+    # if 'unique_id' in df.columns:
+    #     if not pd.api.types.is_int64_dtype(df['unique_id']):
+    #         logging.error(f"Field 'unique_id' should be of type Int64.")
     
     return df
 
 def replace_string_blanks(df):
-    for column in df.columns:
-        if pd.api.types.is_string_dtype(df[column]):
-            # print(f"Before cleaning: {df[column].unique()}")
-            df[column] = df[column].astype(str).replace({
-                'None': '', 'none': '', 'NaN': '', 'nan': '', 
-                '<NA>': '', '<na>': '', 'pd.NA': ''
-            }, regex=True).replace({pd.NA: '', np.nan: ''}).fillna('')
-            # print(f"After cleaning: {df[column].unique()}")
+    # for column in df.columns:
+    #     if pd.api.types.is_string_dtype(df[column]):
+    #         # print(f"Before cleaning: {df[column].unique()}")
+    #         df[column] = df[column].astype(str).replace({
+    #             'None': '', 'none': '', 'NaN': '', 'nan': '', 
+    #             '<NA>': '', '<na>': '', 'pd.NA': ''
+    #         }, regex=True).replace({pd.NA: '', np.nan: ''}).fillna('')
+    #         # print(f"After cleaning: {df[column].unique()}")
     return df

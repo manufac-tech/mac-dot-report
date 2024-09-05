@@ -1,5 +1,10 @@
 import pandas as pd
 
+from .dbase02_id_gen import (
+    field_merge_1_uid,
+    field_merge_2_uid,
+    field_merge_3_uid
+)
 from .dbase04_load_hm import load_hm_dataframe
 from .dbase05_load_rp import load_rp_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
@@ -21,28 +26,32 @@ def build_main_dataframe():
             'suffix': 'hm',
             'merge_field': 'item_name_hm',
             'name_field': 'item_name_hm',
-            'type_field': 'item_type_hm'
+            'type_field': 'item_type_hm',
+            'unique_id_merge_func': None
         },
         'repo': {
             'dataframe': load_rp_dataframe(),
             'suffix': 'rp',
             'merge_field': 'item_name_rp',
             'name_field': 'item_name_rp',
-            'type_field': 'item_type_rp'
+            'type_field': 'item_type_rp',
+            'unique_id_merge_func': 'field_merge_1_uid'
         },
         'dotbot': {
             'dataframe': load_dotbot_yaml_dataframe(),
             'suffix': 'db',
             'merge_field': 'item_name_rp_db',
             'name_field': 'item_name_rp_db',
-            'type_field': 'item_type_db'
+            'type_field': 'item_type_hm_db',
+            'unique_id_merge_func': 'field_merge_2_uid'
         },
         'template': {
             'dataframe': load_tp_dataframe(),
             'suffix': 'tp',
             'merge_field': 'item_name_tp',
             'name_field': 'item_name_tp',
-            'type_field': 'item_type_tp'
+            'type_field': 'item_type_tp',
+            'unique_id_merge_func': 'field_merge_3_uid'
         }
     }
 
@@ -62,18 +71,28 @@ def build_main_dataframe():
         
         input_df_dict_section = input_df_dict[df_name]
 
-        # Validate the main DataFrame dict and current input DataFrame section
-        main_df_dict = validate_df_dict_current_and_main(main_df_dict, main_df_dict, 'main')
-        input_df_dict_section = validate_df_dict_current_and_main(input_df_dict_section, input_df_dict_section, df_name)
-
-        # Merge the validated DataFrames
+        # Merge the DataFrames
         main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section)
 
+        # Print the function name before calling it
+        merge_func_name = input_df_dict_section.get('unique_id_merge_func')
+        print(f"DEBUG: Retrieved function name from dict: {merge_func_name}")  # This will print the function name
+
+        if merge_func_name:
+            merge_func = globals().get(merge_func_name)
+            if merge_func:
+                print(f"DEBUG: Found the function '{merge_func_name}', calling it now...")  # Print before calling the function
+                main_df_dict['dataframe'] = merge_func(main_df_dict['dataframe'])
+            else:
+                print(f"Error: Function '{merge_func_name}' not found.")
+        else:
+            print(f"No merge function for '{df_name}'.")
+
         # Call the print function to display the result of each merge
-        # print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df=print_df)
+        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df='full')
 
     # Final printout after all merges are completed
-    print_debug_info(section_name='final', section_dict=main_df_dict, print_df=print_df)
+    print_debug_info(section_name='final', section_dict=main_df_dict, print_df='full')
 
     return main_df_dict
 
@@ -86,6 +105,11 @@ def initialize_main_dataframe(first_df_section):
     main_dataframe['item_name'] = main_dataframe[f'item_name_{df1_field_suffix}']
     main_dataframe['item_type'] = main_dataframe[f'item_type_{df1_field_suffix}']
     main_dataframe['unique_id'] = main_dataframe[f'unique_id_{df1_field_suffix}']
+
+    # Add status fields for each merge
+    main_dataframe['m_status_1'] = ''  # Status after first merge (Home + Repo)
+    main_dataframe['m_status_2'] = ''  # Status after second merge (Home + Repo + DotBot)
+    main_dataframe['m_status_3'] = ''  # Status after third merge (for future use)
 
     print_df = 'short'  # Specify the output level here: 'full', 'short', or 'none'
 

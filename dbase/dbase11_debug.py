@@ -15,7 +15,7 @@ def print_debug_info(section_name, section_dict, print_df):
 
     if print_df == 'full':
         # Print the entire DataFrame
-        print(f"\n1️⃣ Full DataFrame for '{section_name}':\n{section_dict['dataframe']}")
+        print(f"\n1️⃣ Result of merging main_dataframe with '{section_name}':\n{section_dict['dataframe']}")
     elif print_df == 'short':
         # Print only the first 5 rows
-        print(f"\n1️⃣ First 5 rows of DataFrame for '{section_name}':\n{section_dict['dataframe'].head()}")
+        print(f"\n1️⃣ First 5 rows after merging main_dataframe with '{section_name}':\n{section_dict['dataframe'].head()}")

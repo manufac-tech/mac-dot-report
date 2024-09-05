@@ -2,7 +2,12 @@ from .dbase01_setup import (
     build_main_dataframe,
     initialize_main_dataframe
 )
-from .dbase02_id_gen import get_next_unique_id
+from .dbase02_id_gen import (
+    get_next_unique_id,
+    field_merge_1_uid,
+    field_merge_2_uid,
+    field_merge_3_uid
+)    
 from .dbase03_item_type import (
     determine_item_type,
     is_symlink,
@@ -39,6 +44,9 @@ __all__ = [
     "build_main_dataframe",
     "initialize_main_dataframe",
     "get_next_unique_id",
+    "field_merge_1_uid",
+    "field_merge_2_uid",
+    "field_merge_3_uid",
     "determine_item_type",
     "is_symlink",
     "is_alias",
