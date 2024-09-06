@@ -53,7 +53,7 @@ def reorder_columns(df):
         'item_name_rp', 'item_type_rp',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
         'item_name_tp', 'item_type_tp', 'cat_1_tp', 'cat_1_name_tp', 'comment_tp', 'cat_2_tp',
-        'git_db',
+        'git_rp',
         'no_show',
         'm_status_1', 'm_status_2', 'm_status_3',
         'out_group',

@@ -29,8 +29,8 @@ def load_rp_dataframe():
     df["item_type_rp"] = df["item_type_rp"].astype("string")
     df["unique_id_rp"] = df["unique_id_rp"].astype("Int64")  # Ensure unique_id_rp is Int64
 
-    # Create the git_db column based on .gitignore
-    df = create_git_db_column(df, repo_path)
+    # Create the git_rp column based on .gitignore
+    df = create_git_rp_column(df, repo_path)
 
     # Toggle output directly within the function
     show_output = True  # Change to False to disable output
@@ -44,51 +44,50 @@ def load_rp_dataframe():
 
     return df
 
-def create_git_db_column(df, repo_path):
-    # Read and parse the .gitignore file
-    gitignore_path = os.path.join(repo_path, ".gitignore")
-    if not os.path.exists(gitignore_path):
-        print(f"No .gitignore file found at {gitignore_path}")
-        df['git_db'] = True  # If .gitignore doesn't exist, assume all are tracked
-        return df
+def create_git_rp_column(df, repo_path):
+    # Retrieve gitignore items and their types (file or folder)
+    gitignore_items = read_gitignore_items(repo_path)
 
-    with open(gitignore_path, 'r') as f:
-        gitignore_patterns = [line.strip() for line in f if line.strip() and not line.startswith('#')]
-
-    # Initialize the 'git_db' column with True values (assume tracked)
-    df['git_db'] = True
-
-    # Check each item in the DataFrame against the patterns in .gitignore
+    # Iterate through every item in the DataFrame and compare against gitignore items
     for idx, row in df.iterrows():
         item_name = row['item_name_rp']
         item_type = row['item_type_rp']
-        item_path = os.path.join(repo_path, item_name)
 
-        # Debugging outputs
-        print(f"Checking item: {item_name}, type: {item_type}")
+        # Initialize the git_rp column with True (assuming it's tracked)
+        df.at[idx, 'git_rp'] = True
 
-        for pattern in gitignore_patterns:
-            # Debugging pattern check
-            print(f"Pattern from .gitignore: {pattern}")
-
-            # Handle folders (patterns ending with '/')
-            if pattern.endswith('/') and item_type == 'folder_sym':
-                folder_match = fnmatch.fnmatch(item_name + '/', pattern)
-                print(f"Checking folder: {item_name}/ against pattern {pattern}: {folder_match}")
-                if folder_match:
-                    df.at[idx, 'git_db'] = False  # Mark as untracked if folder matches
-                    print(f"Folder {item_name}/ marked as untracked.")
-                    break
-
-            # Handle files and folders without trailing '/'
-            else:
-                file_match_name = fnmatch.fnmatch(item_name, pattern)
-                file_match_path = fnmatch.fnmatch(item_path, pattern)
-                print(f"Checking file: {item_name} or {item_path} against pattern {pattern}: name match: {file_match_name}, path match: {file_match_path}")
-            
-                if file_match_name or file_match_path:
-                    df.at[idx, 'git_db'] = False  # Mark as untracked if file matches
-                    print(f"File {item_name} marked as untracked.")
-                    break
+        # Compare with gitignore items
+        for pattern, pattern_type in gitignore_items.items():
+            # Use fnmatch to compare names and types
+            if fnmatch.fnmatch(item_name, pattern) and item_type == pattern_type:
+                df.at[idx, 'git_rp'] = False  # Mark as untracked
+                print(f"Match found: {item_name} ({item_type}) matches {pattern}")
+                break  # Stop checking once a match is found
 
     return df
+
+
+def read_gitignore_items(repo_path):
+    gitignore_path = os.path.join(repo_path, ".gitignore")
+    if not os.path.exists(gitignore_path):
+        return {}
+
+    gitignore_items = {}
+
+    with open(gitignore_path, 'r') as f:
+        for line in f:
+            pattern = line.strip()
+            if not pattern or pattern.startswith('#'):
+                continue
+
+            # Remove leading and trailing slashes for comparison purposes
+            pattern_cleaned = pattern.lstrip('/').rstrip('/')
+
+            # Determine type based on whether it had a trailing slash originally
+            item_type = 'folder' if pattern.endswith('/') else 'file'
+
+            # Store the cleaned pattern and its type
+            gitignore_items[pattern_cleaned] = item_type
+
+    print(f"Gitignore items: {gitignore_items}")  # Debug: print the cleaned items
+    return gitignore_items

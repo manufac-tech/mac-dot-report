@@ -38,14 +38,14 @@ def main():
 
     main_df_dict = build_main_dataframe()  # Build the main DataFrame and return as a dictionary
 
-    # Debug: Print columns before validation
-    print("Columns before validation:", main_df_dict['dataframe'].columns)
+    # # Debug: Print columns before validation
+    # print("Columns before validation:", main_df_dict['dataframe'].columns)
 
-    # Debug: Display the DataFrame to examine its contents
-    print("DataFrame contents:\n", main_df_dict['dataframe'].head())
+    # # Debug: Display the DataFrame to examine its contents
+    # print("DataFrame contents:\n", main_df_dict['dataframe'].head())
     
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    #     print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
 
     # Validate the final DataFrame (this step should occur after merging)
     # main_df_dict['dataframe'] = validate_df_dict_current_and_main(main_df_dict['dataframe'], main_df_dict['dataframe'])

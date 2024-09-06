@@ -21,7 +21,7 @@ from .dbase03_item_type import (
 from .dbase04_load_hm import load_hm_dataframe
 from .dbase05_load_rp import (
     load_rp_dataframe,
-    create_git_db_column
+    create_git_rp_column
 )
 from .dbase06_load_db import load_dotbot_yaml_dataframe
 from .dbase07_load_tp import (
@@ -60,7 +60,7 @@ __all__ = [
     "detect_symlink_target_type",
     "load_hm_dataframe",
     "load_rp_dataframe",
-    "create_git_db_column",
+    "create_git_rp_column",
     "load_dotbot_yaml_dataframe",
     "load_tp_dataframe",
     "correct_and_validate_template_df",
