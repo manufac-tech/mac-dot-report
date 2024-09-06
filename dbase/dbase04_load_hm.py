@@ -29,7 +29,7 @@ def load_hm_dataframe():
     df["unique_id_hm"] = df["unique_id_hm"].astype("Int64")
 
     # Toggle output directly within the function
-    show_output = True  # Change to False to disable output
+    show_output = False  # Change to False to disable output
     show_full_df = False  # Change to True to show the full DataFrame
 
     if show_output:

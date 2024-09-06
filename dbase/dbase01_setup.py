@@ -11,6 +11,7 @@ from .dbase06_load_db import load_dotbot_yaml_dataframe
 from .dbase07_load_tp import load_tp_dataframe
 from .dbase08_validate import validate_df_dict_current_and_main
 from .dbase09_merge import merge_dataframes
+from .dbase10_org import reorder_columns
 from .dbase11_debug import print_debug_info
 
 pd.set_option('display.max_rows', None)  # Display all rows
@@ -89,10 +90,13 @@ def build_main_dataframe():
             print(f"No merge function for '{df_name}'.")
 
         # Call the print function to display the result of each merge
-        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df='full')
+        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df='short')
 
+    # After the final merge
+    main_df_dict['dataframe'] = reorder_columns(main_df_dict['dataframe'])
+    
     # Final printout after all merges are completed
-    print_debug_info(section_name='final', section_dict=main_df_dict, print_df='full')
+    print_debug_info(section_name='final', section_dict=main_df_dict, print_df='short')
 
     return main_df_dict
 
@@ -123,6 +127,6 @@ def initialize_main_dataframe(first_df_section):
     }
 
     # Call the print function
-    print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
+    # print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
 
     return main_df_dict

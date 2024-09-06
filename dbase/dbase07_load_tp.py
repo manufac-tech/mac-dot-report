@@ -52,7 +52,7 @@ def load_tp_dataframe():
         template_df = replace_string_blanks(template_df)
 
         # Toggle output directly within the function
-        show_output = True  # Change to False to disable output
+        show_output = False  # Change to False to disable output
         show_full_df = False  # Change to True to show the full DataFrame
 
         if show_output:

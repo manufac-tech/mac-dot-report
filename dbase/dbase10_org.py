@@ -38,10 +38,13 @@ def apply_output_grouping(df):
 def reorder_columns(df):
     reordered_columns = [
         'item_name', 'item_type', 'unique_id',
-        'fs_item_name', 'fs_item_type',
-        'tp_item_name', 'tp_item_type',
-        'tp_cat_1', 'tp_cat_1_name', 'tp_comment', 'tp_cat_2', 
-        'no_show', 'original_order', '_merge'
+        'item_name_hm', 'item_type_hm',
+        'item_name_rp', 'item_type_rp',
+        'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
+        'item_name_tp', 'item_type_tp', 'cat_1_tp', 'cat_1_name_tp', 'comment_tp', 'cat_2_tp',
+        'no_show', 
+        'm_status_1', 'm_status_2', 'm_status_3', 
+        'original_order'
     ]
     reordered_columns = [col for col in reordered_columns if col in df.columns]
     return df[reordered_columns]
