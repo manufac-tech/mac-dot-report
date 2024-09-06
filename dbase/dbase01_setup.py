@@ -11,7 +11,11 @@ from .dbase06_load_db import load_dotbot_yaml_dataframe
 from .dbase07_load_tp import load_tp_dataframe
 from .dbase08_validate import validate_df_dict_current_and_main
 from .dbase09_merge import merge_dataframes
-from .dbase10_org import reorder_columns
+from .dbase10_org import (
+    add_and_populate_out_group,
+    apply_output_grouping,
+    reorder_columns
+)
 from .dbase11_debug import print_debug_info
 
 pd.set_option('display.max_rows', None)  # Display all rows
@@ -60,7 +64,7 @@ def build_main_dataframe():
     main_df_dict = initialize_main_dataframe(input_df_dict['home'])
 
     # Specify the output level here: 'full', 'short', or 'none'
-    print_df = 'short'  # User sets this
+    print_df = 'none'  # User sets this
 
     # Perform the merges with subsequent DataFrames and output the result of each merge
     max_iterations = 3  # Set the maximum number of iterations for merging
@@ -90,13 +94,19 @@ def build_main_dataframe():
             print(f"No merge function for '{df_name}'.")
 
         # Call the print function to display the result of each merge
-        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df='short')
+        print_debug_info(section_name=df_name, section_dict=main_df_dict, print_df='none')
 
     # After the final merge
+    main_df_dict['dataframe'] = add_and_populate_out_group(main_df_dict['dataframe'])
+
+    # Ensure original_order is Int64 and handle missing values
+    main_df_dict['dataframe']['original_order'] = main_df_dict['dataframe']['original_order'].fillna(-1).astype('Int64')
+
+    main_df_dict['dataframe'] = apply_output_grouping(main_df_dict['dataframe'])
     main_df_dict['dataframe'] = reorder_columns(main_df_dict['dataframe'])
     
     # Final printout after all merges are completed
-    print_debug_info(section_name='final', section_dict=main_df_dict, print_df='short')
+    print_debug_info(section_name='final', section_dict=main_df_dict, print_df='full')
 
     return main_df_dict
 
@@ -115,7 +125,7 @@ def initialize_main_dataframe(first_df_section):
     main_dataframe['m_status_2'] = ''  # Status after second merge (Home + Repo + DotBot)
     main_dataframe['m_status_3'] = ''  # Status after third merge (for future use)
 
-    print_df = 'short'  # Specify the output level here: 'full', 'short', or 'none'
+    print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
     # Create the main DataFrame dictionary
     main_df_dict = {

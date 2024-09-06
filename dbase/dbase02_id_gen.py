@@ -144,6 +144,9 @@ def field_merge_3_uid(main_df):
     # Set m_status_3 to propagate the previous error
     main_df.loc[cond_prev_error, 'm_status_3'] = 'ERR<m2'
 
+    # Handle NA values in original_order (fill with a placeholder like -1)
+    main_df['original_order'] = main_df['original_order'].fillna(-1)
+
     # Drop the individual suffixed unique ID fields after consolidation
     main_df.drop(columns=['unique_id_tp'], inplace=True)
 

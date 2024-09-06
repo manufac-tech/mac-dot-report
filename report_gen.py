@@ -23,11 +23,11 @@ def prepare_output_dataframes(main_dataframe):
 
 def export_dataframe_to_csv(df, filename, columns=None):
     try:
-
-        # Export the DataFrame with specified column order, including '_merge' if columns are specified
+        # If columns are specified, export only those columns
         if columns:
-            columns = columns + ['_merge'] if '_merge' not in columns else columns
-        df.to_csv(filename, index=False, columns=columns)
+            df.to_csv(filename, index=False, columns=columns)
+        else:
+            df.to_csv(filename, index=False)  # Export all columns by default
         print(f"DataFrame exported to '{filename}'")
     except Exception as e:
         print(f"Failed to export DataFrame to CSV: {e}")

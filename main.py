@@ -36,29 +36,30 @@ def main():
         user_path_csv, output_base_name_csv, user_path_md, output_base_name_md
     )
 
-    main_dataframe = build_main_dataframe() # Build the main DataFrame
-    
+    main_df_dict = build_main_dataframe()  # Build the main DataFrame and return as a dictionary
+
     # Debug: Print columns before validation
-    # print("Columns before validation:", main_dataframe.columns)
+    print("Columns before validation:", main_df_dict['dataframe'].columns)
 
     # Debug: Display the DataFrame to examine its contents
-    # print("DataFrame contents:\n", main_dataframe.head())
-    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        # print("DataFrame contents:\n", main_dataframe['dataframe'].to_string(index=False))
+    print("DataFrame contents:\n", main_df_dict['dataframe'].head())
+    
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
 
     # Validate the final DataFrame (this step should occur after merging)
-    # main_dataframe = validate_df_dict_current_and_main(main_dataframe, main_dataframe)
+    # main_df_dict['dataframe'] = validate_df_dict_current_and_main(main_df_dict['dataframe'], main_df_dict['dataframe'])
 
-    # Export the DataFrame to a CSV file
-    export_dataframe_to_csv(main_dataframe, filename=csv_output_path)
+    # Export the DataFrame to a CSV file using the main DataFrame reference inside the dictionary
+    export_dataframe_to_csv(main_df_dict['dataframe'], filename=csv_output_path)
 
     # Export the DataFrame to a Markdown report using Jinja2
-    export_to_markdown(
-        df=main_dataframe,
-        template_path='data',
-        template_file='report_md.jinja2',
-        output_file=markdown_output_path
-    )
+    # export_to_markdown(
+    #     df=main_dataframe,
+    #     template_path='data',
+    #     template_file='report_md.jinja2',
+    #     output_file=markdown_output_path
+    # )
 
 # This ensures the main function is only executed if this file is run directly
 if __name__ == "__main__":
