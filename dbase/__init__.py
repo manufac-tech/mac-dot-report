@@ -4,7 +4,8 @@ from .dbase01_setup import (
 )
 
 from .dbase02_init import (
-    initialize_main_dataframe
+    initialize_main_dataframe,
+    create_input_df_dict
 )
 from .dbase03_id_gen import (
     get_next_unique_id,
@@ -50,6 +51,7 @@ from .dbase20_debug import print_debug_info
 __all__ = [
     "build_main_dataframe",
     "initialize_main_dataframe",
+    "create_input_df_dict",
     "get_next_unique_id",
     "field_merge_1_uid",
     "field_merge_2_uid",
