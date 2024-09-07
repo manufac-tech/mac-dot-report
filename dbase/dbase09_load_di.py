@@ -1,8 +1,8 @@
 import os
 import logging
 import pandas as pd
-from .dbase02_id_gen import get_next_unique_id
-from .dbase08_validate import validate_values
+from .dbase03_id_gen import get_next_unique_id
+from .dbase16_validate import validate_values
 
 def correct_and_validate_dot_info_df(dot_info_df):
     # Correct values: Replace NaN with empty strings in 'comment_di' field

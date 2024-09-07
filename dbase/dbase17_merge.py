@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 import numpy as np
 
-from .dbase08_validate import replace_string_blanks
+from .dbase16_validate import replace_string_blanks
 
 def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=True):
     # Extract the DataFrames from the dictionary sections

@@ -3,8 +3,8 @@ import logging
 import pandas as pd
 import fnmatch
 
-from .dbase02_id_gen import get_next_unique_id
-from .dbase03_item_type import determine_item_type
+from .dbase03_id_gen import get_next_unique_id
+from .dbase04_item_type import determine_item_type
 
 def load_rp_dataframe():
     repo_items = []
