@@ -8,7 +8,7 @@ from .dbase02_id_gen import (
 from .dbase04_load_hm import load_hm_dataframe
 from .dbase05_load_rp import load_rp_dataframe
 from .dbase06_load_db import load_dotbot_yaml_dataframe
-from .dbase07_load_tp import load_tp_dataframe
+from .dbase07_load_di import load_di_dataframe
 from .dbase08_validate import validate_df_dict_current_and_main
 from .dbase09_merge import merge_dataframes
 from .dbase10_org import (
@@ -50,12 +50,12 @@ def build_main_dataframe():
             'type_field': 'item_type_hm_db',
             'unique_id_merge_func': 'field_merge_2_uid'
         },
-        'template': {
-            'dataframe': load_tp_dataframe(),
-            'suffix': 'tp',
-            'merge_field': 'item_name_tp',
-            'name_field': 'item_name_tp',
-            'type_field': 'item_type_tp',
+        'dot_info': {
+            'dataframe': load_di_dataframe(),
+            'suffix': 'di',
+            'merge_field': 'item_name_di',
+            'name_field': 'item_name_di',
+            'type_field': 'item_type_di',
             'unique_id_merge_func': 'field_merge_3_uid'
         }
     }

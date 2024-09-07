@@ -1,30 +1,30 @@
 # mac dot report
 
 {% for item in csv_data %}
-{% if loop.first or item.tp_cat_1 != loop.previtem.tp_cat_1 %}
+{% if loop.first or item.di_cat_1 != loop.previtem.di_cat_1 %}
 
-### {{ item.tp_cat_1_name }}
+### {{ item.di_cat_1_name }}
 {% endif %}
 
-{% if loop.first or item.tp_cat_2 != loop.previtem.tp_cat_2 %}
-#### {{ item.tp_cat_1 }}: {{ item.tp_cat_2 }}
+{% if loop.first or item.di_cat_2 != loop.previtem.di_cat_2 %}
+#### {{ item.di_cat_1 }}: {{ item.di_cat_2 }}
 {% endif %}
 
-- {% if item.item_type == 'folder' %}**{{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %} (ƒ)**{% else %}{{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %}{% endif %}
+- {% if item.item_type == 'folder' %}**{{ item.item_name }}{% if item.di_comment %} | {{ item.di_comment.strip() }}{% endif %} (ƒ)**{% else %}{{ item.item_name }}{% if item.di_comment %} | {{ item.di_comment.strip() }}{% endif %}{% endif %}
 {% endfor %}
 
 ---  
 
 ### Unmatched Items
 
-#### _Items not in Template (but in Home Folder)_
-{% for item in fs_not_in_tp %}
+#### _Items not in dot_info (but in Home Folder)_
+{% for item in fs_not_in_di %}
 - {{ item.item_name }}{% if item.item_type == 'folder' %} (ƒ){% endif %}
 {% endfor %}
 
-#### _Items not in Home Folder (but in Template)_
+#### _Items not in Home Folder (but in dot_info)_
 
-{% for item in tp_not_in_fs %}
+{% for item in di_not_in_fs %}
 
-- {{ item.item_name }}{% if item.tp_comment %} | {{ item.tp_comment.strip() }}{% endif %}{% if item.item_type == 'folder' %} (ƒ){% endif %}
+- {{ item.item_name }}{% if item.di_comment %} | {{ item.di_comment.strip() }}{% endif %}{% if item.item_type == 'folder' %} (ƒ){% endif %}
 {% endfor %}

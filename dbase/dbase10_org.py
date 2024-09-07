@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 from .dbase04_load_hm import load_hm_dataframe
-from .dbase07_load_tp import load_tp_dataframe
+from .dbase07_load_di import load_di_dataframe
 from .dbase08_validate import validate_df_dict_current_and_main
 from .dbase09_merge import merge_dataframes
 
@@ -13,11 +13,11 @@ def add_and_populate_out_group(df):
     # Create 'out_group' column to indicate new, missing, or matched items in the report
     df['out_group'] = pd.Series(dtype='Int64')  # Create out_group column
 
-    # Group 2: Matched items (based on tp_match status)
-    df.loc[df['m_status_3'] == 'tp_match', 'out_group'] = 1  
+    # Group 2: Matched items (based on di_match status)
+    df.loc[df['m_status_3'] == 'di_match', 'out_group'] = 1  
 
-    # Group 1: Missing items (based on ERR:unmatched_tp status)
-    df.loc[df['m_status_3'] == 'ERR:unmatched_tp', 'out_group'] = 2  
+    # Group 1: Missing items (based on ERR:unmatched_di status)
+    df.loc[df['m_status_3'] == 'ERR:unmatched_di', 'out_group'] = 2  
 
     # Group 3: New items (based on ERR:home_only status)
     df.loc[df['m_status_1'] == 'ERR:home_only', 'out_group'] = 3
@@ -52,7 +52,7 @@ def reorder_columns(df):
         'item_name_hm', 'item_type_hm',
         'item_name_rp', 'item_type_rp',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_tp', 'item_type_tp', 'cat_1_tp', 'cat_1_name_tp', 'comment_tp', 'cat_2_tp',
+        'item_name_di', 'item_type_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
         'git_rp',
         'no_show',
         'm_status_1', 'm_status_2', 'm_status_3',
@@ -64,9 +64,9 @@ def reorder_columns(df):
 
 def sort_items_1_out_group(df):
     # # Assign output groups based on matching conditions
-    # df.loc[df['_merge'] == 'left_only', 'out_group'] = 1  # Group 1: FS items not in template
+    # df.loc[df['_merge'] == 'left_only', 'out_group'] = 1  # Group 1: FS items not in dot_info
     # df.loc[df['_merge'] == 'both', 'out_group'] = 2       # Group 2: Matched items
-    # df.loc[df['_merge'] == 'right_only', 'out_group'] = 3  # Group 3: Template items not in FS
+    # df.loc[df['_merge'] == 'right_only', 'out_group'] = 3  # Group 3: dot_info items not in FS
 
     # # Convert out_group to an integer for sorting
     # df['out_group'] = df['out_group'].astype(int)

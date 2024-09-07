@@ -24,9 +24,9 @@ from .dbase05_load_rp import (
     create_git_rp_column
 )
 from .dbase06_load_db import load_dotbot_yaml_dataframe
-from .dbase07_load_tp import (
-    load_tp_dataframe,
-    correct_and_validate_template_df
+from .dbase07_load_di import (
+    load_di_dataframe,
+    correct_and_validate_dot_info_df
 )
 from .dbase08_validate import (
     validate_df_dict_current_and_main,
@@ -62,8 +62,8 @@ __all__ = [
     "load_rp_dataframe",
     "create_git_rp_column",
     "load_dotbot_yaml_dataframe",
-    "load_tp_dataframe",
-    "correct_and_validate_template_df",
+    "load_di_dataframe",
+    "correct_and_validate_dot_info_df",
     "validate_df_dict_current_and_main",
     "validate_values",
     "replace_string_blanks",

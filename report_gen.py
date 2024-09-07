@@ -32,7 +32,7 @@ def export_dataframe_to_csv(df, filename, columns=None):
     except Exception as e:
         print(f"Failed to export DataFrame to CSV: {e}")
 
-def export_to_markdown(template_path, template_file, output_file, df=None):
+def export_to_markdown(dot_info_path, dot_info_file, output_file, df=None):
     try:
         # if df is None:
         #     raise ValueError("DataFrame 'df' must be provided")
@@ -41,24 +41,24 @@ def export_to_markdown(template_path, template_file, output_file, df=None):
         group1_df, group2_df, group3_df = prepare_output_dataframes(df)
 
         # Logging to inspect the DataFrames (you can keep this for debugging)
-        # logging.debug("Group 1 DataFrame (FS items not in template):\n%s", group1_df.to_string())
+        # logging.debug("Group 1 DataFrame (FS items not in dot_info):\n%s", group1_df.to_string())
         # logging.debug("Group 2 DataFrame (Matched items):\n%s", group2_df.to_string())
-        # logging.debug("Group 3 DataFrame (Template items not in FS):\n%s", group3_df.to_string())
+        # logging.debug("Group 3 DataFrame (dot_info items not in FS):\n%s", group3_df.to_string())
 
         # Jinja2 setup
         env = Environment(
-            loader=FileSystemLoader(template_path),
+            loader=FileSystemLoader(dot_info_path),
             trim_blocks=True,
             lstrip_blocks=True
         )
         env.globals['pd'] = pd
 
-        # Render template - pass the Group DataFrames directly
-        template = env.get_template(template_file)
-        rendered_markdown = template.render(
+        # Render dot_info - pass the Group DataFrames directly
+        dot_info = env.get_dot_info(dot_info_file)
+        rendered_markdown = dot_info.render(
             csv_data=group2_df.to_dict(orient='records'),  # Group 2: Matched items
-            fs_not_in_tp=group1_df.to_dict(orient='records'),  # Group 1: FS items not in template
-            tp_not_in_fs=group3_df.to_dict(orient='records')  # Group 3: Template items not in FS
+            fs_not_in_di=group1_df.to_dict(orient='records'),  # Group 1: FS items not in dot_info
+            di_not_in_fs=group3_df.to_dict(orient='records')  # Group 3: dot_info items not in FS
         )
 
         # Output the rendered Markdown to a file

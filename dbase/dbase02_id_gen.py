@@ -103,37 +103,37 @@ def field_merge_2_uid(main_df):
     return main_df
 
 def field_merge_3_uid(main_df):
-    # Case 1: Full match check for item_name and item_type between template and main DataFrame
+    # Case 1: Full match check for item_name and item_type between dot_info and main DataFrame
     cond_full_match = (
-        (main_df['item_name'] == main_df['item_name_tp']) &  # item_name matches template
-        (main_df['item_type'] == main_df['item_type_tp'])    # item_type matches template
+        (main_df['item_name'] == main_df['item_name_di']) &  # item_name matches dot_info
+        (main_df['item_type'] == main_df['item_type_di'])    # item_type matches dot_info
     )
 
-    # Set m_status_3 to 'tp=hm_and_rp' where all conditions match
-    main_df.loc[cond_full_match, 'm_status_3'] = 'tp_match'
+    # Set m_status_3 to 'di=hm_and_rp' where all conditions match
+    main_df.loc[cond_full_match, 'm_status_3'] = 'di_match'
 
-    # Case 2: Check for file type mismatch between the template and the main DataFrame
+    # Case 2: Check for file type mismatch between the dot_info and the main DataFrame
     cond_type_mismatch = (
-        (main_df['item_name'] == main_df['item_name_tp']) &  # Names match
+        (main_df['item_name'] == main_df['item_name_di']) &  # Names match
         (main_df['item_type'].notna()) &                     # Ensure non-NaN types in main DataFrame
-        (main_df['item_type_tp'].notna()) &                  # Ensure non-NaN types in template
-        (main_df['item_type'] != main_df['item_type_tp'])    # Types mismatch
+        (main_df['item_type_di'].notna()) &                  # Ensure non-NaN types in dot_info
+        (main_df['item_type'] != main_df['item_type_di'])    # Types mismatch
     )
 
     # Set m_status_3 to 'ERR:file_type_mismatch' where the condition is true
     main_df.loc[cond_type_mismatch, 'm_status_3'] = 'ERR:file_type_mismatch'
 
-    # Case 3: Handle rows where item_name_tp is unmatched in the main DataFrame
-    cond_unmatched_tp = (
-        (main_df['item_name_tp'].notna()) &  # Template item_name exists
+    # Case 3: Handle rows where item_name_di is unmatched in the main DataFrame
+    cond_unmatched_di = (
+        (main_df['item_name_di'].notna()) &  # dot_info item_name exists
         (main_df['item_name'].isna())        # Main DataFrame item_name is missing
     )
 
-    # Apply error status for unmatched template items
-    main_df.loc[cond_unmatched_tp, 'm_status_3'] = 'ERR:unmatched_tp'
+    # Apply error status for unmatched dot_info items
+    main_df.loc[cond_unmatched_di, 'm_status_3'] = 'ERR:unmatched_di'
 
-    # Update the unique_id using the unique_id_tp (as it's the only available ID)
-    main_df.loc[cond_unmatched_tp, 'unique_id'] = main_df['unique_id_tp']
+    # Update the unique_id using the unique_id_di (as it's the only available ID)
+    main_df.loc[cond_unmatched_di, 'unique_id'] = main_df['unique_id_di']
 
     # Case 4: Check for previous error propagation from m_status_2
     cond_prev_error = (
@@ -148,6 +148,6 @@ def field_merge_3_uid(main_df):
     main_df['original_order'] = main_df['original_order'].fillna(-1)
 
     # Drop the individual suffixed unique ID fields after consolidation
-    main_df.drop(columns=['unique_id_tp'], inplace=True)
+    main_df.drop(columns=['unique_id_di'], inplace=True)
 
     return main_df

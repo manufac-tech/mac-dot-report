@@ -56,8 +56,8 @@ def main():
     # Export the DataFrame to a Markdown report using Jinja2
     # export_to_markdown(
     #     df=main_dataframe,
-    #     template_path='data',
-    #     template_file='report_md.jinja2',
+    #     dot_info_path='data',
+    #     dot_info_file='report_md.jinja2',
     #     output_file=markdown_output_path
     # )
 

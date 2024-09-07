@@ -4,11 +4,11 @@ import pandas as pd
 from .dbase02_id_gen import get_next_unique_id
 from .dbase08_validate import validate_values
 
-def correct_and_validate_template_df(template_df):
-    # Correct values: Replace NaN with empty strings in 'comment_tp' field
-    template_df['comment_tp'] = template_df['comment_tp'].fillna('')
+def correct_and_validate_dot_info_df(dot_info_df):
+    # Correct values: Replace NaN with empty strings in 'comment_di' field
+    dot_info_df['comment_di'] = dot_info_df['comment_di'].fillna('')
 
-    return template_df
+    return dot_info_df
 
 def replace_string_blanks(df):
     for column in df.columns:
@@ -23,12 +23,12 @@ def replace_string_blanks(df):
             df[column] = df[column].fillna('')
     return df
 
-def load_tp_dataframe():
+def load_di_dataframe():
     try:
-        template_file_path = "./data/mac-dot-template.csv"
+        dot_info_file_path = "./data/dot-info.csv"
         
         # Load the CSV with explicit data types for the columns
-        template_df = pd.read_csv(template_file_path, dtype={
+        dot_info_df = pd.read_csv(dot_info_file_path, dtype={
             "item_name": "string",
             "item_type": "string",
             "cat_1": "string",
@@ -39,17 +39,17 @@ def load_tp_dataframe():
         }).copy()
 
         # Record the original order of rows
-        template_df['original_order'] = (template_df.index + 1).astype("Int64")  # Convert to Int64 explicitly
+        dot_info_df['original_order'] = (dot_info_df.index + 1).astype("Int64")  # Convert to Int64 explicitly
 
         # Assign unique IDs
-        template_df['unique_id_tp'] = template_df.apply(lambda row: get_next_unique_id(), axis=1)
-        template_df["unique_id_tp"] = template_df["unique_id_tp"].astype("Int64")
+        dot_info_df['unique_id_di'] = dot_info_df.apply(lambda row: get_next_unique_id(), axis=1)
+        dot_info_df["unique_id_di"] = dot_info_df["unique_id_di"].astype("Int64")
 
         # Apply the correction and validation function
-        template_df = correct_and_validate_template_df(template_df)
+        dot_info_df = correct_and_validate_dot_info_df(dot_info_df)
 
         # Apply the enhanced blank replacement function
-        template_df = replace_string_blanks(template_df)
+        dot_info_df = replace_string_blanks(dot_info_df)
 
         # Toggle output directly within the function
         show_output = False  # Change to False to disable output
@@ -57,11 +57,11 @@ def load_tp_dataframe():
 
         if show_output:
             if show_full_df:
-                print("7️⃣ Template DataFrame:\n", template_df)
+                print("7️⃣ dot_info DataFrame:\n", dot_info_df)
             else:
-                print("7️⃣ Template DataFrame (First 5 rows):\n", template_df.head())
+                print("7️⃣ dot_info DataFrame (First 5 rows):\n", dot_info_df.head())
 
-        return template_df
+        return dot_info_df
     except Exception as e:
-        logging.error(f"Error loading template CSV: {e}")
+        logging.error(f"Error loading dot_info CSV: {e}")
         return pd.DataFrame()

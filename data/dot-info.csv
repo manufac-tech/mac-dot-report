@@ -1,8 +1,8 @@
-item_name_tp,item_type_tp,cat_1_tp,cat_1_name_tp,comment_tp,cat_2_tp,no_show
+item_name_di,item_type_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,no_show
 ._dotfiles,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,false
 .zshrc,file,term,Terminal,,zshrc,false
 .ABCD_TEST123,file,term,Terminal,,zshrc,false
-.AB_TEST_EDGE,folder,term,Terminal,(tp_item_type should be [NO FILETYPE]).,zshrc,false
+.AB_TEST_EDGE,folder,term,Terminal,(di_item_type should be [NO FILETYPE]).,zshrc,false
 .zsh_history,file,term,Terminal,,zshrc,false
 .zshrc_aliases,file,term,Terminal,,zshrc,false
 .zsh_history.bak,file,term,Terminal,,zshrc,false
