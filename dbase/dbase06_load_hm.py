@@ -2,8 +2,8 @@ import os
 import logging
 import pandas as pd
 
-from .dbase03_id_gen import get_next_unique_id
-from .dbase04_item_type import determine_item_type
+from .dbase04_id_gen import get_next_unique_id
+from .dbase05_item_type import determine_item_type
 
 def load_hm_dataframe():
     dot_items = []

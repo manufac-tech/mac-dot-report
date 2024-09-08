@@ -1,8 +1,6 @@
-
-
 import pandas as pd
-from .dbase16_validate import validate_df_dict_current_and_main
 
+from .dbase16_validate import validate_df_dict_current_and_main
 
 
 def field_merge_1(main_df):

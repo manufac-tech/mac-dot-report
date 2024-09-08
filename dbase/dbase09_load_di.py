@@ -1,7 +1,7 @@
 import os
 import logging
 import pandas as pd
-from .dbase03_id_gen import get_next_unique_id
+from .dbase04_id_gen import get_next_unique_id
 from .dbase16_validate import validate_values
 
 def correct_and_validate_dot_info_df(dot_info_df):
@@ -53,8 +53,8 @@ def load_di_dataframe():
         dot_info_df = replace_string_blanks(dot_info_df)
 
         # Toggle output directly within the function
-        show_output = True  # Change to False to disable output
-        show_full_df = True  # Change to True to show the full DataFrame
+        show_output = False  # Change to False to disable output
+        show_full_df = False  # Change to True to show the full DataFrame
 
         if show_output:
             if show_full_df:

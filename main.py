@@ -2,8 +2,9 @@ import os
 import logging
 import pandas as pd
 
-from dbase.dbase01_setup import build_main_dataframe
-from dbase.dbase02_init import initialize_main_dataframe
+from dbase.dbase01_setup import build_full_output_dict
+# from dbase.dbase01_setup import build_main_dataframe
+from dbase.dbase03_init import initialize_main_dataframe
 from dbase.dbase16_validate import validate_df_dict_current_and_main
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
@@ -31,13 +32,28 @@ def print_data_checks(df, stage):
     # print(f"\nData types after {stage}:\n", df.dtypes)
     # print(f"\nMissing values after {stage}:\n", df.isnull().sum())
 
+def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
+    # Save full_main_dataframe to CSV
+    export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path)
+
+    # Save report_dataframe to CSV
+    # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path)
+
+    # Export Markdown report
+    # export_to_markdown(
+    #     df=main_df_dict['full_main_dataframe'],  # Or report_dataframe depending on which you want
+    #     dot_info_path='data',
+    #     dot_info_file='report_md.jinja2',
+    #     output_file=markdown_output_path
+    # )
+
 def main():
     # Generate timestamped filenames with the specified base names
     csv_output_path, markdown_output_path = generate_timestamped_output_paths(
         user_path_csv, output_base_name_csv, user_path_md, output_base_name_md
     )
 
-    main_df_dict = build_main_dataframe()  # Build the main_dataframe and return as a dictionary
+    main_df_dict = build_full_output_dict()  # Build the main_dataframe and return as a dictionary
 
     # Debug: Display the DataFrame to examine its contents
     # print("DataFrame contents:\n", main_df_dict['dataframe'].head())
@@ -48,18 +64,7 @@ def main():
     # Validate the final DataFrame (this step should occur after merging)
     # main_df_dict['dataframe'] = validate_df_dict_current_and_main(main_df_dict['dataframe'], main_df_dict['dataframe'])
 
-    # Save full_main_dataframe to CSV
-    export_dataframe_to_csv(main_df_dict['dataframe'], filename=csv_output_path)
-
-    # Save report_dataframe to CSV
-    export_dataframe_to_csv(main_df_dict['dataframe'], filename=csv_output_path)
-
-    # export_to_markdown(
-    #     df=main_dataframe,
-    #     dot_info_path='data',
-    #     dot_info_file='report_md.jinja2',
-    #     output_file=markdown_output_path
-    # )
+    save_outputs(main_df_dict, csv_output_path, markdown_output_path)
 
 # This ensures the main function is only executed if this file is run directly
 if __name__ == "__main__":
