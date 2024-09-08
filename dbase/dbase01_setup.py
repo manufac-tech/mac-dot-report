@@ -20,7 +20,7 @@ from .dbase18_org import (
     apply_output_grouping,
     reorder_columns
 )
-from .dbase20_debug import print_debug_info
+from .dbase30_debug import print_debug_info
 
 pd.set_option('display.max_rows', None)  # Display all rows
 pd.set_option('display.max_columns', None)  # Display all columns
@@ -30,7 +30,7 @@ pd.set_option('display.max_colwidth', None)  # Set the max column width to None
 def build_main_dataframe():
     input_df_dict = create_input_df_dict() # Define DataFrames and paths
 
-    # Initialize the main DataFrame
+    # Initialize the main_dataframe
     main_df_dict = initialize_main_dataframe(input_df_dict['home'])
 
     # Specify the output level here: 'full', 'short', or 'none'

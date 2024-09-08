@@ -1,16 +1,11 @@
 
+
 import pandas as pd
 from .dbase16_validate import validate_df_dict_current_and_main
 
-current_unique_id = 1
 
-def get_next_unique_id():
-    global current_unique_id
-    unique_id = current_unique_id
-    current_unique_id += 1
-    return unique_id
 
-def field_merge_1_uid(main_df):
+def field_merge_1(main_df):
     # Case 1: Expected scenario - Home has symlink, Repo has real item, matching item names
     cond_expected = (main_df['item_name'] == main_df['item_name_rp']) & \
                     (main_df['item_type'] != main_df['item_type_rp']) & \
@@ -41,7 +36,7 @@ def field_merge_1_uid(main_df):
 
     return main_df
 
-def field_merge_2_uid(main_df):
+def field_merge_2(main_df):
     # Case 1: Full match - everything matches between YAML, home, and repo
     cond_full_match = (
         (main_df['item_name_hm'] == main_df['item_name_hm_db']) &  # Home item name matches DotBot home item
@@ -101,7 +96,7 @@ def field_merge_2_uid(main_df):
 
     return main_df
 
-def field_merge_3_uid(main_df):
+def field_merge_3(main_df):
     # Case 1: Full match check for item_name and item_type between dot_info and main_dataframe
     cond_full_match = (
         (main_df['item_name'] == main_df['item_name_di']) &  # item_name matches dot_info

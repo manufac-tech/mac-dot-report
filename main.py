@@ -37,12 +37,9 @@ def main():
         user_path_csv, output_base_name_csv, user_path_md, output_base_name_md
     )
 
-    main_df_dict = build_main_dataframe()  # Build the main DataFrame and return as a dictionary
+    main_df_dict = build_main_dataframe()  # Build the main_dataframe and return as a dictionary
 
-    # # Debug: Print columns before validation
-    # print("Columns before validation:", main_df_dict['dataframe'].columns)
-
-    # # Debug: Display the DataFrame to examine its contents
+    # Debug: Display the DataFrame to examine its contents
     # print("DataFrame contents:\n", main_df_dict['dataframe'].head())
     
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -51,10 +48,12 @@ def main():
     # Validate the final DataFrame (this step should occur after merging)
     # main_df_dict['dataframe'] = validate_df_dict_current_and_main(main_df_dict['dataframe'], main_df_dict['dataframe'])
 
-    # Export the DataFrame to a CSV file using the main DataFrame reference inside the dictionary
+    # Save full_main_dataframe to CSV
     export_dataframe_to_csv(main_df_dict['dataframe'], filename=csv_output_path)
 
-    # Export the DataFrame to a Markdown report using Jinja2
+    # Save report_dataframe to CSV
+    export_dataframe_to_csv(main_df_dict['dataframe'], filename=csv_output_path)
+
     # export_to_markdown(
     #     df=main_dataframe,
     #     dot_info_path='data',

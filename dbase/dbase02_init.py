@@ -16,7 +16,7 @@ from .dbase18_org import (
     apply_output_grouping,
     reorder_columns
 )
-from .dbase20_debug import print_debug_info
+from .dbase30_debug import print_debug_info
 
 # dbase02_init.py
 def create_input_df_dict():
@@ -73,7 +73,7 @@ def initialize_main_dataframe(first_df_section):
 
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
-    # Create the main DataFrame dictionary
+    # Create the main_dataframe dictionary
     main_df_dict = {
         'dataframe': main_dataframe,
         'suffix': '',  # No suffix for global fields

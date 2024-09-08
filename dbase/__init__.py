@@ -46,7 +46,7 @@ from .dbase18_org import (
     sort_items_1_out_group,
     sort_items_2_indiv
 )
-from .dbase20_debug import print_debug_info
+from .dbase30_debug import print_debug_info
 
 __all__ = [
     "build_main_dataframe",

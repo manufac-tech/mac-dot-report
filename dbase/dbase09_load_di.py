@@ -29,13 +29,14 @@ def load_di_dataframe():
         
         # Load the CSV with explicit data types for the columns
         dot_info_df = pd.read_csv(dot_info_file_path, dtype={
-            "item_name": "string",
-            "item_type": "string",
-            "cat_1": "string",
-            "cat_1_name": "string",
-            "comment": "string",
-            "cat_2": "string",
-            "no_show": "bool"
+            "item_name_di": "string",
+            "item_type_di": "string",
+            "cat_1_di": "string",
+            "cat_1_name_di": "string",
+            "comment_di": "string",
+            "cat_2_di": "string",
+            "no_show": "bool",
+            "dot_items_hm": "string"
         }).copy()
 
         # Record the original order of rows
@@ -52,8 +53,8 @@ def load_di_dataframe():
         dot_info_df = replace_string_blanks(dot_info_df)
 
         # Toggle output directly within the function
-        show_output = False  # Change to False to disable output
-        show_full_df = False  # Change to True to show the full DataFrame
+        show_output = True  # Change to False to disable output
+        show_full_df = True  # Change to True to show the full DataFrame
 
         if show_output:
             if show_full_df:
