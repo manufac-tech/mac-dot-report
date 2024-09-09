@@ -98,7 +98,7 @@ def field_merge_3(main_df):
     # Case 1: Full match check for item_name and item_type between dot_info and main_dataframe
     cond_full_match = (
         (main_df['item_name'] == main_df['item_name_di']) &  # item_name matches dot_info
-        (main_df['item_type'] == main_df['item_type_di'])    # item_type matches dot_info
+        (main_df['item_type'] == main_df['item_type_rp_di'])    # item_type matches dot_info
     )
 
     # Set m_status_3 to 'di_match' where all conditions match
@@ -117,8 +117,8 @@ def field_merge_3(main_df):
     cond_type_mismatch = (
         (main_df['item_name'] == main_df['item_name_di']) &  # Names match
         (main_df['item_type'].notna()) &                     # Ensure non-NaN types in main_dataframe
-        (main_df['item_type_di'].notna()) &                  # Ensure non-NaN types in dot_info
-        (main_df['item_type'] != main_df['item_type_di'])    # Types mismatch
+        (main_df['item_type_rp_di'].notna()) &                  # Ensure non-NaN types in dot_info
+        (main_df['item_type'] != main_df['item_type_rp_di'])    # Types mismatch
     )
 
     # Set m_status_3 to 'ERR:file_type_mismatch' where the condition is true

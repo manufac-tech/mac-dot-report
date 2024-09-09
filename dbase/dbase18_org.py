@@ -53,9 +53,9 @@ def reorder_columns(df):
         'item_name_hm', 'item_type_hm',
         'item_name_rp', 'item_type_rp',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_di', 'item_type_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
+        'item_name_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
         'git_rp',
-        'no_show',
+        'no_show_di',
         'm_status_1', 'm_status_2', 'm_status_3',
         'out_group',
         'original_order'

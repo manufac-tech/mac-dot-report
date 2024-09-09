@@ -30,12 +30,12 @@ def load_di_dataframe():
         # Load the CSV with explicit data types for the columns
         dot_info_df = pd.read_csv(dot_info_file_path, dtype={
             "item_name_di": "string",
-            "item_type_di": "string",
+            "item_type_rp_di": "string",
             "cat_1_di": "string",
             "cat_1_name_di": "string",
             "comment_di": "string",
             "cat_2_di": "string",
-            "no_show": "bool",
+            "no_show_di": "bool",
             "dot_items_fs": "string"
         }).copy()
 

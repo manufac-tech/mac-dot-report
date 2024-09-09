@@ -1,4 +1,4 @@
-item_name_di,item_type_rp_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,dot_structure_di,no_show_di,dot_items_fs
+item_name_di,item_type_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,home_type,no_show,dot_items_fs
 ._dotfiles,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,folder_sym,FALSE,
 .zshrc,file,term,Terminal,,zshrc,file_sym,FALSE,
 .ABCD_TEST123,file,term,Terminal,,zshrc,file_sym,FALSE,

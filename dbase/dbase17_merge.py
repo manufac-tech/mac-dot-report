@@ -32,8 +32,18 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
             print(f"Merged DataFrame (all rows, {left_merge_field} and {right_merge_field}):")
             print(merged_dataframe[[left_merge_field, right_merge_field]].to_string(index=False))
 
+        # Debugging step: Check the DataFrame columns before cleaning
+        if verbose:
+            print("\nMerged DataFrame Columns (before cleaning):")
+            print(merged_dataframe.columns)
+
         # Apply the blank replacement after the merge
         merged_dataframe = replace_string_blanks(merged_dataframe)
+
+        # Debugging step: Check the DataFrame columns after cleaning
+        if verbose:
+            print("\nMerged DataFrame Columns (after cleaning):")
+            print(merged_dataframe.columns)
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
