@@ -48,12 +48,12 @@ def apply_output_grouping(df):
 
 def reorder_columns(df):
     reordered_columns = [
-        'item_name', 'item_type', 'unique_id',
-        'dot_structure_di',  # Inserted into the fourth slot
+        'item_name', 'item_type', 'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
+        'dot_structure_di',
         'item_name_hm', 'item_type_hm',
         'item_name_rp', 'item_type_rp',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
+        'item_name_hm_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
         'git_rp',
         'no_show_di',
         'm_status_1', 'm_status_2', 'm_status_3',

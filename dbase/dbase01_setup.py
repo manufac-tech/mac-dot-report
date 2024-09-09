@@ -15,14 +15,14 @@ def build_full_output_dict():
 
     output_df_dict['full_main_dataframe'] = full_main_dataframe
 
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
-        print("\nFull Main DataFrame:\n", full_main_dataframe)
-
-    # report_dataframe = build_report_dataframe(output_df_dict)
-
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
-    #     print("\nReport DataFrame:\n", report_dataframe)
+    #     print("\nFull Main DataFrame:\n", full_main_dataframe)
 
-    # output_df_dict['report_dataframe'] = report_dataframe
+    report_dataframe = build_report_dataframe(output_df_dict)
+
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
+        print("\nReport DataFrame:\n", report_dataframe)
+
+    output_df_dict['report_dataframe'] = report_dataframe
 
     return output_df_dict 

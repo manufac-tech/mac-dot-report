@@ -35,8 +35,8 @@ def create_input_df_dict():
         'dot_info': {
             'dataframe': load_di_dataframe(),
             'suffix': 'di',
-            'merge_field': 'item_name_di',
-            'name_field': 'item_name_di',
+            'merge_field': 'item_name_rp_di',
+            'name_field': 'item_name_rp_di',
             'type_field': 'item_type_rp_di',
             'unique_id_merge_func': 'field_merge_3_uid'
         }
