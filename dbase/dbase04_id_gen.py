@@ -23,10 +23,10 @@ def field_merge_1_uid(main_df):
     # Status update: Create a descriptive status message (e.g., folder>folder_sym or file>file_sym)
     main_df.loc[cond_expected, 'm_status_1'] = main_df['item_type_rp'] + '>' + main_df['item_type']
 
-    # Case 2: Item exists in Repo but not in Home
+    # Case 2: Item exists in Repo but not in Home, marked as repo_only_temp (temporary until further verification)
     cond_repo_only = main_df['item_name'].isna()
     main_df.loc[cond_repo_only, 'unique_id'] = main_df['unique_id_rp']
-    main_df.loc[cond_repo_only, 'm_status_1'] = 'ERR:repo_only'
+    main_df.loc[cond_repo_only, 'm_status_1'] = 'repo_only_temp'
 
     # Case 3: Item exists in Home but not in Repo, marked as home_only_temp (temporary until further verification)
     cond_home_only = main_df['item_name_rp'].isna()
@@ -57,11 +57,19 @@ def field_merge_2_uid(main_df):
     cond_home_only_temp = main_df['m_status_1'] == 'home_only_temp'
     main_df.loc[cond_home_only_temp, 'm_status_2'] = 'home_only_temp'
 
-    # Case 3: Error if item exists only in repo
+    # Case 3: Handle repo_only_temp, propagate this status from m_status_1
+    cond_repo_only_temp = main_df['m_status_1'] == 'repo_only_temp'
+    main_df.loc[cond_repo_only_temp, 'm_status_2'] = 'repo_only_temp'
+
+    # Case 4: Error if item exists only in repo (previous logic)
     cond_repo_only = main_df['m_status_1'] == 'ERR:repo_only'
     main_df.loc[cond_repo_only, 'm_status_2'] = 'ERR<m1'
 
-    # Case 4: YAML repo name exists, but repo item is missing in the file system
+    # Modified Case 3: Propagate repo_only_temp instead of ERR
+    cond_repo_only_temp = main_df['m_status_1'] == 'repo_only_temp'
+    main_df.loc[cond_repo_only_temp, 'm_status_2'] = 'repo_only_temp'
+
+    # Case 5: YAML repo name exists, but repo item is missing in the file system
     cond_unmatched_yaml = (
         (main_df['item_name_rp_db'].notna()) &  # YAML repo name exists
         (main_df['item_name_rp'].isna())        # Repo item is missing in the file system
@@ -70,15 +78,15 @@ def field_merge_2_uid(main_df):
     # Set error status for unmatched YAML items
     main_df.loc[cond_unmatched_yaml, 'm_status_2'] = 'ERR:unmatched_yaml'
 
-    # Case 5: Type mismatch error between home and repo (e.g., file vs folder)
+    # Case 6: Type mismatch error between home and repo (e.g., file vs folder)
     cond_type_mismatch = main_df['m_status_1'] == 'ERR:type=type'
     main_df.loc[cond_type_mismatch, 'm_status_2'] = 'ERR<m1'
 
-    # Case 6: YAML source and destination paths do not match
+    # Case 7: YAML source and destination paths do not match
     cond_yaml_src_dest_mismatch = main_df['item_name_hm_db'] != main_df['item_name_rp_db']
     main_df.loc[cond_yaml_src_dest_mismatch, 'm_status_2'] = 'YAML SRC<>DEST'
 
-    # Case 7: File type mismatch between YAML and actual file system
+    # Case 8: File type mismatch between YAML and actual file system
     cond_file_type_mismatch = (
         (main_df['item_type_rp_db'] != main_df['item_type_rp']) |  # Repo file type mismatch
         (main_df['item_type_hm_db'] != main_df['item_type_hm'])    # Home file type mismatch
@@ -111,16 +119,22 @@ def field_merge_3_uid(main_df):
     # Set m_status_3 to 'di_match' where all conditions match
     main_df.loc[cond_full_match, 'm_status_3'] = 'di_match'
 
-    # Case: Check for home_only_temp status
+    # Case 2: Check for home_only_temp status
     cond_home_only_temp = (main_df['m_status_2'] == 'home_only_temp')
 
     # If the item is marked as 'hm_only' in dot_info, it's a valid dynamic config
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_hm'] == 'hm_only'), 'm_status_3'] = 'di_match'
+    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'] == 'hm_only'), 'm_status_3'] = 'di_match'
 
     # If the item is not marked as 'hm_only', it's a new item in the home folder
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_hm'].isna()), 'm_status_3'] = 'new_home_only'
+    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'].isna()), 'm_status_3'] = 'new_home_only'
 
-    # Case 2: Check for file type mismatch between the dot_info and the main_dataframe
+    # Case 3: Handle rp_only (items only in repo, not in home)
+    cond_repo_only = (main_df['dot_items_fs'] == 'rp_only')
+
+    # Set the status for rp_only items to indicate they are valid repo-only items
+    main_df.loc[cond_repo_only, 'm_status_3'] = 'di_match_repo_only'
+
+    # Case 4: Check for file type mismatch between the dot_info and the main_dataframe
     cond_type_mismatch = (
         (main_df['item_name'] == main_df['item_name_di']) &  # Names match
         (main_df['item_type'].notna()) &                     # Ensure non-NaN types in main_dataframe
@@ -129,9 +143,9 @@ def field_merge_3_uid(main_df):
     )
 
     # Set m_status_3 to 'ERR:file_type_mismatch' where the condition is true
-    # main_df.loc[cond_type_mismatch, 'm_status_3'] = 'ERR:file_type_mismatch'
+    main_df.loc[cond_type_mismatch, 'm_status_3'] = 'ERR:file_type_mismatch'
 
-    # Case 3: Handle rows where item_name_di is unmatched in the main_dataframe
+    # Case 5: Handle rows where item_name_di is unmatched in the main_dataframe
     cond_unmatched_di = (
         (main_df['item_name_di'].notna()) &  # dot_info item_name exists
         (main_df['item_name'].isna())        # main_dataframe item_name is missing
@@ -143,7 +157,7 @@ def field_merge_3_uid(main_df):
     # Update the unique_id using the unique_id_di (as it's the only available ID)
     main_df.loc[cond_unmatched_di, 'unique_id'] = main_df['unique_id_di']
 
-    # Case 4: Check for previous error propagation from m_status_2
+    # Case 6: Check for previous error propagation from m_status_2
     cond_prev_error = (
         main_df['m_status_2'].notna() &                            # Ensure non-NaN in m_status_2
         main_df['m_status_2'].str.startswith('ERR')                # Check if m_status_2 contains an error

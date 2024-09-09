@@ -1,4 +1,4 @@
-item_name_di,item_type_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,home_type,no_show,dot_items_hm
+item_name_di,item_type_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,home_type,no_show,dot_items_fs
 ._dotfiles,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,folder_sym,FALSE,
 .zshrc,file,term,Terminal,,zshrc,file_sym,FALSE,
 .ABCD_TEST123,file,term,Terminal,,zshrc,file_sym,FALSE,
@@ -53,6 +53,8 @@ item_name_di,item_type_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,home_type,n
 .android,folder,swd,Software Development,Android SDK,other,folder_sym,FALSE,
 .degit,folder,swd,Software Development,quickly scaffold projects by downloading/extracting a repo,other,folder_sym,FALSE,
 .gitignore_global,file,swd,Software Development,Global .gitignore file,vcs git,file_sym,FALSE,
+.gitignore,file,swd,Software Development,Repo .gitignore file,vcs git,none,FALSE,rp_only
+.git,folder,swd,Software Development,Repo .git folder,vcs git,none,FALSE,rp_only
 .gitflow_export,file,swd,Software Development,GitFlow configuration file,vcs git,file_sym,FALSE,
 .gitconfig,file,swd,Software Development,Git configuration file,vcs git,file_sym,FALSE,
 .hgignore_global,file,swd,Software Development,Global .hgignore file,vcs other,file_sym,FALSE,

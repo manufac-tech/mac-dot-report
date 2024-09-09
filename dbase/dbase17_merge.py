@@ -11,7 +11,13 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
     left_merge_field = main_df_dict['merge_field']
     right_merge_field = input_df_dict_section['merge_field']
 
-    # Perform the merge operation without the indicator column
+    # Debugging step: Check the DataFrame state before merging
+    if verbose:
+        print(f"\nBefore merging with '{input_df_dict_section['suffix']}' DataFrame:")
+        print(f"main_df['{left_merge_field}'] (all rows):\n{main_df[[left_merge_field]].to_string(index=False)}")
+        print(f"input_df['{right_merge_field}'] (all rows):\n{input_df[[right_merge_field]].to_string(index=False)}")
+
+    # Perform the merge operation
     try:
         merged_dataframe = pd.merge(
             main_df, input_df,
@@ -19,19 +25,15 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
             right_on=right_merge_field,
             how=merge_type
         ).copy()
-        
-        # Debugging step: Check the DataFrame state before cleaning
-        # if verbose:
-        #     print("\nBefore cleaning:")
-        #     print(merged_dataframe.isna().sum())
+
+        # Debugging step: Check the DataFrame state after the merge
+        if verbose:
+            print(f"\nAfter merging with '{input_df_dict_section['suffix']}' DataFrame:")
+            print(f"Merged DataFrame (all rows, {left_merge_field} and {right_merge_field}):")
+            print(merged_dataframe[[left_merge_field, right_merge_field]].to_string(index=False))
 
         # Apply the blank replacement after the merge
         merged_dataframe = replace_string_blanks(merged_dataframe)
-
-        # Debugging step: Check the DataFrame state after cleaning
-        # if verbose:
-        #     print("\nAfter cleaning:")
-        #     print(merged_dataframe.isna().sum())
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
