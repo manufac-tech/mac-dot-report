@@ -123,13 +123,13 @@ def field_merge_3_uid(main_df):
     cond_home_only_temp = (main_df['m_status_2'] == 'home_only_temp')
 
     # If the item is marked as 'hm_only' in dot_info, it's a valid dynamic config
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'] == 'hm_only'), 'm_status_3'] = 'di_match'
+    main_df.loc[cond_home_only_temp & (main_df['dot_structure_di'] == 'hm_only'), 'm_status_3'] = 'di_match'
 
     # If the item is not marked as 'hm_only', it's a new item in the home folder
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'].isna()), 'm_status_3'] = 'new_home_only'
+    main_df.loc[cond_home_only_temp & (main_df['dot_structure_di'].isna()), 'm_status_3'] = 'new_home_only'
 
     # Case 3: Handle rp_only (items only in repo, not in home)
-    cond_repo_only = (main_df['dot_items_fs'] == 'rp_only')
+    cond_repo_only = (main_df['dot_structure_di'] == 'rp_only')
 
     # Set the status for rp_only items to indicate they are valid repo-only items
     main_df.loc[cond_repo_only, 'm_status_3'] = 'di_match_repo_only'

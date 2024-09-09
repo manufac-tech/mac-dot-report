@@ -108,10 +108,10 @@ def field_merge_3(main_df):
     cond_home_only_temp = (main_df['m_status_2'] == 'home_only_temp')
 
     # If the item is marked as 'hm_only' in dot_info, it's a valid dynamic config
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'] == 'hm_only'), 'm_status_3'] = 'di_match'
+    main_df.loc[cond_home_only_temp & (main_df['dot_structure_di'] == 'hm_only'), 'm_status_3'] = 'di_match'
 
     # If the item is not marked as 'hm_only', it's a new item in the home folder
-    main_df.loc[cond_home_only_temp & (main_df['dot_items_fs'].isna()), 'm_status_3'] = 'new_home_only'
+    main_df.loc[cond_home_only_temp & (main_df['dot_structure_di'].isna()), 'm_status_3'] = 'new_home_only'
 
     # Case 2: Check for file type mismatch between the dot_info and the main_dataframe
     cond_type_mismatch = (

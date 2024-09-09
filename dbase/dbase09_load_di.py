@@ -36,7 +36,7 @@ def load_di_dataframe():
             "comment_di": "string",
             "cat_2_di": "string",
             "no_show_di": "bool",
-            "dot_items_fs": "string"
+            "dot_structure_di": "string"
         }).copy()
 
         # Record the original order of rows

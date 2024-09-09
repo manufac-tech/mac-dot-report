@@ -1,21 +1,9 @@
 import pandas as pd
 
-from .dbase04_id_gen import (
-    field_merge_1_uid,
-    field_merge_2_uid,
-    field_merge_3_uid
-)
 from .dbase06_load_hm import load_hm_dataframe
 from .dbase07_load_rp import load_rp_dataframe
 from .dbase08_load_db import load_dotbot_yaml_dataframe
 from .dbase09_load_di import load_di_dataframe
-from .dbase16_validate import validate_df_dict_current_and_main
-from .dbase17_merge import merge_dataframes
-from .dbase18_org import (
-    add_and_populate_out_group,
-    apply_output_grouping,
-    reorder_columns
-)
 from .dbase30_debug import print_debug_info
 
 def create_input_df_dict():
@@ -82,6 +70,6 @@ def initialize_main_dataframe(first_df_section):
     }
 
     # Call the print function
-    # print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
+    print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
 
     return main_df_dict

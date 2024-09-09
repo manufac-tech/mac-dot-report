@@ -49,7 +49,7 @@ def apply_output_grouping(df):
 def reorder_columns(df):
     reordered_columns = [
         'item_name', 'item_type', 'unique_id',
-        'dot_items_fs',  # Inserted into the fourth slot
+        'dot_structure_di',  # Inserted into the fourth slot
         'item_name_hm', 'item_type_hm',
         'item_name_rp', 'item_type_rp',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
