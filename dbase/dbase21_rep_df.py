@@ -3,9 +3,7 @@ import pandas as pd
 # from .dbase01_setup import build_main_dataframe
 from .dbase18_org import reorder_columns_rep
 from .dbase26_f_merge import (
-    field_merge_1,
-    field_merge_2,
-    field_merge_3
+    compare_documents,
 )
 
 
@@ -19,13 +17,19 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['item_name_repo'] = report_dataframe['item_name_rp']
     report_dataframe['item_type_repo'] = report_dataframe['item_type_rp']
 
+    # Add status fields for error flagging
+    report_dataframe['r_status_1'] = ''  # Flag for name match/mismatch
+    report_dataframe['r_status_2'] = ''  # Flag for type match/mismatch
+    report_dataframe['r_status_3'] = ''  # Flag for other inconsistencies
+
     # Apply the field consolidation (the field_merge functions)
-    # report_dataframe = field_merge_1(report_dataframe)
-    # report_dataframe = field_merge_2(report_dataframe)
-    # report_dataframe = field_merge_3(report_dataframe)
+    report_dataframe = compare_documents(report_dataframe)
 
     # Reorder columns for the report DataFrame
     report_dataframe = reorder_columns_rep(report_dataframe)
+
+    # report_dataframe = report_dataframe[report_dataframe['r_status_1'] != 'Name Match']
+    # report_dataframe = report_dataframe.sort_values(by='r_status_1')
 
     return report_dataframe
 
