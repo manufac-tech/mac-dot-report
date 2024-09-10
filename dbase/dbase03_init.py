@@ -12,33 +12,21 @@ def create_input_df_dict():
             'dataframe': load_hm_dataframe(),
             'suffix': 'hm',
             'merge_field': 'item_name_hm',
-            # 'name_field': 'item_name_hm',
-            # 'type_field': 'item_type_hm',
-            # 'unique_id_merge_func': None
         },
         'repo': {
             'dataframe': load_rp_dataframe(),
             'suffix': 'rp',
             'merge_field': 'item_name_rp',
-            # 'name_field': 'item_name_rp',
-            # 'type_field': 'item_type_rp',
-            # 'unique_id_merge_func': 'field_merge_1_uid'
         },
         'dotbot': {
             'dataframe': load_dotbot_yaml_dataframe(),
             'suffix': 'db',
             'merge_field': 'item_name_rp_db',
-            # 'name_field': 'item_name_rp_db',
-            # 'type_field': 'item_type_hm_db',
-            # 'unique_id_merge_func': 'field_merge_2_uid'
         },
         'dot_info': {
             'dataframe': load_di_dataframe(),
             'suffix': 'di',
             'merge_field': 'item_name_rp_di',
-            # 'name_field': 'item_name_rp_di',
-            # 'type_field': 'item_type_rp_di',
-            # 'unique_id_merge_func': 'field_merge_3_uid'
         }
     }
     return input_df_dict
@@ -65,8 +53,6 @@ def initialize_main_dataframe(first_df_section):
         'dataframe': main_dataframe,
         'suffix': '',  # No suffix for global fields
         'merge_field': 'item_name',
-        # 'name_field': 'item_name',
-        # 'type_field': 'item_type'
     }
 
     # Call the print function

@@ -47,7 +47,7 @@ from .dbase17_merge import merge_dataframes
 from .dbase18_org import (
     add_and_populate_out_group,
     apply_output_grouping,
-    reorder_columns,
+    reorder_columns_main,
     sort_items_1_out_group, # MAYBE REMOVE
     sort_items_2_indiv # MAYBE REMOVE
 )
@@ -93,7 +93,7 @@ __all__ = [
     "merge_dataframes",
     "add_and_populate_out_group",
     "apply_output_grouping",
-    "reorder_columns",
+    "reorder_columns_main",
     "sort_items_1_out_group",  # MAYBE REMOVE
     "sort_items_2_indiv",  # MAYBE REMOVE
     "build_report_dataframe",

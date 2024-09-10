@@ -13,7 +13,7 @@ from .dbase17_merge import merge_dataframes
 from .dbase18_org import (
     add_and_populate_out_group,
     apply_output_grouping,
-    reorder_columns
+    reorder_columns_main
 )
 # from .dbase21_rep_df import build_report_dataframe
 from .dbase30_debug import print_debug_info
@@ -61,7 +61,7 @@ def build_main_dataframe():
     main_df_dict['dataframe']['original_order'] = main_df_dict['dataframe']['original_order'].fillna(-1).astype('Int64')
 
     main_df_dict['dataframe'] = apply_output_grouping(main_df_dict['dataframe'])
-    # main_df_dict['dataframe'] = reorder_columns(main_df_dict['dataframe'])
+    # main_df_dict['dataframe'] = reorder_columns_main(main_df_dict['dataframe'])
 
     full_main_dataframe = main_df_dict['dataframe']  # This is the final, fully merged dataframe
 

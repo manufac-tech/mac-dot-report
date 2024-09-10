@@ -46,7 +46,7 @@ def apply_output_grouping(df):
 
     return df_sorted
 
-def reorder_columns(df):
+def reorder_columns_main(df):
     reordered_columns = [
         # 'item_name', 'item_type',
         'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
@@ -58,6 +58,24 @@ def reorder_columns(df):
         'git_rp',
         'no_show_di',
         # 'm_status_1', 'm_status_2', 'm_status_3',
+        'out_group',
+        'original_order'
+    ]
+    reordered_columns = [col for col in reordered_columns if col in df.columns]
+    return df[reordered_columns]
+
+def reorder_columns_rep(df):
+    reordered_columns = [
+        'item_name', 'item_type',
+        'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
+        'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
+        'dot_structure_di',
+        'item_name_hm', 'item_type_hm',
+        'item_name_rp', 'item_type_rp',
+        'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
+        'item_name_hm_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
+        'git_rp',
+        'no_show_di',
         'out_group',
         'original_order'
     ]
