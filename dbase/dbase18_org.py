@@ -14,13 +14,13 @@ def add_and_populate_out_group(df):
     df['out_group'] = pd.Series(dtype='Int64')  # Create out_group column
 
     # Group 2: Matched items (based on di_match status)
-    df.loc[df['m_status_3'] == 'di_match', 'out_group'] = 1  
+    # df.loc[df['m_status_3'] == 'di_match', 'out_group'] = 1  
 
     # Group 1: Missing items (based on ERR:unmatched_di status)
-    df.loc[df['m_status_3'] == 'ERR:unmatched_di', 'out_group'] = 2  
+    # df.loc[df['m_status_3'] == 'ERR:unmatched_di', 'out_group'] = 2  
 
     # Group 3: New items (based on ERR:home_only status)
-    df.loc[df['m_status_1'] == 'ERR:home_only', 'out_group'] = 3
+    # df.loc[df['m_status_1'] == 'ERR:home_only', 'out_group'] = 3
 
     # Group 4: Catch-all for uncategorized items
     # df['out_group'].fillna(4, inplace=True)
@@ -48,7 +48,8 @@ def apply_output_grouping(df):
 
 def reorder_columns(df):
     reordered_columns = [
-        'item_name', 'item_type', 'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
+        # 'item_name', 'item_type',
+        'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
         'dot_structure_di',
         'item_name_hm', 'item_type_hm',
         'item_name_rp', 'item_type_rp',
@@ -56,7 +57,7 @@ def reorder_columns(df):
         'item_name_hm_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
         'git_rp',
         'no_show_di',
-        'm_status_1', 'm_status_2', 'm_status_3',
+        # 'm_status_1', 'm_status_2', 'm_status_3',
         'out_group',
         'original_order'
     ]
