@@ -55,7 +55,7 @@ from .dbase21_rep_df import (
     build_report_dataframe
 )
 from .dbase26_f_merge import (
-    compare_documents
+    compare_docs_di_and_db
 )
 
 from .dbase30_debug import print_debug_info
@@ -95,6 +95,6 @@ __all__ = [
     "sort_items_1_out_group",  # MAYBE REMOVE
     "sort_items_2_indiv",  # MAYBE REMOVE
     "build_report_dataframe",
-    "compare_documents",
+    "compare_docs_di_and_db",
     "print_debug_info"
 ]
