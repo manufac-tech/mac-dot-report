@@ -4,13 +4,13 @@ from .dbase16_validate import validate_df_dict_current_and_main
 
 def field_merge_main(report_dataframe):
     """Master function to handle field merging, comparing document and FS results."""
-    
+    # print("field_merge_main() called")
     # Apply field merge logic using both document and FS comparisons
     report_dataframe['final_status'] = report_dataframe.apply(
         lambda row: determine_merge_status(
             row,
-            row['r_status_1'], 
-            row['r_status_2'],
+            row['doc_status'], 
+            row['fs_status'],
             check_fs_conditions(row)  # Pass the result of the FS check directly
         ), axis=1
     )
@@ -19,7 +19,7 @@ def field_merge_main(report_dataframe):
 
 def determine_merge_status(row, doc_status, fs_status, fs_condition):
     """Helper function to determine final merge status based on document and FS checks."""
-    
+    # print("determine_merge_status() called")
     # Full Match condition
     if doc_status == 'N_Yes, T_Yes' and fs_status == 'N_Yes, T_Yes':
         return 'Full Match'
@@ -62,7 +62,7 @@ def compare_docs_di_and_db(main_df):
     )
 
     # Concatenate the name and type match statuses
-    main_df['r_status_1'] = main_df.apply(
+    main_df['doc_status'] = main_df.apply(
         lambda row: (f"N_Yes" if names_match[row.name] else "N_No") + 
                     ", " + 
                     (f"T_Yes" if types_match[row.name] else "T_No"), 
@@ -89,7 +89,7 @@ def compare_fs_rp_and_hm(main_df):
     )
 
     # Concatenate the match status for file system into RStatus2
-    main_df['r_status_2'] = main_df.apply(
+    main_df['fs_status'] = main_df.apply(
         lambda row: f"N_Yes, T_Yes" if names_match_fs[row.name] and types_match_fs[row.name] 
         else f"N_Yes, T_No" if names_match_fs[row.name] 
         else f"N_No, T_Yes" if types_match_fs[row.name]
