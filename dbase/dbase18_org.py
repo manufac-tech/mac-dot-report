@@ -68,7 +68,7 @@ def reorder_columns_rep(df):
     reordered_columns = [
         'item_name', 'item_type',
         'dot_structure_di',
-        'r_status_1', 'r_status_2', 'r_status_3', 'r_status_4', 'r_status_5',
+        'r_status_1', 'r_status_2', 'r_status_3', 'final_status',
         'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
         'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
         'item_name_hm', 'item_type_hm',

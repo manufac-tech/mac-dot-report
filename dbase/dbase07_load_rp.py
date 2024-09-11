@@ -33,7 +33,7 @@ def load_rp_dataframe():
     df = create_git_rp_column(df, repo_path)
 
     # Toggle output directly within the function
-    show_output = True  # Change to False to disable output
+    show_output = False  # Change to False to disable output
     show_full_df = False  # Change to True to show the full DataFrame
 
     if show_output:
@@ -61,7 +61,7 @@ def create_git_rp_column(df, repo_path):
             # Use fnmatch to compare names and types
             if fnmatch.fnmatch(item_name, pattern) and item_type == pattern_type:
                 df.at[idx, 'git_rp'] = False  # Mark as untracked
-                print(f"Match found: {item_name} ({item_type}) matches {pattern}")
+                # print(f"Match found: {item_name} ({item_type}) matches {pattern}")
                 break  # Stop checking once a match is found
 
     return df
@@ -89,5 +89,4 @@ def read_gitignore_items(repo_path):
             # Store the cleaned pattern and its type
             gitignore_items[pattern_cleaned] = item_type
 
-    print(f"Gitignore items: {gitignore_items}")  # Debug: print the cleaned items
     return gitignore_items

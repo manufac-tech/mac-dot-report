@@ -31,7 +31,7 @@ def build_main_dataframe():
         if iteration > max_iterations: # diagnostic
             break
 
-        print(f"\n 1️⃣ Iteration {iteration}: Merging with '{df_name}' DataFrame")
+        # print(f"\n 1️⃣ Iteration {iteration}: Merging with '{df_name}' DataFrame")
 
         input_df_dict_section = input_df_dict[df_name]
 

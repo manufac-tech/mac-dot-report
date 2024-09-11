@@ -4,7 +4,7 @@ import numpy as np
 
 from .dbase16_validate import replace_string_blanks
 
-def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=True):
+def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=False):
     # Extract the DataFrames from the dictionary sections
     main_df = main_df_dict['dataframe']
     input_df = input_df_dict_section['dataframe']
