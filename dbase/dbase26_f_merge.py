@@ -8,40 +8,38 @@ def field_merge_main(report_dataframe):
     report_dataframe = compare_docs_di_and_db(report_dataframe) # Do doc comparison & update DataFrame
     report_dataframe = compare_fs_rp_and_hm(report_dataframe) # Do FS comparison & update DataFrame
     
-    # Perform FS condition checks for each row
-    report_dataframe['fs_conditions'] = report_dataframe.apply(check_fs_conditions, axis=1)
-
     # Define a function to process merge status for each row
     def process_merge_status(row):
         doc_comp = row['fm_doc_comp']
-        fs_status = row['fs_status']
-        fs_condition = row['fs_conditions']
-        return determine_merge_status(row, doc_comp, fs_status, fs_condition)
+        fs_comp = row['fm_fs_comp']
+        return determine_merge_status(row, doc_comp, fs_comp)
 
     # Apply the merge status logic and update the DataFrame
     report_dataframe['final_status'] = report_dataframe.apply(process_merge_status, axis=1)
 
     return report_dataframe
 
-def determine_merge_status(row, doc_comparison, fs_status, fs_condition):
+def determine_merge_status(row, doc_comparison, fs_comparison):
     """Helper function to determine final merge status based on doc and FS checks."""
 
     # Use Booleans for match conditions
     names_match = doc_comparison['names_match']
     types_match = doc_comparison['types_match']
+    names_match_fs = fs_comparison['names_match_fs']
+    types_match_fs = fs_comparison['types_match_fs']
 
     # Full Match condition (both names and types match in the doc comparison)
-    if names_match and types_match and fs_status == 'N_Yes, T_Yes':
+    if names_match and types_match and names_match_fs and types_match_fs:
         return 'Full Match'
     
     # Check for specific FS conditions
-    if fs_condition == 'Sym Overwritten':
+    if not names_match_fs and types_match_fs:
         return 'Sym Overwritten'
-    if fs_condition == 'New Home Item':
+    if names_match_fs and not types_match_fs:
         return 'New Home Item'
-    if fs_condition == 'Home Only':
+    if not names_match_fs and not types_match_fs:
         return 'Home Only'
-    if fs_condition == 'Repo Only':
+    if names_match_fs and types_match_fs:
         return 'Repo Only'
     
     # Default to Mismatch
@@ -110,26 +108,26 @@ def compare_fs_rp_and_hm(df):
 
     return df
 
-def check_fs_conditions(row):
-    """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
+# def check_fs_conditions(row):
+#     # """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
 
-    # Check for Home-only condition
-    if row['item_name_rp'] == '' and row['item_name_hm'] != '':
-        print("Home Only matched")
-        return 'Home Only'
+#     # # Check for Home-only condition
+#     # if row['item_name_rp'] == '' and row['item_name_hm'] != '':
+#     #     print("Home Only matched")
+#     #     return 'Home Only'
 
-    # Check for Repo-only condition
-    if row['item_name_hm'] == '' and row['item_name_rp'] != '':
-        print("Repo Only matched)")
-        return 'Repo Only'
+#     # # Check for Repo-only condition
+#     # if row['item_name_hm'] == '' and row['item_name_rp'] != '':
+#     #     print("Repo Only matched)")
+#     #     return 'Repo Only'
 
-    # Check for symlink overwritten by an actual file
-    if (row['item_type_hm'] in ['file', 'folder']) and \
-       (row['item_type_rp'] in ['file', 'folder']):  # Ensure repo expects a symlink
-        print("Sym Overwritten matched")
-        return 'Sym Overwritten'
+#     # # Check for symlink overwritten by an actual file
+#     # if (row['item_type_hm'] in ['file', 'folder']) and \
+#     #    (row['item_type_rp'] in ['file', 'folder']):  # Ensure repo expects a symlink
+#     #     print("Sym Overwritten matched")
+#     #     return 'Sym Overwritten'
 
-    return 'No Condition'
+#     return 'No Condition'
 
 
 

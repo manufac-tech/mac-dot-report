@@ -57,7 +57,7 @@ from .dbase21_rep_df import (
 from .dbase26_f_merge import (
     compare_docs_di_and_db,
     compare_fs_rp_and_hm,
-    check_fs_conditions,
+    # check_fs_conditions,
     field_merge_main,
     determine_merge_status
 )
@@ -99,9 +99,9 @@ __all__ = [
     "sort_items_1_out_group",  # MAYBE REMOVE
     "sort_items_2_indiv",  # MAYBE REMOVE
     "build_report_dataframe",
-        'compare_docs_di_and_db',
+    'compare_docs_di_and_db',
     'compare_fs_rp_and_hm',
-    'check_fs_conditions',
+    # 'check_fs_conditions',
     'field_merge_main',
     'determine_merge_status',
     "print_debug_info"
