@@ -64,7 +64,7 @@ def reorder_columns_main(df):
     reordered_columns = [col for col in reordered_columns if col in df.columns]
     return df[reordered_columns]
 
-def reorder_columns_rep(df):
+def reorder_columns_rep(df, show_dict_fields=False):
     reordered_columns = [
         'item_name', 'item_type',
         'dot_structure_di',
@@ -82,6 +82,11 @@ def reorder_columns_rep(df):
         'out_group',
         'original_order'
     ]
+
+    # Add dictionary fields if show_dict_fields is True
+    if show_dict_fields:
+        reordered_columns.extend(['fm_doc_comp', 'fm_fs_comp', 'fm_fs_cond', 'fm_merge_top'])
+
     reordered_columns = [col for col in reordered_columns if col in df.columns]
     return df[reordered_columns]
 

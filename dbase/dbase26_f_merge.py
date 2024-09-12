@@ -4,7 +4,14 @@ from .dbase16_validate import validate_df_dict_current_and_main
 
 def field_merge_main(report_dataframe):
     """Master function to handle field merging, comparing document and FS results."""
-    # print("field_merge_main() called")
+    print("field_merge_main() called")
+    
+    # Perform document comparison and update the DataFrame
+    report_dataframe = compare_docs_di_and_db(report_dataframe)
+    
+    # Perform file system comparison and update the DataFrame
+    report_dataframe = compare_fs_rp_and_hm(report_dataframe)
+    
     # Apply field merge logic using both document and FS comparisons
     report_dataframe['final_status'] = report_dataframe.apply(
         lambda row: determine_merge_status(
@@ -19,7 +26,8 @@ def field_merge_main(report_dataframe):
 
 def determine_merge_status(row, doc_status, fs_status, fs_condition):
     """Helper function to determine final merge status based on document and FS checks."""
-    # print("determine_merge_status() called")
+    print(f"Processing row {row.name}...")
+    
     # Full Match condition
     if doc_status == 'N_Yes, T_Yes' and fs_status == 'N_Yes, T_Yes':
         return 'Full Match'
@@ -39,6 +47,7 @@ def determine_merge_status(row, doc_status, fs_status, fs_condition):
 
 def compare_docs_di_and_db(main_df):
     """Compare documents (dot-info.csv and DotBot YAML) for name and type matching."""
+    print("compare_docs_di_and_db() called")
 
     # Fill NaN with an empty string in the name and type columns
     main_df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
@@ -74,6 +83,7 @@ def compare_docs_di_and_db(main_df):
 
 def compare_fs_rp_and_hm(main_df):
     """Compare file system items (repo and home folders) for name and type matching."""
+    print("compare_fs_rp_and_hm() called")
     
     # Fill NaN with an empty string in the name and type columns for the file system
     main_df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']] = \
@@ -88,41 +98,34 @@ def compare_fs_rp_and_hm(main_df):
         (main_df['item_type_hm'].isin(['file_sym', 'folder_sym']))
     )
 
-    # Concatenate the match status for file system into RStatus2
+    # Concatenate the name and type match statuses
     main_df['fs_status'] = main_df.apply(
-        lambda row: f"N_Yes, T_Yes" if names_match_fs[row.name] and types_match_fs[row.name] 
-        else f"N_Yes, T_No" if names_match_fs[row.name] 
-        else f"N_No, T_Yes" if types_match_fs[row.name]
-        else "N_No, T_No",
+        lambda row: (f"N_Yes" if names_match_fs[row.name] else "N_No") + 
+                    ", " + 
+                    (f"T_Yes" if types_match_fs[row.name] else "T_No"), 
         axis=1
     )
-
-    # Call CheckFSConditions to update RStatus3
-    main_df = check_fs_conditions(main_df)
 
     return main_df
 
 def check_fs_conditions(row):
-    """Return specific FS conditions for a given row, handling empty strings."""
-    
-    # Check for Home-only condition (no matching item in repo)
+    """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
+    print(f"check_fs_conditions() called for row {row.name}")
+
+    # Check for Home-only condition
     if row['item_name_rp'] == '' and row['item_name_hm'] != '':
         return 'Home Only'
-    
-    # Check for Repo-only condition (no matching item in home)
+
+    # Check for Repo-only condition
     if row['item_name_hm'] == '' and row['item_name_rp'] != '':
         return 'Repo Only'
-    
+
     # Check for symlink overwritten by an actual file
-    if row['item_type_hm'] in ['file', 'folder'] and row['item_type_rp'] in ['file', 'folder']:
+    if (row['item_type_hm'] in ['file', 'folder']) and \
+       (row['item_type_rp'] in ['file', 'folder']):  # Ensure repo expects a symlink
         return 'Sym Overwritten'
-    
-    # Check for new item in home (untracked by repo or documents)
-    if row['item_name_hm'] != '' and row['item_name_rp'] == '' and row['item_name_hm_di'] == '':
-        return 'New Home Item'
-    
-    # Default case if no conditions match
-    return None
+
+    return 'No Condition'
 
 
 
