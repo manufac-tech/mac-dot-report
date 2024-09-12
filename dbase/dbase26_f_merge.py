@@ -5,26 +5,26 @@ from .dbase16_validate import validate_df_dict_current_and_main
 def field_merge_main(report_dataframe):
     """Master function to handle field merging, comparing document and FS results."""
 
-    # Perform document comparison and update the DataFrame
-    report_dataframe = compare_docs_di_and_db(report_dataframe)
+    report_dataframe = compare_docs_di_and_db(report_dataframe) # Do doc comparison & update DataFrame
+    report_dataframe = compare_fs_rp_and_hm(report_dataframe) # Do FS comparison & update DataFrame
     
-    # Perform file system comparison and update the DataFrame
-    report_dataframe = compare_fs_rp_and_hm(report_dataframe)
-    
-    # Apply field merge logic using both document and FS comparisons
-    report_dataframe['final_status'] = report_dataframe.apply(
-        lambda row: determine_merge_status(
-            row,
-            row['fm_doc_comp'],  # Pass the dictionary instead of individual fields
-            row['fs_status'],
-            check_fs_conditions(row)  # Pass the result of the FS check directly
-        ), axis=1
-    )
+    # Perform FS condition checks for each row
+    report_dataframe['fs_conditions'] = report_dataframe.apply(check_fs_conditions, axis=1)
+
+    # Define a function to process merge status for each row
+    def process_merge_status(row):
+        doc_comp = row['fm_doc_comp']
+        fs_status = row['fs_status']
+        fs_condition = row['fs_conditions']
+        return determine_merge_status(row, doc_comp, fs_status, fs_condition)
+
+    # Apply the merge status logic and update the DataFrame
+    report_dataframe['final_status'] = report_dataframe.apply(process_merge_status, axis=1)
 
     return report_dataframe
 
 def determine_merge_status(row, doc_comparison, fs_status, fs_condition):
-    """Helper function to determine final merge status based on document and FS checks."""
+    """Helper function to determine final merge status based on doc and FS checks."""
 
     # Use Booleans for match conditions
     names_match = doc_comparison['names_match']
@@ -115,15 +115,18 @@ def check_fs_conditions(row):
 
     # Check for Home-only condition
     if row['item_name_rp'] == '' and row['item_name_hm'] != '':
+        print("Home Only matched")
         return 'Home Only'
 
     # Check for Repo-only condition
     if row['item_name_hm'] == '' and row['item_name_rp'] != '':
+        print("Repo Only matched)")
         return 'Repo Only'
 
     # Check for symlink overwritten by an actual file
     if (row['item_type_hm'] in ['file', 'folder']) and \
        (row['item_type_rp'] in ['file', 'folder']):  # Ensure repo expects a symlink
+        print("Sym Overwritten matched")
         return 'Sym Overwritten'
 
     return 'No Condition'
