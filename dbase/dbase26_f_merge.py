@@ -45,39 +45,37 @@ def determine_merge_status(row, doc_status, fs_status, fs_condition):
     # Default to Mismatch
     return 'Mismatch'
 
-def compare_docs_di_and_db(main_df):
-    """Compare documents (dot-info.csv and DotBot YAML) for name and type matching."""
+def compare_docs_di_and_db(report_dataframe):
+    """Compare documents (dot-info.csv and DotBot YAML) for name and type matching and store results in a dictionary."""
 
     # Fill NaN with an empty string in the name and type columns
-    main_df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
-        main_df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']].fillna('')
+    report_dataframe[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
+        report_dataframe[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']].fillna('')
 
-    main_df[['item_type_hm_db', 'item_type_rp_db']] = \
-        main_df[['item_type_hm_db', 'item_type_rp_db']].fillna('')
+    report_dataframe[['item_type_hm_db', 'item_type_rp_db']] = \
+        report_dataframe[['item_type_hm_db', 'item_type_rp_db']].fillna('')
 
-    # Define the condition for matching names
-    names_match = (
-        (main_df['item_name_hm_db'] == main_df['item_name_rp_db']) &
-        (main_df['item_name_hm_di'] == main_df['item_name_rp_di']) &
-        (main_df['item_name_hm_db'] != '') & (main_df['item_name_rp_db'] != '') & 
-        (main_df['item_name_hm_di'] != '') & (main_df['item_name_rp_di'] != '')
-    )
+    # Apply logic row by row to compare names and types, storing results in fm_doc_comp
+    def compare_row(row):
+        names_match = (
+            (row['item_name_hm_db'] == row['item_name_rp_db']) and
+            (row['item_name_hm_di'] == row['item_name_rp_di']) and
+            (row['item_name_hm_db'] != '') and (row['item_name_rp_db'] != '') and 
+            (row['item_name_hm_di'] != '') and (row['item_name_rp_di'] != '')
+        )
+        types_match = (
+            (row['item_type_rp_db'] in ['file', 'folder', 'file_alias', 'folder_alias']) and
+            (row['item_type_hm_db'] in ['file_sym', 'folder_sym'])
+        )
+        return {
+            'names_match': 'N_Yes' if names_match else 'N_No',
+            'types_match': 'T_Yes' if types_match else 'T_No'
+        }
+    
+    # Store the results in the 'fm_doc_comp' field for each row
+    report_dataframe['fm_doc_comp'] = report_dataframe.apply(compare_row, axis=1)
 
-    # Define the condition for matching types
-    types_match = (
-        (main_df['item_type_rp_db'].isin(['file', 'folder', 'file_alias', 'folder_alias'])) &
-        (main_df['item_type_hm_db'].isin(['file_sym', 'folder_sym']))
-    )
-
-    # Concatenate the name and type match statuses
-    main_df['doc_status'] = main_df.apply(
-        lambda row: (f"N_Yes" if names_match[row.name] else "N_No") + 
-                    ", " + 
-                    (f"T_Yes" if types_match[row.name] else "T_No"), 
-        axis=1
-    )
-
-    return main_df
+    return report_dataframe
 
 
 def compare_fs_rp_and_hm(main_df):
