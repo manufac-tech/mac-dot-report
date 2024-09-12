@@ -35,8 +35,14 @@ def build_report_dataframe(main_df_dict):
     # Apply the field consolidation (the field_merge_main function)
     report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
 
-    # Reorder columns for the report DataFrame
-    report_dataframe = reorder_columns_rep(report_dataframe, show_dict_fields=False)
+    # Reorder columns for the report DataFrame with new argument names
+    report_dataframe = reorder_columns_rep(
+        report_dataframe,
+        show_field_merge=True,         # Set to True or False as needed
+        show_unique_ids=False,          # Set to True or False as needed
+        show_field_merge_dicts=True,   # Set to True or False as needed
+        show_final_output=False         # Set to True or False as needed
+    )
 
     return report_dataframe
 

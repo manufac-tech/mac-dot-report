@@ -4,7 +4,7 @@ from .dbase16_validate import validate_df_dict_current_and_main
 
 def field_merge_main(report_dataframe):
     """Master function to handle field merging, comparing document and FS results."""
-    print("field_merge_main() called")
+    # print("field_merge_main() called")
     
     # Perform document comparison and update the DataFrame
     report_dataframe = compare_docs_di_and_db(report_dataframe)
@@ -26,7 +26,7 @@ def field_merge_main(report_dataframe):
 
 def determine_merge_status(row, doc_status, fs_status, fs_condition):
     """Helper function to determine final merge status based on document and FS checks."""
-    print(f"Processing row {row.name}...")
+    # print(f"Processing row {row.name}...")
     
     # Full Match condition
     if doc_status == 'N_Yes, T_Yes' and fs_status == 'N_Yes, T_Yes':
@@ -47,7 +47,6 @@ def determine_merge_status(row, doc_status, fs_status, fs_condition):
 
 def compare_docs_di_and_db(main_df):
     """Compare documents (dot-info.csv and DotBot YAML) for name and type matching."""
-    print("compare_docs_di_and_db() called")
 
     # Fill NaN with an empty string in the name and type columns
     main_df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
@@ -83,7 +82,6 @@ def compare_docs_di_and_db(main_df):
 
 def compare_fs_rp_and_hm(main_df):
     """Compare file system items (repo and home folders) for name and type matching."""
-    print("compare_fs_rp_and_hm() called")
     
     # Fill NaN with an empty string in the name and type columns for the file system
     main_df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']] = \
@@ -110,7 +108,6 @@ def compare_fs_rp_and_hm(main_df):
 
 def check_fs_conditions(row):
     """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
-    print(f"check_fs_conditions() called for row {row.name}")
 
     # Check for Home-only condition
     if row['item_name_rp'] == '' and row['item_name_hm'] != '':

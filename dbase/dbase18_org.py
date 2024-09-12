@@ -64,24 +64,58 @@ def reorder_columns_main(df):
     reordered_columns = [col for col in reordered_columns if col in df.columns]
     return df[reordered_columns]
 
-def reorder_columns_rep(df, show_dict_fields=False):
-    reordered_columns = [
-        'item_name', 'item_type',
-        'dot_structure_di',
+def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, show_field_merge_dicts, show_final_output):
+    # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH
+    # Field Merge Group
+    field_merge_columns = [
         'doc_status', 'fs_status', 'r_status_3', 'final_status',
-        'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
-        'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
-        'item_name_hm', 'item_type_hm',
-        'item_name_rp', 'item_type_rp',
+        'item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_hm_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di',
-        # 'comment_di',
-        'cat_2_di',
-        'git_rp',
-        'no_show_di',
-        'out_group',
-        'original_order'
+        'item_name_rp_di', 'item_name_hm_di', 'item_type_rp_di', 'item_type_hm_di'
     ]
+
+    # Unique IDs Group
+    unique_ids_columns = [
+        'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di'
+    ]
+
+    # Field Merge Dicts Group
+    field_merge_dicts_columns = [
+        'fm_doc_comp', 'fm_fs_comp', 'fm_fs_cond', 'fm_merge_top'
+    ]
+
+    # Final Output Group
+    final_output_columns = [
+        'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
+        'dot_structure_di', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di'
+    ]
+
+    # Display Field Merge Section
+    if show_field_merge:
+        print("Field Merge Group:")
+        print(report_dataframe[field_merge_columns])
+        print("\n" * 2)
+
+    # Display Unique IDs Section
+    if show_unique_ids:
+        print("Unique IDs Group:")
+        print(report_dataframe[unique_ids_columns])
+        print("\n" * 2)
+
+    # Display Field Merge Dicts Section
+    if show_field_merge_dicts:
+        print("Field Merge Dicts Group:")
+        print(report_dataframe[field_merge_dicts_columns])
+        print("\n" * 2)
+
+    # Display Final Output Section
+    if show_final_output:
+        print("Final Output Group:")
+        print(report_dataframe[final_output_columns])
+        print("\n" * 2)
+
+    # Return reordered DataFrame if needed
+    return report_dataframe
 
     # Add dictionary fields if show_dict_fields is True
     if show_dict_fields:

@@ -20,8 +20,8 @@ def build_full_output_dict():
 
     report_dataframe = build_report_dataframe(output_df_dict)
 
-    with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
-        print("\nReport DataFrame:\n", report_dataframe)
+    # with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.width', None):
+    #     print("\nReport DataFrame:\n", report_dataframe)
 
     output_df_dict['report_dataframe'] = report_dataframe
 
