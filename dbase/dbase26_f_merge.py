@@ -4,8 +4,7 @@ from .dbase16_validate import validate_df_dict_current_and_main
 
 def field_merge_main(report_dataframe):
     """Master function to handle field merging, comparing document and FS results."""
-    # print("field_merge_main() called")
-    
+
     # Perform document comparison and update the DataFrame
     report_dataframe = compare_docs_di_and_db(report_dataframe)
     
@@ -16,7 +15,7 @@ def field_merge_main(report_dataframe):
     report_dataframe['final_status'] = report_dataframe.apply(
         lambda row: determine_merge_status(
             row,
-            row['doc_status'], 
+            row['fm_doc_comp'],  # Pass the dictionary instead of individual fields
             row['fs_status'],
             check_fs_conditions(row)  # Pass the result of the FS check directly
         ), axis=1
@@ -24,12 +23,15 @@ def field_merge_main(report_dataframe):
 
     return report_dataframe
 
-def determine_merge_status(row, doc_status, fs_status, fs_condition):
+def determine_merge_status(row, doc_comparison, fs_status, fs_condition):
     """Helper function to determine final merge status based on document and FS checks."""
-    # print(f"Processing row {row.name}...")
-    
-    # Full Match condition
-    if doc_status == 'N_Yes, T_Yes' and fs_status == 'N_Yes, T_Yes':
+
+    # Use Booleans for match conditions
+    names_match = doc_comparison['names_match']
+    types_match = doc_comparison['types_match']
+
+    # Full Match condition (both names and types match in the doc comparison)
+    if names_match and types_match and fs_status == 'N_Yes, T_Yes':
         return 'Full Match'
     
     # Check for specific FS conditions
@@ -45,64 +47,68 @@ def determine_merge_status(row, doc_status, fs_status, fs_condition):
     # Default to Mismatch
     return 'Mismatch'
 
-def compare_docs_di_and_db(report_dataframe):
-    """Compare documents (dot-info.csv and DotBot YAML) for name and type matching and store results in a dictionary."""
+def compare_docs_di_and_db(df):
+    """Compare documents (dot-info.csv and DotBot YAML) for name and type matching."""
 
     # Fill NaN with an empty string in the name and type columns
-    report_dataframe[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
-        report_dataframe[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']].fillna('')
+    df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']] = \
+        df[['item_name_hm_db', 'item_name_rp_db', 'item_name_hm_di', 'item_name_rp_di']].fillna('')
 
-    report_dataframe[['item_type_hm_db', 'item_type_rp_db']] = \
-        report_dataframe[['item_type_hm_db', 'item_type_rp_db']].fillna('')
+    df[['item_type_hm_db', 'item_type_rp_db']] = \
+        df[['item_type_hm_db', 'item_type_rp_db']].fillna('')
 
-    # Apply logic row by row to compare names and types, storing results in fm_doc_comp
-    def compare_row(row):
-        names_match = (
-            (row['item_name_hm_db'] == row['item_name_rp_db']) and
-            (row['item_name_hm_di'] == row['item_name_rp_di']) and
-            (row['item_name_hm_db'] != '') and (row['item_name_rp_db'] != '') and 
-            (row['item_name_hm_di'] != '') and (row['item_name_rp_di'] != '')
-        )
-        types_match = (
-            (row['item_type_rp_db'] in ['file', 'folder', 'file_alias', 'folder_alias']) and
-            (row['item_type_hm_db'] in ['file_sym', 'folder_sym'])
-        )
-        return {
-            'names_match': 'N_Yes' if names_match else 'N_No',
-            'types_match': 'T_Yes' if types_match else 'T_No'
-        }
-    
-    # Store the results in the 'fm_doc_comp' field for each row
-    report_dataframe['fm_doc_comp'] = report_dataframe.apply(compare_row, axis=1)
-
-    return report_dataframe
-
-
-def compare_fs_rp_and_hm(main_df):
-    """Compare file system items (repo and home folders) for name and type matching."""
-    
-    # Fill NaN with an empty string in the name and type columns for the file system
-    main_df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']] = \
-        main_df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']].fillna('')
-
-    # Define the condition for matching names between repo and home folders
-    names_match_fs = (main_df['item_name_rp'] == main_df['item_name_hm'])
-
-    # Define the condition for matching types, accounting for expected symlinks in home
-    types_match_fs = (
-        (main_df['item_type_rp'].isin(['file', 'folder', 'file_alias', 'folder_alias'])) &
-        (main_df['item_type_hm'].isin(['file_sym', 'folder_sym']))
+    # Define the condition for matching names
+    names_match = (
+        (df['item_name_hm_db'] == df['item_name_rp_db']) &
+        (df['item_name_hm_di'] == df['item_name_rp_di']) &
+        (df['item_name_hm_db'] != '') & (df['item_name_rp_db'] != '') & 
+        (df['item_name_hm_di'] != '') & (df['item_name_rp_di'] != '')
     )
 
-    # Concatenate the name and type match statuses
-    main_df['fs_status'] = main_df.apply(
-        lambda row: (f"N_Yes" if names_match_fs[row.name] else "N_No") + 
-                    ", " + 
-                    (f"T_Yes" if types_match_fs[row.name] else "T_No"), 
+    # Define the condition for matching types
+    types_match = (
+        (df['item_type_rp_db'].isin(['file', 'folder', 'file_alias', 'folder_alias'])) &
+        (df['item_type_hm_db'].isin(['file_sym', 'folder_sym']))
+    )
+
+    # Concatenate the name and type match statuses into Booleans
+    df['fm_doc_comp'] = df.apply(
+        lambda row: {
+            'names_match': bool(names_match[row.name]),
+            'types_match': bool(types_match[row.name])
+        }, 
         axis=1
     )
 
-    return main_df
+    return df
+
+
+def compare_fs_rp_and_hm(df):
+    """Compare file system items (repo and home folders) for name and type matching."""
+
+    # Fill NaN with an empty string in the name and type columns for the file system
+    df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']] = \
+        df[['item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm']].fillna('')
+
+    # Define the condition for matching names between repo and home folders
+    names_match_fs = (df['item_name_rp'] == df['item_name_hm'])
+
+    # Define the condition for matching types, accounting for expected symlinks in home
+    types_match_fs = (
+        (df['item_type_rp'].isin(['file', 'folder', 'file_alias', 'folder_alias'])) &
+        (df['item_type_hm'].isin(['file_sym', 'folder_sym']))
+    )
+
+    # Store the results in a dictionary
+    df['fm_fs_comp'] = df.apply(
+        lambda row: {
+            'names_match_fs': names_match_fs[row.name],
+            'types_match_fs': types_match_fs[row.name]
+        },
+        axis=1
+    )
+
+    return df
 
 def check_fs_conditions(row):
     """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
@@ -125,11 +131,11 @@ def check_fs_conditions(row):
 
 
 
-def field_merge_2(main_df):
+def field_merge_2(df):
 
-    return main_df
+    return df
 
-def field_merge_3(main_df):
+def field_merge_3(df):
 
-    return main_df
+    return df
 
