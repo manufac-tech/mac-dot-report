@@ -81,7 +81,7 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
 
     # Field Merge Dicts Group
     field_merge_dicts_columns = [
-        'fm_doc_comp', 'fm_fs_comp', 'fm_fs_cond', 'fm_merge_top'
+        'fm_doc_match', 'fm_fs_match', 'fm_merge_summary'
     ]
 
     # Final Output Group
@@ -119,7 +119,7 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
 
     # Add dictionary fields if show_dict_fields is True
     if show_dict_fields:
-        reordered_columns.extend(['fm_doc_comp', 'fm_fs_comp', 'fm_fs_cond', 'fm_merge_top'])
+        reordered_columns.extend(['fm_doc_match', 'fm_fs_match', 'fm_merge_summary'])
 
     reordered_columns = [col for col in reordered_columns if col in df.columns]
     return df[reordered_columns]

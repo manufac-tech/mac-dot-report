@@ -59,7 +59,7 @@ from .dbase26_f_merge import (
     compare_fs_rp_and_hm,
     # check_fs_conditions,
     field_merge_main,
-    determine_merge_status
+    calc_final_merge_status
 )
 
 from .dbase30_debug import print_debug_info

@@ -10,16 +10,16 @@ def field_merge_main(report_dataframe):
     
     # Define a function to process merge status for each row
     def process_merge_status(row):
-        doc_comp = row['fm_doc_comp']
-        fs_comp = row['fm_fs_comp']
-        return determine_merge_status(row, doc_comp, fs_comp)
+        doc_match_status = row['fm_doc_match']
+        fs_match_status = row['fm_fs_match']
+        return calc_final_merge_status(row, doc_match_status, fs_match_status)
 
     # Apply the merge status logic and update the DataFrame
     report_dataframe['final_status'] = report_dataframe.apply(process_merge_status, axis=1)
 
     return report_dataframe
 
-def determine_merge_status(row, doc_comparison, fs_comparison):
+def calc_final_merge_status(row, doc_comparison, fs_comparison):
     """Helper function to determine final merge status based on doc and FS checks."""
 
     # Use Booleans for match conditions
@@ -70,7 +70,7 @@ def compare_docs_di_and_db(df):
     )
 
     # Concatenate the name and type match statuses into Booleans
-    df['fm_doc_comp'] = df.apply(
+    df['fm_doc_match'] = df.apply(
         lambda row: {
             'names_match': bool(names_match[row.name]),
             'types_match': bool(types_match[row.name])
@@ -98,7 +98,7 @@ def compare_fs_rp_and_hm(df):
     )
 
     # Store the results in a dictionary
-    df['fm_fs_comp'] = df.apply(
+    df['fm_fs_match'] = df.apply(
         lambda row: {
             'names_match_fs': names_match_fs[row.name],
             'types_match_fs': types_match_fs[row.name]

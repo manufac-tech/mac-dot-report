@@ -27,10 +27,9 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['final_status'] = ''
 
     # Initialize dictionary fields with empty dictionaries
-    report_dataframe['fm_doc_comp'] = [{} for _ in range(len(report_dataframe))]
-    report_dataframe['fm_fs_comp'] = [{} for _ in range(len(report_dataframe))]
-    report_dataframe['fm_fs_cond'] = [{} for _ in range(len(report_dataframe))]
-    report_dataframe['fm_merge_top'] = [{} for _ in range(len(report_dataframe))]
+    report_dataframe['fm_doc_match'] = [{} for _ in range(len(report_dataframe))]
+    report_dataframe['fm_fs_match'] = [{} for _ in range(len(report_dataframe))]
+    report_dataframe['fm_merge_summary'] = [{} for _ in range(len(report_dataframe))]
 
     # Apply the field consolidation (the field_merge_main function)
     report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
