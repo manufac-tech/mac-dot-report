@@ -19,17 +19,68 @@ def field_merge_main(report_dataframe):
 
     return report_dataframe
 
+
+def perform_full_matching(report_dataframe):
+    """
+    Main function that coordinates matching logic and handles copying values.
+    """
+    # Call dot_structure_status() to perform structure matches (full match, home only, repo only)
+    report_dataframe['st_main'] = dot_structure_status(report_dataframe)  # TEMP placeholder
+    
+    # Further matches can be performed here, such as alerts or additional system checks:
+    # Example: 
+    # report_dataframe = dotbot_all_status(report_dataframe)
+    
+    # Copy data as needed based on results of matching functions
+    # Example: For dot_structure_status, copy relevant fields after the match
+    # (Details of field copying will be based on logic within each subfunction)
+
+    return report_dataframe
+
+def dot_structure_status(report_dataframe):
+    """
+    Adjusted function for Home-only, Repo-only, and Full Match logic.
+    """
+
+    # Repo-only logic
+    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'st_main'] = 'Repo-only'
+
+    # Home-only logic
+    report_dataframe.loc[(report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == ''), 'st_main'] = 'Home-only'
+
+    # Full Match logic
+    report_dataframe.loc[
+        (report_dataframe['item_name_hm'] != '') & 
+        (report_dataframe['item_name_rp'] != '') & 
+        (
+            ((report_dataframe['item_type_rp'] == 'file') & (report_dataframe['item_type_hm'] == 'file_sym')) |
+            ((report_dataframe['item_type_rp'] == 'folder') & (report_dataframe['item_type_hm'] == 'folder_sym'))
+        ), 
+        'st_main'
+    ] = 'Full Match'
+
+    # Default to Mismatch
+    report_dataframe.loc[report_dataframe['item_name_hm'].isnull() & report_dataframe['item_name_rp'].isnull(), 'st_main'] = 'Mismatch'
+
+    return report_dataframe['st_main']
+
+    # Default to Mismatch
+    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] == ''), 'st_main'] = 'Mismatch'
+
+    return report_dataframe['st_main']
+
+
 def calc_final_merge_status(row, doc_comparison, fs_comparison):
     """Helper function to determine final merge status based on doc and FS checks."""
 
     # Use Booleans for match conditions
-    names_match = doc_comparison['names_match']
-    types_match = doc_comparison['types_match']
+    names_match_docs = doc_comparison['names_match']
+    types_match_docs = doc_comparison['types_match']
     names_match_fs = fs_comparison['names_match_fs']
     types_match_fs = fs_comparison['types_match_fs']
 
     # Full Match condition (both names and types match in the doc comparison)
-    if names_match and types_match and names_match_fs and types_match_fs:
+    if names_match_docs and types_match_docs and names_match_fs and types_match_fs:
         return 'Full Match'
     
     # Check for specific FS conditions
@@ -39,7 +90,7 @@ def calc_final_merge_status(row, doc_comparison, fs_comparison):
         return 'New Home Item'
     if not names_match_fs and not types_match_fs:
         return 'Home Only'
-    if names_match_fs and types_match_fs:
+    if names_match_fs and not types_match_fs:
         return 'Repo Only'
     
     # Default to Mismatch
@@ -107,30 +158,6 @@ def compare_fs_rp_and_hm(df):
     )
 
     return df
-
-# def check_fs_conditions(row):
-#     # """Function to check specific file system conditions (home-only, repo-only, sym overwrite, new home item)."""
-
-#     # # Check for Home-only condition
-#     # if row['item_name_rp'] == '' and row['item_name_hm'] != '':
-#     #     print("Home Only matched")
-#     #     return 'Home Only'
-
-#     # # Check for Repo-only condition
-#     # if row['item_name_hm'] == '' and row['item_name_rp'] != '':
-#     #     print("Repo Only matched)")
-#     #     return 'Repo Only'
-
-#     # # Check for symlink overwritten by an actual file
-#     # if (row['item_type_hm'] in ['file', 'folder']) and \
-#     #    (row['item_type_rp'] in ['file', 'folder']):  # Ensure repo expects a symlink
-#     #     print("Sym Overwritten matched")
-#     #     return 'Sym Overwritten'
-
-#     return 'No Condition'
-
-
-
 
 def field_merge_2(df):
 

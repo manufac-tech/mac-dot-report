@@ -3,7 +3,8 @@ import pandas as pd
 # from .dbase01_setup import build_main_dataframe
 from .dbase18_org import reorder_columns_rep
 from .dbase26_f_merge import (
-    field_merge_main
+    field_merge_main,
+    perform_full_matching
 )
 
 
@@ -20,11 +21,11 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['item_name_repo'] = report_dataframe['item_name_rp']
     report_dataframe['item_type_repo'] = report_dataframe['item_type_rp']
 
-    # Add status fields for error flagging
-    report_dataframe['doc_status'] = ''
-    report_dataframe['fs_status'] = ''
-    report_dataframe['r_status_3'] = ''
-    report_dataframe['final_status'] = ''
+    # Add status fields for tracking matching results and system status
+    report_dataframe['st_docs'] = ''
+    report_dataframe['st_alert'] = ''
+    report_dataframe['st_main'] = ''
+    report_dataframe['st_db_all'] = ''
 
     # Initialize dictionary fields with empty dictionaries
     report_dataframe['fm_doc_match'] = [{} for _ in range(len(report_dataframe))]
@@ -32,7 +33,10 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['fm_merge_summary'] = [{} for _ in range(len(report_dataframe))]
 
     # Apply the field consolidation (the field_merge_main function)
-    report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
+    # report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
+
+    report_dataframe = perform_full_matching(report_dataframe)  # Updated to call new matching logic
+
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
