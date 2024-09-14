@@ -87,7 +87,7 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
     # Final Output Group
     final_output_columns = [
         'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
-        'dot_structure_di', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di'
+        'dot_structure_di', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
     ]
 
     # Display Field Merge Section

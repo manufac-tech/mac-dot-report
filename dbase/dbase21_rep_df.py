@@ -15,14 +15,19 @@ def build_report_dataframe(main_df_dict):
     """Create the report dataframe based on a copy of the full_main_dataframe."""
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
+    print(report_dataframe[['item_name_rp', 'item_type_rp', 'no_show_di']].tail(10))
+
     # Handle NaN values globally
-    report_dataframe = handle_nan_values(report_dataframe)
+    # report_dataframe = handle_nan_values(report_dataframe)
 
     # Copy existing fields to the new target fields
-    report_dataframe['item_name_home'] = report_dataframe['item_name_hm']
-    report_dataframe['item_type_home'] = report_dataframe['item_type_hm']
-    report_dataframe['item_name_repo'] = report_dataframe['item_name_rp']
-    report_dataframe['item_type_repo'] = report_dataframe['item_type_rp']
+    report_dataframe['item_name_home'] = ''
+    report_dataframe['item_type_home'] = ''
+    report_dataframe['item_name_repo'] = ''
+    report_dataframe['item_type_repo'] = ''
+
+    # Re-apply blank handling to the newly copied fields
+    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Add status fields for tracking matching results and system status
     report_dataframe['st_docs'] = ''
@@ -44,7 +49,7 @@ def build_report_dataframe(main_df_dict):
     # Consolidate name, type, and unique_id fields based on the matching logic
     report_dataframe = consolidate_fields(report_dataframe)  # <--- Call the consolidation function here
 
-    report_dataframe = filter_no_show_rows(report_dataframe) # Filter out rows w 'no_show_di' = True
+    # report_dataframe = filter_no_show_rows(report_dataframe) # Filter out rows w 'no_show_di' = True
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
@@ -58,15 +63,22 @@ def build_report_dataframe(main_df_dict):
     return report_dataframe
 
 
-def handle_nan_values(report_dataframe):
-    for column in report_dataframe.columns:
-        if pd.api.types.is_integer_dtype(report_dataframe[column]):
-            # Fill NaN values with a specific integer or pd.NA for Int64 dtype
-            report_dataframe[column] = report_dataframe[column].fillna(pd.NA)
-        else:
-            # Fill NaN values with an empty string for other dtypes
-            report_dataframe[column] = report_dataframe[column].fillna('')
-    return report_dataframe
+def handle_nan_values(df):
+    """
+    Replace NaN values in the DataFrame with appropriate defaults.
+    """
+    # Replace NaN values in string columns with empty strings
+    string_columns = df.select_dtypes(include=['object']).columns
+    df[string_columns] = df[string_columns].fillna('')
+
+    # Replace NaN values in numeric columns with 0 or another appropriate value
+    numeric_columns = df.select_dtypes(include=['number']).columns
+    df[numeric_columns] = df[numeric_columns].fillna(0)
+
+    # Replace NA values in all columns with appropriate defaults
+    df = df.fillna('')
+
+    return df
 
 def filter_no_show_rows(report_dataframe):
     """Filter out rows where 'no_show_di' is set to True."""
