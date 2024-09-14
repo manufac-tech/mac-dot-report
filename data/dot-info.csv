@@ -63,7 +63,7 @@ item_name_rp_di,item_name_hm_di,dot_structure_di,item_type_rp_di,item_type_hm_di
 .cache,.cache,rp>hm,folder,folder_sym,sys,System,,general,FALSE
 .local,.local,rp>hm,folder,folder_sym,sys,System,,general,FALSE
 .IdentityService,.IdentityService,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
-.DS_Store,.DS_Store,rp>hm,file,file_sym,sys,System,,macos,FALSE
+.DS_Store,.DS_Store,rp>hm,file,file_sym,sys,System,,macos,TRUE
 .Trash,.Trash,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
 .CFUserTextEncoding,.CFUserTextEncoding,rp>hm,file,file_sym,sys,System,macOS - stores the user’s preferred text encoding settings,macos,FALSE
 .netrc,.netrc,rp>hm,file,file_sym,sys,System,Unix file stores login & init info for connecting to remote systems,unix,FALSE

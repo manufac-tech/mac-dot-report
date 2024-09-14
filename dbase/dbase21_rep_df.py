@@ -37,6 +37,7 @@ def build_report_dataframe(main_df_dict):
 
     report_dataframe = perform_full_matching(report_dataframe)  # Updated to call new matching logic
 
+    report_dataframe = filter_no_show_rows(report_dataframe) # Filter out rows w 'no_show_di' = True
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
@@ -59,3 +60,7 @@ def handle_nan_values(report_dataframe):
             # Fill NaN values with an empty string for other dtypes
             report_dataframe[column] = report_dataframe[column].fillna('')
     return report_dataframe
+
+def filter_no_show_rows(report_dataframe):
+    """Filter out rows where 'no_show_di' is set to True."""
+    return report_dataframe[report_dataframe['no_show_di'] == False].copy()
