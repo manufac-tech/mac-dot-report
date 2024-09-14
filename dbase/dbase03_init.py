@@ -41,21 +41,16 @@ def initialize_main_dataframe(first_df_section):
     main_dataframe['item_type'] = main_dataframe[f'item_type_{df1_field_suffix}']
     main_dataframe['unique_id'] = main_dataframe[f'unique_id_{df1_field_suffix}']
 
-    # Add status fields for each merge
-    # main_dataframe['m_status_1'] = ''  # Status after first merge (Home + Repo)
-    # main_dataframe['m_status_2'] = ''  # Status after second merge (Home + Repo + DotBot)
-    # main_dataframe['m_status_3'] = ''  # Status after third merge (for future use)
-
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
-    # Create the main_dataframe dictionary
+    # Keep using the dictionary structure for the main DataFrame
     main_df_dict = {
         'dataframe': main_dataframe,
         'suffix': '',  # No suffix for global fields
-        'merge_field': 'item_name',
+        'merge_field': 'item_name',  # Keeping 'item_name' as the primary merge field
     }
 
-    # Call the print function
+    # Print debugging information if needed
     print_debug_info(section_name='initialize', section_dict=main_df_dict, print_df=print_df)
 
     return main_df_dict

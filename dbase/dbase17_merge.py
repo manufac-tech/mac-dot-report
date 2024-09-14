@@ -4,18 +4,12 @@ import numpy as np
 
 from .dbase16_validate import replace_string_blanks
 
-def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', verbose=False):
+def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer'):
     # Extract the DataFrames from the dictionary sections
     main_df = main_df_dict['dataframe']
     input_df = input_df_dict_section['dataframe']
     left_merge_field = main_df_dict['merge_field']
     right_merge_field = input_df_dict_section['merge_field']
-
-    # Debugging step: Check the DataFrame state before merging
-    if verbose:
-        print(f"\nBefore merging with '{input_df_dict_section['suffix']}' DataFrame:")
-        print(f"main_df['{left_merge_field}'] (all rows):\n{main_df[[left_merge_field]].to_string(index=False)}")
-        print(f"input_df['{right_merge_field}'] (all rows):\n{input_df[[right_merge_field]].to_string(index=False)}")
 
     # Perform the merge operation
     try:
@@ -26,26 +20,101 @@ def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer', ve
             how=merge_type
         ).copy()
 
-        # Debugging step: Check the DataFrame state after the merge
-        if verbose:
-            print(f"\nAfter merging with '{input_df_dict_section['suffix']}' DataFrame:")
-            print(f"Merged DataFrame (all rows, {left_merge_field} and {right_merge_field}):")
-            print(merged_dataframe[[left_merge_field, right_merge_field]].to_string(index=False))
-
-        # Debugging step: Check the DataFrame columns before cleaning
-        if verbose:
-            print("\nMerged DataFrame Columns (before cleaning):")
-            print(merged_dataframe.columns)
-
         # Apply the blank replacement after the merge
         merged_dataframe = replace_string_blanks(merged_dataframe)
-
-        # Debugging step: Check the DataFrame columns after cleaning
-        if verbose:
-            print("\nMerged DataFrame Columns (after cleaning):")
-            print(merged_dataframe.columns)
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
     
     return merged_dataframe
+
+
+
+# def merge_dataframes(main_df_dict, input_df_dict):
+#     # Initialize main_df from the main_df_dict
+#     main_df = main_df_dict['dataframe']
+
+#     # Merge with 'home' section
+#     if 'home' in input_df_dict:
+#         home_df_dict = input_df_dict['home']
+#         left_merge_field_home = main_df_dict['merge_field']
+#         right_merge_field_home = home_df_dict['merge_field']
+
+#         try:
+#             main_df = pd.merge(
+#                 main_df, home_df_dict['dataframe'],
+#                 left_on=left_merge_field_home,
+#                 right_on=right_merge_field_home,
+#                 how='outer'
+#             ).copy()
+
+#             # Apply the blank replacement after the merge
+#             main_df = replace_string_blanks(main_df)
+
+#         except Exception as e:
+#             raise RuntimeError(f"Error during merge with section 'home': {e}")
+
+#     # Merge with 'repo' section
+#     if 'repo' in input_df_dict:
+#         repo_df_dict = input_df_dict['repo']
+#         left_merge_field_repo = main_df_dict['merge_field']
+#         right_merge_field_repo = repo_df_dict['merge_field']
+
+#         try:
+#             main_df = pd.merge(
+#                 main_df, repo_df_dict['dataframe'],
+#                 left_on=left_merge_field_repo,
+#                 right_on=right_merge_field_repo,
+#                 how='outer'
+#             ).copy()
+
+#             # Apply the blank replacement after the merge
+#             main_df = replace_string_blanks(main_df)
+
+#         except Exception as e:
+#             raise RuntimeError(f"Error during merge with section 'repo': {e}")
+
+#     # Merge with 'dotbot' section
+#     if 'dotbot' in input_df_dict:
+#         dotbot_df_dict = input_df_dict['dotbot']
+#         left_merge_field_dotbot = main_df_dict['merge_field']
+#         right_merge_field_dotbot = dotbot_df_dict['merge_field']
+
+#         try:
+#             main_df = pd.merge(
+#                 main_df, dotbot_df_dict['dataframe'],
+#                 left_on=left_merge_field_dotbot,
+#                 right_on=right_merge_field_dotbot,
+#                 how='outer'
+#             ).copy()
+
+#             # Apply the blank replacement after the merge
+#             main_df = replace_string_blanks(main_df)
+
+#         except Exception as e:
+#             raise RuntimeError(f"Error during merge with section 'dotbot': {e}")
+
+#     # Merge with 'dot_info' section
+#     if 'dot_info' in input_df_dict:
+#         dot_info_df_dict = input_df_dict['dot_info']
+#         left_merge_field_dot_info = main_df_dict['merge_field']
+#         right_merge_field_dot_info = dot_info_df_dict['merge_field']
+
+#         try:
+#             main_df = pd.merge(
+#                 main_df, dot_info_df_dict['dataframe'],
+#                 left_on=left_merge_field_dot_info,
+#                 right_on=right_merge_field_dot_info,
+#                 how='outer'
+#             ).copy()
+
+#             # Apply the blank replacement after the merge
+#             main_df = replace_string_blanks(main_df)
+
+#         except Exception as e:
+#             raise RuntimeError(f"Error during merge with section 'dot_info': {e}")
+
+#     # Update the main_df_dict to store the final merged DataFrame
+#     main_df_dict['dataframe'] = main_df
+    
+#     return main_df_dict
