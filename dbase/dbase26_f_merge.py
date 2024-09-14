@@ -24,23 +24,41 @@ def perform_full_matching(report_dataframe):
     """
     Main function that coordinates matching logic and handles copying values.
     """
-    # Call dot_structure_status() to perform structure matches (full match, home only, repo only)
-    report_dataframe['st_main'] = dot_structure_status(report_dataframe)  # TEMP placeholder
+    # Ensure the necessary status fields are initialized
+    if 'st_main' not in report_dataframe.columns:
+        report_dataframe['st_main'] = 'TEMP_STATUS'
     
-    # Further matches can be performed here, such as alerts or additional system checks:
-    # Example: 
-    # report_dataframe = dotbot_all_status(report_dataframe)
+    if 'st_docs' not in report_dataframe.columns:
+        report_dataframe['st_docs'] = 'TEMP_DOC_MATCH'
     
-    # Copy data as needed based on results of matching functions
-    # Example: For dot_structure_status, copy relevant fields after the match
-    # (Details of field copying will be based on logic within each subfunction)
+    if 'st_db_all' not in report_dataframe.columns:
+        report_dataframe['st_db_all'] = 'TEMP_DB_ALL'
 
+    # Call dot_structure_status() to perform structure matches (full match, home only, repo only)
+    report_dataframe['st_main'] = dot_structure_status(report_dataframe)
+    
+    # Call subsystem_docs() for CSV/YAML match
+    report_dataframe['st_docs'] = subsystem_docs(report_dataframe)
+    
+    # Placeholder for DotBot All status function call
+    # report_dataframe['st_db_all'] = subsystem_db_all(report_dataframe)
+    
     return report_dataframe
 
+
+def subsystem_docs(report_dataframe):
+    for index, row in report_dataframe.iterrows():
+        if (row['item_name_rp_di'] == row['item_name_rp_db'] and
+            row['item_type_rp_di'] == row['item_type_rp_db'] and
+            row['item_name_hm_di'] == row['item_name_hm_db'] and
+            row['item_type_hm_di'] == row['item_type_hm_db']):
+            report_dataframe.at[index, 'st_docs'] = 'Valid'
+        else:
+            report_dataframe.at[index, 'st_docs'] = 'Invalid'
+    
+    return report_dataframe['st_docs']
+
 def dot_structure_status(report_dataframe):
-    """
-    Adjusted function for Home-only, Repo-only, and Full Match logic.
-    """
 
     # Repo-only logic
     report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'st_main'] = 'Repo-only'
