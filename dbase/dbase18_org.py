@@ -68,7 +68,7 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
     # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH
     # Field Merge Group
     field_merge_columns = [
-        'st_alert', 'st_db_all', 'st_docs', 'st_main',
+        'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'st_main',
         'item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm',
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
         'item_name_rp_di', 'item_name_hm_di', 'item_type_rp_di', 'item_type_hm_di'

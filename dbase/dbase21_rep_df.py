@@ -2,9 +2,12 @@ import pandas as pd
 
 # from .dbase01_setup import build_main_dataframe
 from .dbase18_org import reorder_columns_rep
-from .dbase26_f_merge import (
-    field_merge_main,
+from .dbase26_f_mg1 import (
+    # field_merge_main,
     perform_full_matching
+)
+from .dbase27_f_mg2 import (
+    consolidate_fields
 )
 
 
@@ -26,6 +29,7 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['st_alert'] = ''
     report_dataframe['st_main'] = ''
     report_dataframe['st_db_all'] = ''
+    report_dataframe['st_misc'] = ''
 
     # Initialize dictionary fields with empty dictionaries
     report_dataframe['fm_doc_match'] = [{} for _ in range(len(report_dataframe))]
@@ -37,15 +41,18 @@ def build_report_dataframe(main_df_dict):
 
     report_dataframe = perform_full_matching(report_dataframe)  # Updated to call new matching logic
 
+    # Consolidate name, type, and unique_id fields based on the matching logic
+    report_dataframe = consolidate_fields(report_dataframe)  # <--- Call the consolidation function here
+
     report_dataframe = filter_no_show_rows(report_dataframe) # Filter out rows w 'no_show_di' = True
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
         report_dataframe,
         show_field_merge=True,         # Set to True or False as needed
-        show_unique_ids=False,          # Set to True or False as needed
-        show_field_merge_dicts=True,   # Set to True or False as needed
-        show_final_output=False         # Set to True or False as needed
+        show_unique_ids=True,          # Set to True or False as needed
+        show_field_merge_dicts=False,   # Set to True or False as needed
+        show_final_output=True         # Set to True or False as needed
     )
 
     return report_dataframe
