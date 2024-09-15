@@ -19,18 +19,27 @@ def build_main_dataframe():
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
     # First merge: home and repo
-    input_df_dict_section_repo = input_df_dict['repo']
-    main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section_repo)  # Merge the DataFrames
+    main_df = main_df_dict['dataframe']
+    input_df = input_df_dict['repo']['dataframe']
+    left_merge_field = main_df_dict['merge_field']
+    right_merge_field = input_df_dict['repo']['merge_field']
+    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     print_debug_info(section_name='repo', section_dict=main_df_dict, print_df=print_df)
 
     # Second merge: home+repo and dotbot
-    input_df_dict_section_dotbot = input_df_dict['dotbot']
-    main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section_dotbot)  # Merge the DataFrames
+    main_df = main_df_dict['dataframe']
+    input_df = input_df_dict['dotbot']['dataframe']
+    left_merge_field = main_df_dict['merge_field']
+    right_merge_field = input_df_dict['dotbot']['merge_field']
+    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     print_debug_info(section_name='dotbot', section_dict=main_df_dict, print_df=print_df)
 
     # Third merge: home+repo+dotbot and dot_info
-    input_df_dict_section_dot_info = input_df_dict['dot_info']
-    main_df_dict['dataframe'] = merge_dataframes(main_df_dict, input_df_dict_section_dot_info)  # Merge the DataFrames
+    main_df = main_df_dict['dataframe']
+    input_df = input_df_dict['dot_info']['dataframe']
+    left_merge_field = main_df_dict['merge_field']
+    right_merge_field = input_df_dict['dot_info']['merge_field']
+    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     print_debug_info(section_name='dot_info', section_dict=main_df_dict, print_df=print_df)
 
     # After the final merge, process the DataFrame
@@ -47,13 +56,7 @@ def build_main_dataframe():
 
     return full_main_dataframe
 
-def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer'):
-    # Extract the DataFrames from the dictionary sections
-    main_df = main_df_dict['dataframe']
-    input_df = input_df_dict_section['dataframe']
-    left_merge_field = main_df_dict['merge_field']
-    right_merge_field = input_df_dict_section['merge_field']
-
+def merge_dataframes(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
     # Perform the merge operation
     try:
         merged_dataframe = pd.merge(
