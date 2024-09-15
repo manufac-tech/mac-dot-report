@@ -31,21 +31,8 @@ def build_main_dataframe():
     # Print debugging information if needed
     print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
-    # First merge: home and repo
-    left_merge_field = 'item_name'
-    right_merge_field = 'item_name_rp'
-    main_df = merge_dataframes(main_df, repo_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='repo', section_dict={'dataframe': main_df}, print_df=print_df)
-
-    # Second merge: home+repo and dotbot
-    right_merge_field = 'item_name_rp_db'
-    main_df = merge_dataframes(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dotbot', section_dict={'dataframe': main_df}, print_df=print_df)
-
-    # Third merge: home+repo+dotbot and dot_info
-    right_merge_field = 'item_name_rp_di'
-    main_df = merge_dataframes(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dot_info', section_dict={'dataframe': main_df}, print_df=print_df)
+    # Perform the merges
+    main_df = df_merge_1_setup(main_df, repo_df, dotbot_df, dot_info_df, print_df)
 
     # After the final merge, process the DataFrame
     main_df = add_and_populate_out_group(main_df)
@@ -61,7 +48,42 @@ def build_main_dataframe():
 
     return full_main_dataframe
 
-def merge_dataframes(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
+def df_merge_1_setup(main_df, repo_df, dotbot_df, dot_info_df, print_df):
+    # First merge: home and repo
+    left_merge_field = 'item_name'
+    right_merge_field = 'item_name_rp'
+    print("Before first merge:")
+    print(main_df.to_string())
+    print(repo_df.to_string())
+    main_df = df_merge_2_actual(main_df, repo_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='repo', section_dict={'dataframe': main_df}, print_df=print_df)
+    main_df = consolidate_post_merge1(main_df)  # NEEDED BECAUSE MERGE 1 IS UNIQUE: IT'S REPO MERGED TO HOME
+    print("After first merge:")
+    print(main_df.to_string())
+
+    # Second merge: home+repo and dotbot
+    right_merge_field = 'item_name_rp_db'
+    print("Before second merge:")
+    print(main_df.to_string())
+    print(dotbot_df.to_string())
+    main_df = df_merge_2_actual(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='dotbot', section_dict={'dataframe': main_df}, print_df=print_df)
+    print("After second merge:")
+    print(main_df.to_string())
+
+    # Third merge: home+repo+dotbot and dot_info
+    right_merge_field = 'item_name_rp_di'
+    print("Before third merge:")
+    print(main_df.to_string())
+    print(dot_info_df.to_string())
+    main_df = df_merge_2_actual(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='dot_info', section_dict={'dataframe': main_df}, print_df=print_df)
+    print("After third merge:")
+    print(main_df.to_string())
+
+    return main_df
+
+def df_merge_2_actual(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
     # Perform the merge operation
     try:
         merged_dataframe = pd.merge(
@@ -91,3 +113,16 @@ def replace_string_blanks(df):
             # Fill remaining NaN values with empty string
             df[column] = df[column].fillna('')
     return df
+
+def consolidate_post_merge1(main_df):
+    # Consolidate item_name field
+    main_df['item_name'] = main_df.apply(
+        lambda row: row['item_name_rp'] if pd.notna(row['item_name_rp']) and row['item_name_rp'] != "" else row['item_name'],
+        axis=1
+    )
+    main_df['item_name'] = main_df.apply(
+        lambda row: row['item_name_hm'] if pd.notna(row['item_name_hm']) and row['item_name_hm'] != "" else row['item_name'],
+        axis=1
+    )
+    
+    return main_df
