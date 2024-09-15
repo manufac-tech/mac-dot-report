@@ -6,8 +6,8 @@ from .dbase18_org import (
     reorder_columns_main
 )
 from .dbase30_debug import print_debug_info
-from .dbase06_load_hm import load_hm_dataframe
-from .dbase07_load_rp import load_rp_dataframe
+from .dbase06_load_rp import load_rp_dataframe
+from .dbase07_load_hm import load_hm_dataframe
 from .dbase08_load_db import load_dotbot_yaml_dataframe
 from .dbase09_load_di import load_di_dataframe
 

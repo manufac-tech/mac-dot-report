@@ -21,12 +21,12 @@ from .dbase05_item_type import (
     detect_alias_type,
     detect_symlink_target_type
 )
-from .dbase06_load_hm import load_hm_dataframe
-from .dbase07_load_rp import (
+from .dbase06_load_rp import (
     load_rp_dataframe,
     create_git_rp_column,
     read_gitignore_items
 )
+from .dbase07_load_hm import load_hm_dataframe
 from .dbase08_load_db import load_dotbot_yaml_dataframe
 from .dbase09_load_di import (
     correct_and_validate_dot_info_df,
@@ -52,6 +52,7 @@ from .dbase26_f_mg1 import (
     subsystem_db_all,
     alert_sym_overwrite
 )
+from .dbase27_f_mg2 import alert_in_doc_not_fs  # New import
 from .dbase28_f_mg3 import consolidate_fields  # Updated import statement
 
 from .dbase30_debug import print_debug_info
@@ -90,6 +91,7 @@ __all__ = [
     "subsystem_docs",
     "subsystem_db_all",
     "alert_sym_overwrite",
+    "alert_in_doc_not_fs",  # New function
     "consolidate_fields",  # Updated function name
     "print_debug_info"
 ]

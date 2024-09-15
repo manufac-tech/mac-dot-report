@@ -54,9 +54,26 @@ def alert_sym_overwrite(report_dataframe):
     report_dataframe.loc[name_match & type_mismatch, 'st_alert'] = 'SymLink Overwrite'
     report_dataframe.loc[name_match & type_mismatch, 'st_main'] = 'NO FS MATCH-T'
 
-    # Ensure no default 'TEMP_ALERT' remains
-    report_dataframe['st_alert'] = report_dataframe['st_alert'].fillna('')
-
     return report_dataframe['st_alert']
 
-    
+    import pandas as pd
+
+def alert_in_doc_not_fs(report_dataframe):
+    """
+    Function to check for entries that exist in the documentation (YAML or CSV)
+    but do not exist in the filesystem.
+    Updates 'st_alert' with 'In Doc Not FS' based on the conditions.
+    """
+
+    # Check for entries that exist in the documentation but not in the filesystem
+    in_doc_not_fs = (
+        (report_dataframe['item_name_rp_di'] != '') & (report_dataframe['item_name_rp'] == '') & (report_dataframe['item_name_hm'] == '')
+    ) | (
+        (report_dataframe['item_name_hm_di'] != '') & (report_dataframe['item_name_rp'] == '') & (report_dataframe['item_name_hm'] == '')
+    )
+
+    # Set 'In Doc Not FS' if the condition is met
+    report_dataframe.loc[in_doc_not_fs, 'st_alert'] = 'In Doc Not FS'
+    report_dataframe.loc[in_doc_not_fs, 'st_main'] = 'NO FS MATCH-N'
+
+    return report_dataframe['st_alert']

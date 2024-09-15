@@ -1,6 +1,7 @@
 import pandas as pd
 
-from .dbase27_f_mg2 import (subsystem_docs, subsystem_db_all, alert_sym_overwrite)
+from .dbase27_f_mg2 import (subsystem_docs, subsystem_db_all, alert_sym_overwrite, alert_in_doc_not_fs)
+
 
 def field_match_master(report_dataframe):
     """
@@ -33,6 +34,13 @@ def field_match_master(report_dataframe):
         report_dataframe['st_alert'] = alert_sym_overwrite(report_dataframe)
     except Exception as e:
         print(f"Error in alert_sym_overwrite: {e}")
+        report_dataframe['st_alert'] = ''
+
+    try:
+        # Perform alert for entries in docs but not in filesystem
+        report_dataframe['st_alert'] = alert_in_doc_not_fs(report_dataframe)
+    except Exception as e:
+        print(f"Error in alert_in_doc_not_fs: {e}")
         report_dataframe['st_alert'] = ''
     
     return report_dataframe
