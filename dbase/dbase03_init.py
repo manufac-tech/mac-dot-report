@@ -6,30 +6,6 @@ from .dbase08_load_db import load_dotbot_yaml_dataframe
 from .dbase09_load_di import load_di_dataframe
 from .dbase30_debug import print_debug_info
 
-def create_input_df_dict():
-    input_df_dict = {
-        'home': {
-            'dataframe': load_hm_dataframe(),
-            'suffix': 'hm',
-            'merge_field': 'item_name_hm',
-        },
-        'repo': {
-            'dataframe': load_rp_dataframe(),
-            'suffix': 'rp',
-            'merge_field': 'item_name_rp',
-        },
-        'dotbot': {
-            'dataframe': load_dotbot_yaml_dataframe(),
-            'suffix': 'db',
-            'merge_field': 'item_name_rp_db',
-        },
-        'dot_info': {
-            'dataframe': load_di_dataframe(),
-            'suffix': 'di',
-            'merge_field': 'item_name_rp_di',
-        }
-    }
-    return input_df_dict
 
 def initialize_main_dataframe(first_df_section):
     # Extract information
