@@ -4,19 +4,13 @@ from .dbase03_init import (
     initialize_main_dataframe,
     create_input_df_dict
 )
-# from .dbase04_id_gen import (
-#     field_merge_1_uid,
-#     field_merge_2_uid,
-#     field_merge_3_uid
-# )
-from .dbase17_merge import merge_dataframes
 from .dbase18_org import (
     add_and_populate_out_group,
     apply_output_grouping,
     reorder_columns_main
 )
-# from .dbase21_rep_df import build_report_dataframe
 from .dbase30_debug import print_debug_info
+from .dbase09_load_di import replace_string_blanks  # Ensure this import is present
 
 def build_main_dataframe():
     input_df_dict = create_input_df_dict()  # Define DataFrames and paths
@@ -52,3 +46,27 @@ def build_main_dataframe():
     full_main_dataframe = main_df_dict['dataframe']  # This is the final, fully merged dataframe
 
     return full_main_dataframe
+
+def merge_dataframes(main_df_dict, input_df_dict_section, merge_type='outer'):
+    # Extract the DataFrames from the dictionary sections
+    main_df = main_df_dict['dataframe']
+    input_df = input_df_dict_section['dataframe']
+    left_merge_field = main_df_dict['merge_field']
+    right_merge_field = input_df_dict_section['merge_field']
+
+    # Perform the merge operation
+    try:
+        merged_dataframe = pd.merge(
+            main_df, input_df,
+            left_on=left_merge_field,
+            right_on=right_merge_field,
+            how=merge_type
+        ).copy()
+
+        # Apply the blank replacement after the merge
+        merged_dataframe = replace_string_blanks(merged_dataframe)
+
+    except Exception as e:
+        raise RuntimeError(f"Error during merge: {e}")
+    
+    return merged_dataframe
