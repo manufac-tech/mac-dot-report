@@ -1,8 +1,5 @@
 import pandas as pd
 
-from .dbase03_init import (
-    initialize_main_dataframe
-)
 from .dbase18_org import (
     add_and_populate_out_group,
     apply_output_grouping,
@@ -15,72 +12,53 @@ from .dbase07_load_rp import load_rp_dataframe
 from .dbase08_load_db import load_dotbot_yaml_dataframe
 from .dbase09_load_di import load_di_dataframe
 
-def create_input_df_dict():
-    input_df_dict = {
-        'home': {
-            'dataframe': load_hm_dataframe(),
-            'suffix': 'hm',
-            'merge_field': 'item_name_hm',
-        },
-        'repo': {
-            'dataframe': load_rp_dataframe(),
-            'suffix': 'rp',
-            'merge_field': 'item_name_rp',
-        },
-        'dotbot': {
-            'dataframe': load_dotbot_yaml_dataframe(),
-            'suffix': 'db',
-            'merge_field': 'item_name_rp_db',
-        },
-        'dot_info': {
-            'dataframe': load_di_dataframe(),
-            'suffix': 'di',
-            'merge_field': 'item_name_rp_di',
-        }
-    }
-    return input_df_dict
-
 def build_main_dataframe():
-    input_df_dict = create_input_df_dict()  # Define DataFrames and paths
-    main_df_dict = initialize_main_dataframe(input_df_dict['home'])  # Initialize the main_dataframe
-    
+    # Define individual DataFrames
+    home_df = load_hm_dataframe()
+    repo_df = load_rp_dataframe()
+    dotbot_df = load_dotbot_yaml_dataframe()
+    dot_info_df = load_di_dataframe()
+
+    # Initialize the main_dataframe
+    main_df = home_df.copy()
+
+    # Create global fields
+    main_df['item_name'] = main_df['item_name_hm']
+    main_df['item_type'] = main_df['item_type_hm']
+    main_df['unique_id'] = main_df['unique_id_hm']
+
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
+    # Print debugging information if needed
+    print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
+
     # First merge: home and repo
-    main_df = main_df_dict['dataframe']
-    input_df = input_df_dict['repo']['dataframe']
-    left_merge_field = main_df_dict['merge_field']
-    right_merge_field = input_df_dict['repo']['merge_field']
-    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='repo', section_dict=main_df_dict, print_df=print_df)
+    left_merge_field = 'item_name'
+    right_merge_field = 'item_name_rp'
+    main_df = merge_dataframes(main_df, repo_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='repo', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # Second merge: home+repo and dotbot
-    main_df = main_df_dict['dataframe']
-    input_df = input_df_dict['dotbot']['dataframe']
-    left_merge_field = main_df_dict['merge_field']
-    right_merge_field = input_df_dict['dotbot']['merge_field']
-    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dotbot', section_dict=main_df_dict, print_df=print_df)
+    right_merge_field = 'item_name_rp_db'
+    main_df = merge_dataframes(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='dotbot', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # Third merge: home+repo+dotbot and dot_info
-    main_df = main_df_dict['dataframe']
-    input_df = input_df_dict['dot_info']['dataframe']
-    left_merge_field = main_df_dict['merge_field']
-    right_merge_field = input_df_dict['dot_info']['merge_field']
-    main_df_dict['dataframe'] = merge_dataframes(main_df, input_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dot_info', section_dict=main_df_dict, print_df=print_df)
+    right_merge_field = 'item_name_rp_di'
+    main_df = merge_dataframes(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    print_debug_info(section_name='dot_info', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # After the final merge, process the DataFrame
-    main_df_dict['dataframe'] = add_and_populate_out_group(main_df_dict['dataframe'])
+    main_df = add_and_populate_out_group(main_df)
 
     # Ensure original_order is Int64 and handle missing values
-    main_df_dict['dataframe']['original_order'] = main_df_dict['dataframe']['original_order'].fillna(-1).astype('Int64')
+    main_df['original_order'] = main_df['original_order'].fillna(-1).astype('Int64')
 
     # Apply output grouping
-    main_df_dict['dataframe'] = apply_output_grouping(main_df_dict['dataframe'])
-    # main_df_dict['dataframe'] = reorder_columns_main(main_df_dict['dataframe'])
+    main_df = apply_output_grouping(main_df)
+    # main_df = reorder_columns_main(main_df)
 
-    full_main_dataframe = main_df_dict['dataframe']  # This is the final, fully merged dataframe
+    full_main_dataframe = main_df  # This is the final, fully merged dataframe
 
     return full_main_dataframe
 
