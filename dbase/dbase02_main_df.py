@@ -50,36 +50,19 @@ def build_main_dataframe():
 
 def df_merge_1_setup(main_df, repo_df, dotbot_df, dot_info_df, print_df):
     # First merge: home and repo
-    left_merge_field = 'item_name'
+    left_merge_field = 'item_name' # Only declared once; it remains the "left input" for all merges
     right_merge_field = 'item_name_rp'
-    print("Before first merge:")
-    print(main_df.to_string())
-    print(repo_df.to_string())
     main_df = df_merge_2_actual(main_df, repo_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='repo', section_dict={'dataframe': main_df}, print_df=print_df)
-    main_df = consolidate_post_merge1(main_df)  # NEEDED BECAUSE MERGE 1 IS UNIQUE: IT'S REPO MERGED TO HOME
-    print("After first merge:")
-    print(main_df.to_string())
+    main_df = consolidate_post_merge1(main_df)
 
-    # Second merge: home+repo and dotbot
+    # Second merge: home+repo and dotbot H+R
     right_merge_field = 'item_name_rp_db'
-    print("Before second merge:")
-    print(main_df.to_string())
-    print(dotbot_df.to_string())
     main_df = df_merge_2_actual(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dotbot', section_dict={'dataframe': main_df}, print_df=print_df)
-    print("After second merge:")
-    print(main_df.to_string())
 
-    # Third merge: home+repo+dotbot and dot_info
+    # Third merge: home+repo+dotbot and dot_info H+R
     right_merge_field = 'item_name_rp_di'
-    print("Before third merge:")
-    print(main_df.to_string())
-    print(dot_info_df.to_string())
     main_df = df_merge_2_actual(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    print_debug_info(section_name='dot_info', section_dict={'dataframe': main_df}, print_df=print_df)
-    print("After third merge:")
-    print(main_df.to_string())
+    main_df = consolidate_post_merge3(main_df)
 
     return main_df
 
@@ -114,15 +97,26 @@ def replace_string_blanks(df):
             df[column] = df[column].fillna('')
     return df
 
-def consolidate_post_merge1(main_df):
-    # Consolidate item_name field
-    main_df['item_name'] = main_df.apply(
-        lambda row: row['item_name_rp'] if pd.notna(row['item_name_rp']) and row['item_name_rp'] != "" else row['item_name'],
-        axis=1
-    )
-    main_df['item_name'] = main_df.apply(
-        lambda row: row['item_name_hm'] if pd.notna(row['item_name_hm']) and row['item_name_hm'] != "" else row['item_name'],
-        axis=1
-    )
-    
+def consolidate_post_merge1(main_df): # Copies the priority name to item_name
+    def consolidate(row):
+        if pd.notna(row['item_name_rp']) and row['item_name_rp'] != "":
+            return row['item_name_rp']
+        elif pd.notna(row['item_name_hm']) and row['item_name_hm'] != "":
+            return row['item_name_hm']
+        else:
+            return row['item_name']  # If both are null, keep the original value
+
+    main_df['item_name'] = main_df.apply(consolidate, axis=1)
+    return main_df
+
+def consolidate_post_merge3(main_df): # Copies the priority name to item_name
+    def consolidate(row):
+        if pd.notna(row['item_name_rp_di']) and row['item_name_rp_di'] != "":
+            return row['item_name_rp_di']
+        elif pd.notna(row['item_name_hm_di']) and row['item_name_hm_di'] != "":
+            return row['item_name_hm_di']
+        else:
+            return row['item_name']  # If both are null, keep the original value
+
+    main_df['item_name'] = main_df.apply(consolidate, axis=1)
     return main_df
