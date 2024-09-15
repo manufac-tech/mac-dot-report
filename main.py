@@ -3,7 +3,6 @@ import logging
 import pandas as pd
 
 from dbase.dbase01_setup import build_full_output_dict
-# from dbase.dbase16_validate import validate_df_dict_current_and_main
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
@@ -23,18 +22,8 @@ user_path_csv = os.path.join(user_main_path, "Documents_SRB iCloud/Filespace con
 output_base_name_csv = "mac-dot-report"
 output_base_name_md = "mac-dot-report"
 
-def print_data_checks(df, stage):
-    """Print data types and missing values for the DataFrame."""
-    # print(f"\n{stage} DataFrame Info:\n")
-    # print(df.info())
-    # print(f"\nData types after {stage}:\n", df.dtypes)
-    # print(f"\nMissing values after {stage}:\n", df.isnull().sum())
-
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
-    # Save full_main_dataframe to CSV
     export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path)
-
-    # Save report_dataframe to CSV
     # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path)
 
     # Export Markdown report
@@ -58,9 +47,6 @@ def main():
     
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     #     print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
-
-    # Validate the final DataFrame (this step should occur after merging)
-    # main_df_dict['dataframe'] = validate_df_dict_current_and_main(main_df_dict['dataframe'], main_df_dict['dataframe'])
 
     save_outputs(main_df_dict, csv_output_path, markdown_output_path)
 

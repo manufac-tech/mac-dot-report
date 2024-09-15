@@ -6,7 +6,6 @@ from .dbase18_org import (
     reorder_columns_main
 )
 from .dbase30_debug import print_debug_info
-from .dbase09_load_di import replace_string_blanks  # Ensure this import is present
 from .dbase06_load_hm import load_hm_dataframe
 from .dbase07_load_rp import load_rp_dataframe
 from .dbase08_load_db import load_dotbot_yaml_dataframe
@@ -79,3 +78,16 @@ def merge_dataframes(main_df, input_df, left_merge_field, right_merge_field, mer
         raise RuntimeError(f"Error during merge: {e}")
     
     return merged_dataframe
+
+def replace_string_blanks(df):
+    for column in df.columns:
+        if pd.api.types.is_string_dtype(df[column]):
+            # Convert everything to string to ensure we can replace all forms of NA
+            df[column] = df[column].astype(str)
+            # Replace all variations of NA, including case-insensitive matches
+            df[column] = df[column].str.replace(r'(?i)^<na>$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^nan$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^none$', '', regex=True)
+            # Fill remaining NaN values with empty string
+            df[column] = df[column].fillna('')
+    return df
