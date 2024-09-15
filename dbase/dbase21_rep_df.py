@@ -3,10 +3,9 @@ import pandas as pd
 # from .dbase01_setup import build_main_dataframe
 from .dbase18_org import reorder_columns_rep
 from .dbase26_f_mg1 import (
-    # field_merge_main,
-    perform_full_matching
+    field_match_master
 )
-from .dbase27_f_mg2 import (
+from .dbase28_f_mg3 import (
     consolidate_fields
 )
 
@@ -20,11 +19,11 @@ def build_report_dataframe(main_df_dict):
     # Handle NaN values globally
     # report_dataframe = handle_nan_values(report_dataframe)
 
-    # Copy existing fields to the new target fields
-    report_dataframe['item_name_home'] = ''
-    report_dataframe['item_type_home'] = ''
+    # Create new target fields
     report_dataframe['item_name_repo'] = ''
     report_dataframe['item_type_repo'] = ''
+    report_dataframe['item_name_home'] = ''
+    report_dataframe['item_type_home'] = ''
 
     # Re-apply blank handling to the newly copied fields
     report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
@@ -44,7 +43,7 @@ def build_report_dataframe(main_df_dict):
     # Apply the field consolidation (the field_merge_main function)
     # report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
 
-    report_dataframe = perform_full_matching(report_dataframe)  # Updated to call new matching logic
+    report_dataframe = field_match_master(report_dataframe)  # Updated to call new matching logic
 
     # Consolidate name, type, and unique_id fields based on the matching logic
     report_dataframe = consolidate_fields(report_dataframe)  # <--- Call the consolidation function here

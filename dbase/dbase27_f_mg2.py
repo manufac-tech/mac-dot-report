@@ -1,55 +1,62 @@
 import pandas as pd
 
+def subsystem_docs(report_dataframe):
+    for index, row in report_dataframe.iterrows():
+        if (row['item_name_rp_di'] == row['item_name_rp_db'] and
+            row['item_type_rp_di'] == row['item_type_rp_db'] and
+            row['item_name_hm_di'] == row['item_name_hm_db'] and
+            row['item_type_hm_di'] == row['item_type_hm_db']):
+            report_dataframe.at[index, 'st_docs'] = 'Valid'
+        else:
+            report_dataframe.at[index, 'st_docs'] = 'Invalid'
+    
+    return report_dataframe['st_docs']
 
-def consolidate_fields(report_dataframe):
+def subsystem_db_all(report_dataframe):
     """
-    Consolidates item_name_repo, item_type_repo, item_name_home, item_type_home, and unique_id based on match statuses.
-    Sets 'st_misc' to 'D' for each match where the target fields are updated with correct data.
+    Function to verify DotBot (db) alignment between repo, home, and DotBot YAML (.bot.yaml).
+    Updates 'st_db_all' with 'Valid' or 'Invalid' based on the match.
     """
 
-    # Full Match case
-    full_match_condition = report_dataframe['st_main'] == 'Full Match'
-    report_dataframe.loc[full_match_condition, 'item_name_repo'] = report_dataframe['item_name_rp']
-    report_dataframe.loc[full_match_condition, 'item_type_repo'] = report_dataframe['item_type_rp']
-    report_dataframe.loc[full_match_condition, 'item_name_home'] = report_dataframe['item_name_hm']
-    report_dataframe.loc[full_match_condition, 'item_type_home'] = report_dataframe['item_type_hm']
-    report_dataframe.loc[full_match_condition, 'unique_id'] = report_dataframe['unique_id_rp']
-    report_dataframe.loc[full_match_condition, 'st_misc'] = 'D'  # Mark as updated with correct data
+    # Check if repo folder (item_name_rp) matches the corresponding entry in .bot.yaml (item_name_rp_db)
+    repo_name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_rp_db'])
+    repo_type_match = (report_dataframe['item_type_rp'] == report_dataframe['item_type_rp_db'])
 
-    # Home-only case
-    home_only_condition = report_dataframe['st_main'] == 'Home-only'
-    report_dataframe.loc[home_only_condition, 'item_name_home'] = report_dataframe['item_name_hm']
-    report_dataframe.loc[home_only_condition, 'item_type_home'] = report_dataframe['item_type_hm']
-    report_dataframe.loc[home_only_condition, 'item_name_repo'] = None
-    report_dataframe.loc[home_only_condition, 'item_type_repo'] = None
-    report_dataframe.loc[home_only_condition, 'unique_id'] = report_dataframe['unique_id_hm']
-    report_dataframe.loc[home_only_condition, 'st_misc'] = 'D'  # Mark as updated with correct data
+    # Check if home folder (item_name_hm) matches the corresponding entry in .bot.yaml (item_name_hm_db)
+    home_name_match = (report_dataframe['item_name_hm'] == report_dataframe['item_name_hm_db'])
+    home_type_match = (report_dataframe['item_type_hm'] == report_dataframe['item_type_hm_db'])
 
-    # Repo-only case
-    repo_only_condition = report_dataframe['st_main'] == 'Repo-only'
-    report_dataframe.loc[repo_only_condition, 'item_name_repo'] = report_dataframe['item_name_rp']
-    report_dataframe.loc[repo_only_condition, 'item_type_repo'] = report_dataframe['item_type_rp']
-    report_dataframe.loc[repo_only_condition, 'item_name_home'] = None
-    report_dataframe.loc[repo_only_condition, 'item_type_home'] = None
-    report_dataframe.loc[repo_only_condition, 'unique_id'] = report_dataframe['unique_id_rp']
-    report_dataframe.loc[repo_only_condition, 'st_misc'] = 'D'  # Mark as updated with correct data
+    # Set 'Valid' or 'Invalid' based on name and type match
+    report_dataframe['st_db_all'] = 'Invalid'  # Default to 'Invalid'
+    report_dataframe.loc[repo_name_match & repo_type_match & home_name_match & home_type_match, 'st_db_all'] = 'Valid'
 
-    # SymLink Overwrite case
-    sym_overwrite_condition = report_dataframe['st_alert'] == 'SymLink Overwrite'
-    report_dataframe.loc[sym_overwrite_condition, 'item_name_repo'] = report_dataframe['item_name_rp']
-    report_dataframe.loc[sym_overwrite_condition, 'item_type_repo'] = report_dataframe['item_type_rp']
-    report_dataframe.loc[sym_overwrite_condition, 'item_name_home'] = report_dataframe['item_name_hm']
-    report_dataframe.loc[sym_overwrite_condition, 'item_type_home'] = report_dataframe['item_type_hm']
-    report_dataframe.loc[sym_overwrite_condition, 'unique_id'] = report_dataframe['unique_id_rp']
-    report_dataframe.loc[sym_overwrite_condition, 'st_misc'] = 'D'  # Mark as updated with correct data
+    return report_dataframe['st_db_all']
 
-    # New Home Item case
-    new_home_item_condition = report_dataframe['st_alert'] == 'New Home Item'
-    report_dataframe.loc[new_home_item_condition, 'item_name_home'] = report_dataframe['item_name_hm']
-    report_dataframe.loc[new_home_item_condition, 'item_type_home'] = report_dataframe['item_type_hm']
-    report_dataframe.loc[new_home_item_condition, 'item_name_repo'] = None
-    report_dataframe.loc[new_home_item_condition, 'item_type_repo'] = None
-    report_dataframe.loc[new_home_item_condition, 'unique_id'] = report_dataframe['unique_id_hm']
-    report_dataframe.loc[new_home_item_condition, 'st_misc'] = 'D'  # Mark as updated with correct data
+def alert_sym_overwrite(report_dataframe):
+    """
+    Function to check for SymLink Overwrite: when a file/folder in the home directory 
+    has the same name as an item in the repo but is not a symlink.
+    Updates 'st_alert' with 'SymLink Overwrite' based on the conditions.
+    """
 
-    return report_dataframe
+    # Check if item names match between repo and home
+    name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
+
+    # Check if types differ in a way that suggests a symlink has been overwritten
+    # Expect home type to be file_sym or folder_sym and repo type to be file or folder
+    type_mismatch = (
+        (report_dataframe['item_type_rp'] == 'file') & (report_dataframe['item_type_hm'] != 'file_sym')
+    ) | (
+        (report_dataframe['item_type_rp'] == 'folder') & (report_dataframe['item_type_hm'] != 'folder_sym')
+    )
+
+    # Set 'SymLink Overwrite' if names match but types differ as described above
+    report_dataframe.loc[name_match & type_mismatch, 'st_alert'] = 'SymLink Overwrite'
+    report_dataframe.loc[name_match & type_mismatch, 'st_main'] = 'NO FS MATCH-T'
+
+    # Ensure no default 'TEMP_ALERT' remains
+    report_dataframe['st_alert'] = report_dataframe['st_alert'].fillna('')
+
+    return report_dataframe['st_alert']
+
+    

@@ -33,13 +33,12 @@ from .dbase09_load_di import (
     load_di_dataframe
 )
 
-
 from .dbase18_org import (
     add_and_populate_out_group,
     apply_output_grouping,
     reorder_columns_main,
-    sort_items_1_out_group, # MAYBE REMOVE
-    sort_items_2_indiv # MAYBE REMOVE
+    sort_items_1_out_group,  # MAYBE REMOVE
+    sort_items_2_indiv  # MAYBE REMOVE
 )
 from .dbase21_rep_df import (
     build_report_dataframe,
@@ -47,25 +46,21 @@ from .dbase21_rep_df import (
     filter_no_show_rows
 )
 from .dbase26_f_mg1 import (
-    # compare_docs_di_and_db,
-    # compare_fs_rp_and_hm,
-    # field_merge_main,
-    # calc_final_merge_status,
-    perform_full_matching,
+    field_match_master,
     dot_structure_status,
     subsystem_docs,
     subsystem_db_all,
     alert_sym_overwrite
 )
+from .dbase28_f_mg3 import consolidate_fields  # Updated import statement
 
 from .dbase30_debug import print_debug_info
 
 __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
-    "merge_dataframes",
+    "df_merge_2_actual",
     "replace_string_blanks",
-    "create_input_df_dict", 
     "get_next_unique_id",
     "determine_item_type",
     "is_symlink",
@@ -90,12 +85,11 @@ __all__ = [
     "build_report_dataframe",
     "handle_nan_values",
     "filter_no_show_rows",
-    # "compare_docs_di_and_db",
-    # "compare_fs_rp_and_hm",
-    "perform_full_matching",
+    "field_match_master",
     "dot_structure_status",
     "subsystem_docs",
     "subsystem_db_all",
     "alert_sym_overwrite",
+    "consolidate_fields",  # Updated function name
     "print_debug_info"
 ]

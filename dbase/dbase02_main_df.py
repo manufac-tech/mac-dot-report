@@ -13,18 +13,18 @@ from .dbase09_load_di import load_di_dataframe
 
 def build_main_dataframe():
     # Define individual DataFrames
-    home_df = load_hm_dataframe()
     repo_df = load_rp_dataframe()
+    home_df = load_hm_dataframe()
     dotbot_df = load_dotbot_yaml_dataframe()
     dot_info_df = load_di_dataframe()
 
-    # Initialize the main_dataframe
-    main_df = home_df.copy()
+    # Initialize the main_dataframe from the REPO FOLDER
+    main_df = repo_df.copy()
 
     # Create global fields
-    main_df['item_name'] = main_df['item_name_hm']
-    main_df['item_type'] = main_df['item_type_hm']
-    main_df['unique_id'] = main_df['unique_id_hm']
+    main_df['item_name'] = main_df['item_name_rp']
+    main_df['item_type'] = main_df['item_type_rp']
+    main_df['unique_id'] = main_df['unique_id_rp']
 
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
 
@@ -32,7 +32,7 @@ def build_main_dataframe():
     print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # Perform the merges
-    main_df = df_merge_1_setup(main_df, repo_df, dotbot_df, dot_info_df, print_df)
+    main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df)
 
     # After the final merge, process the DataFrame
     main_df = add_and_populate_out_group(main_df)
@@ -48,18 +48,18 @@ def build_main_dataframe():
 
     return full_main_dataframe
 
-def df_merge_1_setup(main_df, repo_df, dotbot_df, dot_info_df, print_df):
-    # First merge: home and repo
+def df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df):
+    # First merge: repo and home
     left_merge_field = 'item_name' # Only declared once; it remains the "left input" for all merges
-    right_merge_field = 'item_name_rp'
-    main_df = df_merge_2_actual(main_df, repo_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    right_merge_field = 'item_name_hm'
+    main_df = df_merge_2_actual(main_df, home_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     main_df = consolidate_post_merge1(main_df)
 
-    # Second merge: home+repo and dotbot H+R
+    # Second merge: repo+home and dotbot R+H
     right_merge_field = 'item_name_rp_db'
     main_df = df_merge_2_actual(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
 
-    # Third merge: home+repo+dotbot and dot_info H+R
+    # Third merge: repo+home+dotbot and dot_info R+H
     right_merge_field = 'item_name_rp_di'
     main_df = df_merge_2_actual(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     main_df = consolidate_post_merge3(main_df)
