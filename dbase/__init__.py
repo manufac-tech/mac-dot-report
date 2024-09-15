@@ -5,18 +5,10 @@ from .dbase01_setup import (
 from .dbase02_main_df import (
     build_main_dataframe,
     merge_dataframes,  # Moved from dbase17_merge
-    # create_input_df_dict,  # Moved from dbase03_init
 )
-
-# from .dbase03_init import (
-#     # initialize_main_dataframe,
-# )
 
 from .dbase04_id_gen import (
     get_next_unique_id,
-    field_merge_1_uid,
-    field_merge_2_uid,
-    field_merge_3_uid
 )
 from .dbase05_item_type import (
     determine_item_type,
@@ -41,7 +33,7 @@ from .dbase09_load_di import (
     load_di_dataframe
 )
 from .dbase16_validate import (
-    validate_df_dict_current_and_main,
+    # validate_df_dict_current_and_main,
     validate_values, # MAYBE REMOVE
     # replace_string_blanks
 )
@@ -74,13 +66,9 @@ from .dbase30_debug import print_debug_info
 __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
-    "merge_dataframes",  # Moved from dbase17_merge
-    "create_input_df_dict",  # Moved from dbase03_init
-    # "initialize_main_dataframe",
+    "merge_dataframes",
+    "create_input_df_dict", 
     "get_next_unique_id",
-    "field_merge_1_uid",
-    "field_merge_2_uid",
-    "field_merge_3_uid",
     "determine_item_type",
     "is_symlink",
     "is_alias",
@@ -97,7 +85,7 @@ __all__ = [
     "correct_and_validate_dot_info_df",
     "replace_string_blanks",
     "load_di_dataframe",
-    "validate_df_dict_current_and_main",
+    # "validate_df_dict_current_and_main",
     "validate_values",  # MAYBE REMOVE
     # "replace_string_blanks",  # This is commented out in the imports
     "add_and_populate_out_group",

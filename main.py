@@ -3,9 +3,7 @@ import logging
 import pandas as pd
 
 from dbase.dbase01_setup import build_full_output_dict
-# from dbase.dbase01_setup import build_main_dataframe
-# from dbase.dbase03_init import initialize_main_dataframe
-from dbase.dbase16_validate import validate_df_dict_current_and_main
+# from dbase.dbase16_validate import validate_df_dict_current_and_main
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
