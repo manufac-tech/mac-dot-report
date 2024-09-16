@@ -49,7 +49,7 @@ def load_dotbot_yaml_dataframe():
 
     # Toggle output directly within the function
     show_output = False  # Change to False to disable output
-    show_full_df = True  # Change to True to show the full DataFrame
+    show_full_df = False  # Change to True to show the full DataFrame
 
     if show_output:
         if show_full_df:

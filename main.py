@@ -48,7 +48,7 @@ def main():
     # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     #     print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
 
-    save_outputs(main_df_dict, csv_output_path, markdown_output_path)
+    # save_outputs(main_df_dict, csv_output_path, markdown_output_path) # Write to disk
 
 # This ensures the main function is only executed if this file is run directly
 if __name__ == "__main__":

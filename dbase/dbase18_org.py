@@ -63,19 +63,14 @@ def reorder_columns_main(df):
     
     return df
 
-def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, show_field_merge_dicts, show_final_output):
+def reorder_columns_rep(report_dataframe, show_field_merge, show_field_merge_dicts, show_final_output, show_all_fields):
     # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH
     # Field Merge Group
     field_merge_columns = [
         'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'st_main',
-        'item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm',
-        'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_rp_di', 'item_name_hm_di', 'item_type_rp_di', 'item_type_hm_di'
-    ]
-
-    # Unique IDs Group
-    unique_ids_columns = [
-        'unique_id'  # Only keep the main unique_id column
+        # Removed fields: 'item_name_rp', 'item_name_hm', 'item_type_rp', 'item_type_hm',
+        # 'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
+        # 'item_name_rp_di', 'item_name_hm_di', 'item_type_rp_di', 'item_type_hm_di'
     ]
 
     # Field Merge Dicts Group
@@ -85,20 +80,21 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
 
     # Final Output Group
     final_output_columns = [
+        'unique_id',
+        # 'st_misc',
+        'st_alert', 'st_db_all', 'st_docs', 'st_main',
         'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
-        'dot_structure_di', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
+        'dot_structure_di', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di',
+        # 'comment_di',
     ]
+
+    # All Fields Group
+    all_fields_columns = report_dataframe.columns.tolist()
 
     # Display Field Merge Section
     if show_field_merge:
         print("Field Merge Group:")
         print(report_dataframe[field_merge_columns])
-        print("\n" * 2)
-
-    # Display Unique IDs Section
-    if show_unique_ids:
-        print("Unique IDs Group:")
-        print(report_dataframe[unique_ids_columns])
         print("\n" * 2)
 
     # Display Field Merge Dicts Section
@@ -111,6 +107,12 @@ def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, sho
     if show_final_output:
         print("Final Output Group:")
         print(report_dataframe[final_output_columns])
+        print("\n" * 2)
+
+    # Display All Fields Section
+    if show_all_fields:
+        print("All Fields Group:")
+        print(report_dataframe[all_fields_columns])
         print("\n" * 2)
 
     # Return reordered DataFrame if needed

@@ -14,7 +14,7 @@ def build_report_dataframe(main_df_dict):
     """Create the report dataframe based on a copy of the full_main_dataframe."""
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
-    print(report_dataframe[['item_name_rp', 'item_type_rp', 'no_show_di']].tail(10))
+    # print(report_dataframe[['item_name_rp', 'item_type_rp', 'no_show_di']].tail(10))
 
     # Handle NaN values globally
     # report_dataframe = handle_nan_values(report_dataframe)
@@ -53,10 +53,10 @@ def build_report_dataframe(main_df_dict):
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
         report_dataframe,
-        show_field_merge=False,         # Set to True or False as needed
-        show_unique_ids=False,          # Set to True or False as needed
-        show_field_merge_dicts=False,   # Set to True or False as needed
-        show_final_output=True         # Set to True or False as needed
+        show_field_merge=True,         # Set to True or False as needed
+        show_field_merge_dicts=False,  # Set to True or False as needed
+        show_final_output=True,        # Set to True or False as needed
+        show_all_fields=True          # Set to True or False as needed
     )
 
     return report_dataframe

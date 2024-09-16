@@ -25,11 +25,10 @@ def build_main_dataframe():
     main_df['unique_id'] = main_df['unique_id_rp']
 
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
-    print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
+    # print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # THE MERGE
     main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df) # Perform the merges
-
 
     # POST-MERGE OPERATIONS
     main_df = add_and_populate_out_group(main_df)
@@ -44,8 +43,9 @@ def build_main_dataframe():
     return full_main_dataframe
 
 def df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df):
-    # First merge: repo and home
     left_merge_field = 'item_name' # Only declared once; it remains the "left input" for all merges
+
+    # First merge: repo and home
     right_merge_field = 'item_name_hm'
     main_df = df_merge_2_actual(main_df, home_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     main_df = consolidate_post_merge1(main_df)

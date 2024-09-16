@@ -33,9 +33,9 @@ def load_rp_dataframe():
     df = create_git_rp_column(df, repo_path)
 
     # Toggle output directly within the function
-    show_output = False  # Change to False to disable output
-    show_full_df = False  # Change to True to show the full DataFrame
-
+    show_output = False
+    show_full_df = False
+    
     if show_output:
         if show_full_df:
             print("5️⃣ Repo DataFrame:\n", df)
