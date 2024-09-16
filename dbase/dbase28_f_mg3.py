@@ -72,4 +72,7 @@ def consolidate_fields(report_dataframe):
     report_dataframe.loc[in_doc_not_fs_di_condition, 'unique_id'] = report_dataframe['unique_id_di']
     report_dataframe.loc[in_doc_not_fs_di_condition, 'st_misc'] = 'x'  # Mark as updated with correct data
 
+    # Remove extra unique_id fields
+    report_dataframe.drop(columns=['unique_id_rp', 'unique_id_hm', 'unique_id_db', 'unique_id_di'], inplace=True)
+
     return report_dataframe

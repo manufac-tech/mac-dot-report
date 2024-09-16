@@ -53,8 +53,8 @@ def build_report_dataframe(main_df_dict):
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
         report_dataframe,
-        show_field_merge=True,         # Set to True or False as needed
-        show_unique_ids=True,          # Set to True or False as needed
+        show_field_merge=False,         # Set to True or False as needed
+        show_unique_ids=False,          # Set to True or False as needed
         show_field_merge_dicts=False,   # Set to True or False as needed
         show_final_output=True         # Set to True or False as needed
     )
