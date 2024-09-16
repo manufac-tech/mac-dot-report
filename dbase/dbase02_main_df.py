@@ -27,10 +27,11 @@ def build_main_dataframe():
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
     print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
+    # THE MERGE
     main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df) # Perform the merges
 
 
-
+    # POST-MERGE OPERATIONS
     main_df = add_and_populate_out_group(main_df)
 
     main_df['original_order'] = main_df['original_order'].fillna(-1).astype('Int64') # original_order = Int64, handle missing vals
