@@ -44,22 +44,24 @@ def apply_output_grouping(df):
     return df_sorted
 
 def reorder_columns_main(df):
-    reordered_columns = [
-        # 'item_name', 'item_type',
-        'unique_id', 'unique_id_hm', 'unique_id_rp', 'unique_id_db', 'unique_id_di',
-        'dot_structure_di',
-        'item_name_hm', 'item_type_hm',
-        'item_name_rp', 'item_type_rp',
-        'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db',
-        'item_name_hm_di', 'item_type_rp_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di',
-        'git_rp',
-        'no_show_di',
-        # 'm_status_1', 'm_status_2', 'm_status_3',
-        'out_group',
-        'original_order'
+    # Define the desired column order based on the provided fields
+    desired_order = [
+        'item_name_rp', 'item_type_rp', 'unique_id_rp', 'git_rp', 'item_name', 'item_type', 'unique_id',
+        'item_name_hm', 'item_type_hm', 'unique_id_hm', 'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db',
+        'item_type_rp_db', 'unique_id_db', 'item_name_rp_di', 'item_name_hm_di', 'dot_structure_di', 'item_type_rp_di',
+        'item_type_hm_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di', 'no_show_di', 'original_order',
+        'unique_id_di', 'out_group'
     ]
-    reordered_columns = [col for col in reordered_columns if col in df.columns]
-    return df[reordered_columns]
+    
+    # Ensure all columns in desired_order are in the DataFrame
+    for col in desired_order:
+        if col not in df.columns:
+            print(f"Warning: Column {col} not found in DataFrame")
+    
+    # Reorder columns
+    df = df[desired_order]
+    
+    return df
 
 def reorder_columns_rep(report_dataframe, show_field_merge, show_unique_ids, show_field_merge_dicts, show_final_output):
     # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH

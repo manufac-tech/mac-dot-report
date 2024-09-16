@@ -17,9 +17,7 @@ def build_main_dataframe():
     home_df = load_hm_dataframe()
     dotbot_df = load_dotbot_yaml_dataframe()
     dot_info_df = load_di_dataframe()
-
-    # Initialize the main_dataframe from the REPO FOLDER
-    main_df = repo_df.copy()
+    main_df = repo_df.copy() # Initialize the main_dataframe from the REPO FOLDER
 
     # Create global fields
     main_df['item_name'] = main_df['item_name_rp']
@@ -27,24 +25,20 @@ def build_main_dataframe():
     main_df['unique_id'] = main_df['unique_id_rp']
 
     print_df = 'none'  # Specify the output level here: 'full', 'short', or 'none'
-
-    # Print debugging information if needed
     print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
-    # Perform the merges
-    main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df)
+    main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df) # Perform the merges
 
-    # After the final merge, process the DataFrame
+
+
     main_df = add_and_populate_out_group(main_df)
 
-    # Ensure original_order is Int64 and handle missing values
-    main_df['original_order'] = main_df['original_order'].fillna(-1).astype('Int64')
+    main_df['original_order'] = main_df['original_order'].fillna(-1).astype('Int64') # original_order = Int64, handle missing vals
 
-    # Apply output grouping
     main_df = apply_output_grouping(main_df)
-    # main_df = reorder_columns_main(main_df)
 
-    full_main_dataframe = main_df  # This is the final, fully merged dataframe
+    # main_df = reorder_columns_main(main_df)
+    full_main_dataframe = main_df
 
     return full_main_dataframe
 

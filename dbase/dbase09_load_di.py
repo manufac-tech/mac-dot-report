@@ -6,10 +6,7 @@ from .dbase04_id_gen import get_next_unique_id
 def correct_and_validate_dot_info_df(dot_info_df):
     # Correct values: Replace NaN with empty strings in 'comment_di' field
     dot_info_df['comment_di'] = dot_info_df['comment_di'].fillna('')
-
     return dot_info_df
-
-
 
 def load_di_dataframe():
     try:
@@ -17,14 +14,16 @@ def load_di_dataframe():
         
         # Load the CSV with explicit data types for the columns
         dot_info_df = pd.read_csv(dot_info_file_path, dtype={
-            "item_name_di": "string",
+            "item_name_rp_di": "string",
+            "item_name_hm_di": "string",
+            "dot_structure_di": "string",
             "item_type_rp_di": "string",
+            "item_type_hm_di": "string",
             "cat_1_di": "string",
             "cat_1_name_di": "string",
-            "comment_di": "string",
             "cat_2_di": "string",
-            "no_show_di": "bool",
-            "dot_structure_di": "string"
+            "comment_di": "string",
+            "no_show_di": "bool"
         }).copy()
 
         # Record the original order of rows
@@ -38,8 +37,8 @@ def load_di_dataframe():
         dot_info_df = correct_and_validate_dot_info_df(dot_info_df)
 
         # Toggle output directly within the function
-        show_output = False  # Change to False to disable output
-        show_full_df = False  # Change to True to show the full DataFrame
+        show_output = False
+        show_full_df = False
 
         if show_output:
             if show_full_df:
