@@ -6,9 +6,6 @@ from .db02_make_df1 import (
     build_main_dataframe
 )
 
-from .db04_id_gen import (
-    get_next_unique_id,
-)
 from .db05_get_type import (
     determine_item_type,
     is_symlink,
@@ -32,6 +29,7 @@ from .db09_load_di import (
 )
 
 from .db17_merge import (
+    get_next_unique_id,
     df_merge_2_actual,
     replace_string_blanks,
     df_merge_1_setup,
@@ -57,7 +55,7 @@ from .db26_f_mg1 import (
     subsystem_db_all,
     alert_sym_overwrite
 )
-from .db27_f_mg2 import alert_in_doc_not_fs  # New import
+from .db27_f_mg2 import alert_in_doc_not_fs
 from .db28_f_mg3 import (
     consolidate_fields,
     get_conditions_actions,
@@ -69,12 +67,6 @@ from .db30_debug import print_debug_info
 __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
-    "df_merge_2_actual",
-    "replace_string_blanks",
-    "df_merge_1_setup",
-    "consolidate_post_merge1",
-    "consolidate_post_merge3",
-    "get_next_unique_id",
     "determine_item_type",
     "is_symlink",
     "is_alias",
@@ -83,13 +75,19 @@ __all__ = [
     "resolve_item_type",
     "detect_alias_type",
     "detect_symlink_target_type",
-    "load_hm_dataframe",
     "load_rp_dataframe",
     "create_git_rp_column",
     "read_gitignore_items",
+    "load_hm_dataframe",
     "load_dotbot_yaml_dataframe",
     "correct_and_validate_dot_info_df",
     "load_di_dataframe",
+    "get_next_unique_id",
+    "df_merge_2_actual",
+    "replace_string_blanks",
+    "df_merge_1_setup",
+    "consolidate_post_merge1",
+    "consolidate_post_merge3",
     "apply_output_grouping",
     "reorder_columns_main",
     "sort_items_1_out_group",  # MAYBE REMOVE later
