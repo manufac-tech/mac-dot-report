@@ -17,7 +17,7 @@ output_base_name_csv = "mac-dot-report"
 output_base_name_csv_full = "mac-dot-report_FULL_DF"
 
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path, csv_full_output_path):
-    save_markdown(main_df_dict, markdown_output_path)  # Export Markdown report
+    # save_markdown(main_df_dict, markdown_output_path)  # Export Markdown report
     save_report_csv(main_df_dict, csv_output_path)  # Export the report DataFrame to CSV
     # save_full_csv(main_df_dict, csv_full_output_path)  # Save full main DataFrame to CSV
 
