@@ -3,13 +3,13 @@ import logging
 import pandas as pd
 
 from dbase.db01_setup import build_full_output_dict
-from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
+from report_gen import generate_timestamped_output_paths, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
-# logging.basicConfig(
-#     format='%(asctime)s - %(levelname)s - %(message)s',
-#     level=logging.DEBUG  # Change to DEBUG to capture more detailed output (INFO is the default level)
-# )
+logging.basicConfig(
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG  # Change to DEBUG to capture more detailed output (INFO is the default level)
+)
 
 # Define the home directory
 home_dir = os.path.expanduser("~")
@@ -23,17 +23,16 @@ output_base_name_csv = "mac-dot-report"
 output_base_name_md = "mac-dot-report"
 
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
-    # export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path.replace(".csv", "_main.csv"))
-    pass
+    # Export the report DataFrame to CSV
     export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path.replace(".csv", "_report.csv"))
 
-    # Export Markdown report (commented out as not needed)
-    # export_to_markdown(
-    #     df=main_df_dict['main_dataframe'],  # Or report_dataframe depending on which you want
-    #     dot_info_path='data',
-    #     dot_info_file='report_md.jinja2',
-    #     output_file=markdown_output_path
-    # )
+    # Export Markdown report
+    export_to_markdown(
+        dot_info_path='data',
+        dot_info_file='report_md.jinja2',
+        output_file=markdown_output_path,
+        df=main_df_dict['report_dataframe']  # Use report_dataframe for the Markdown report
+    )
 
 def main():
     # Generate timestamped filenames with the specified base names
