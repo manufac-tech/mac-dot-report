@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from .dbase04_id_gen import get_next_unique_id
+from .db04_id_gen import get_next_unique_id
 
 def load_dotbot_yaml_dataframe():
     dotbot_yaml_path = os.path.join(os.path.expanduser("~"), "._dotfiles/dotfiles_srb_repo/install.conf.yaml")

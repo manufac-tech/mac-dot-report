@@ -2,7 +2,7 @@ import os
 import logging
 import pandas as pd
 
-from dbase.dbase01_setup import build_full_output_dict
+from dbase.db01_setup import build_full_output_dict
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
