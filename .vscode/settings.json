@@ -2,7 +2,6 @@
   "files.exclude": {
     "dbase/__pycache__": true,
     ".gitignore": true,
-    "requirements.txt": true,
     ".venv": true,
     ".vscode": true,
     "__pycache__": true,
