@@ -31,10 +31,7 @@ def build_main_dataframe():
     main_df = df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df) # Perform the merges
 
     # POST-MERGE OPERATIONS
-    # Create 'sort_out' column to indicate new, missing, or matched items in the report
-    # main_df['sort_out'] = pd.Series(dtype='Int64')  # Create sort_out column
 
-    # main_df['sort_out'] = main_df['sort_out'].fillna(-1)
     main_df['sort_orig'] = main_df['sort_orig'].fillna(-1).astype('Int64') # sort_orig = Int64, handle missing vals
 
     main_df = apply_output_grouping(main_df)

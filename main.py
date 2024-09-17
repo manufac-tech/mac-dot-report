@@ -6,10 +6,10 @@ from dbase.db01_setup import build_full_output_dict
 from report_gen import generate_timestamped_output_paths, prepare_output_dataframes, export_dataframe_to_csv, export_to_markdown
 
 # Configure logging to show DEBUG level messages 
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.INFO  # Change to DEBUG to capture more detailed output (INFO is the default level)
-)
+# logging.basicConfig(
+#     format='%(asctime)s - %(levelname)s - %(message)s',
+#     level=logging.DEBUG  # Change to DEBUG to capture more detailed output (INFO is the default level)
+# )
 
 # Define the home directory
 home_dir = os.path.expanduser("~")
@@ -23,10 +23,11 @@ output_base_name_csv = "mac-dot-report"
 output_base_name_md = "mac-dot-report"
 
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
-    export_dataframe_to_csv(main_df_dict['main_dataframe'], filename=csv_output_path)
-    # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path)
+    # export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path.replace(".csv", "_main.csv"))
+    pass
+    # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path.replace(".csv", "_report.csv"))
 
-    # Export Markdown report
+    # Export Markdown report (commented out as not needed)
     # export_to_markdown(
     #     df=main_df_dict['main_dataframe'],  # Or report_dataframe depending on which you want
     #     dot_info_path='data',
@@ -42,13 +43,7 @@ def main():
 
     main_df_dict = build_full_output_dict()  # Build the main_dataframe and return as a dictionary
 
-    # Debug: Display the DataFrame to examine its contents
-    # print("DataFrame contents:\n", main_df_dict['dataframe'].head())
-    
-    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #     print("DataFrame contents:\n", main_df_dict['dataframe'].to_string(index=False))
-
-    # save_outputs(main_df_dict, csv_output_path, markdown_output_path) # Write to disk
+    save_outputs(main_df_dict, csv_output_path, markdown_output_path) # Write to disk
 
 # This ensures the main function is only executed if this file is run directly
 if __name__ == "__main__":
