@@ -36,28 +36,22 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['st_db_all'] = ''
     report_dataframe['st_misc'] = ''
 
-    # Initialize dictionary fields with empty dictionaries
-    report_dataframe['fm_doc_match'] = [{} for _ in range(len(report_dataframe))]
-    report_dataframe['fm_fs_match'] = [{} for _ in range(len(report_dataframe))]
-    report_dataframe['fm_merge_summary'] = [{} for _ in range(len(report_dataframe))]
-
-    # Apply the field consolidation (the field_merge_main function)
-    # report_dataframe = field_merge_main(report_dataframe)
+    # report_dataframe = field_merge_main(report_dataframe) # field merge/consolidation
 
     report_dataframe = field_match_master(report_dataframe)
 
     # Consolidate name, type, and unique_id fields based on the matching logic
     report_dataframe = consolidate_fields(report_dataframe)
 
-    # report_dataframe = filter_no_show_rows(report_dataframe)
+    report_dataframe = filter_no_show_rows(report_dataframe)
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
         report_dataframe,
-        show_all_fields=False,         # Set to True or False as needed
-        show_final_output=True,        # Set to True or False as needed
-        show_field_merge=False,         # Set to True or False as needed
-        show_field_merge_dicts=False  # Set to True or False as needed
+        show_all_fields=False,
+        show_final_output=True,
+        show_field_merge=False,
+        show_field_merge_dicts=False
     )
 
     return report_dataframe

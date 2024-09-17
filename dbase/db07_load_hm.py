@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from .db04_id_gen import get_next_unique_id
-from .db05_item_type import determine_item_type
+from .db05_get_type import determine_item_type
 
 def load_hm_dataframe():
     dot_items = []

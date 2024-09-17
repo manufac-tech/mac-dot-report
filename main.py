@@ -25,7 +25,7 @@ output_base_name_md = "mac-dot-report"
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
     # export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path.replace(".csv", "_main.csv"))
     pass
-    # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path.replace(".csv", "_report.csv"))
+    export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path.replace(".csv", "_report.csv"))
 
     # Export Markdown report (commented out as not needed)
     # export_to_markdown(

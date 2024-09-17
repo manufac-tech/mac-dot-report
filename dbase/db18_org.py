@@ -16,11 +16,13 @@ def apply_output_grouping(df):
 def reorder_columns_main(df):
     # Define the desired column order based on the provided fields
     desired_order = [
-        'item_name_rp', 'item_type_rp', 'git_rp', 'item_name', 'item_type', 'unique_id', 
-        'item_name_hm', 'item_type_hm', 'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db',
-        'item_type_rp_db', 'item_name_rp_di', 'item_name_hm_di', 'dot_struc_di', 'item_type_rp_di',
-        'item_type_hm_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di', 'no_show_di', 'sort_orig',
-        # 'sort_out'
+        'item_name', 'item_type', 'unique_id',
+        'item_name_rp', 'item_type_rp', 'git_rp', 'item_name_hm', 'item_type_hm',
+        'item_name_hm_db', 'item_type_hm_db', 'item_name_rp_db', 'item_type_rp_db',
+        'item_name_rp_di', 'item_type_rp_di', 'item_name_hm_di', 'item_type_hm_di',
+        'dot_struc_di', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di', 'no_show_di',
+        'sort_orig',
+        'unique_id_rp', 'unique_id_db', 'unique_id_hm', 'unique_id_di'
     ]
     
     # Ensure all columns in desired_order are in the DataFrame
@@ -42,12 +44,12 @@ def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, sh
     # Final Output Group
     final_output_columns = [
         # 'unique_id',
-        'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
-        # 'st_misc',
+        'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
         'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di',
-        # 'comment_di',
+        'comment_di',
         'dot_struc_di',
-        'dot_struc', 'st_db_all', 'st_docs', 'st_alert',
+        'dot_struc', 'st_alert', 'st_db_all', 'st_docs',
+        'st_misc',
         'sort_orig', 'sort_out',
     ]
 
@@ -55,11 +57,6 @@ def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, sh
     field_merge_columns = [
         'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'dot_struc',
         'sort_out', 'sort_orig'
-    ]
-
-    # Field Merge Dicts Group
-    field_merge_dicts_columns = [
-        'fm_doc_match', 'fm_fs_match', 'fm_merge_summary'
     ]
 
     # Display All Fields Section
@@ -78,12 +75,6 @@ def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, sh
     if show_field_merge:
         print("Field Merge Group:")
         print(report_dataframe[field_merge_columns])
-        print("\n" * 2)
-
-    # Display Field Merge Dicts Section
-    if show_field_merge_dicts:
-        print("Field Merge Dicts Group:")
-        print(report_dataframe[field_merge_dicts_columns])
         print("\n" * 2)
 
     # Return reordered DataFrame if needed

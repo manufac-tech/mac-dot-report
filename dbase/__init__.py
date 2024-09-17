@@ -2,16 +2,14 @@ from .db01_setup import (
     build_full_output_dict
 )
 
-from .db02_main_df import (
-    build_main_dataframe,
-    df_merge_2_actual,
-    replace_string_blanks
+from .db02_make_df1 import (
+    build_main_dataframe
 )
 
 from .db04_id_gen import (
     get_next_unique_id,
 )
-from .db05_item_type import (
+from .db05_get_type import (
     determine_item_type,
     is_symlink,
     is_alias,
@@ -33,14 +31,21 @@ from .db09_load_di import (
     load_di_dataframe
 )
 
+from .db17_merge import (
+    df_merge_2_actual,
+    replace_string_blanks,
+    df_merge_1_setup,
+    consolidate_post_merge1,
+    consolidate_post_merge3
+)
+
 from .db18_org import (
-    # add_and_populate_out_group,
     apply_output_grouping,
     reorder_columns_main,
     sort_items_1_out_group,  # MAYBE REMOVE
     sort_items_2_indiv  # MAYBE REMOVE
 )
-from .db21_rep_df import (
+from .db21_make_df2 import (
     build_report_dataframe,
     handle_nan_values,
     filter_no_show_rows
@@ -66,6 +71,9 @@ __all__ = [
     "build_main_dataframe",
     "df_merge_2_actual",
     "replace_string_blanks",
+    "df_merge_1_setup",
+    "consolidate_post_merge1",
+    "consolidate_post_merge3",
     "get_next_unique_id",
     "determine_item_type",
     "is_symlink",
@@ -82,11 +90,10 @@ __all__ = [
     "load_dotbot_yaml_dataframe",
     "correct_and_validate_dot_info_df",
     "load_di_dataframe",
-    # "add_and_populate_out_group",
     "apply_output_grouping",
     "reorder_columns_main",
-    "sort_items_1_out_group",  # MAYBE REMOVE
-    "sort_items_2_indiv",  # MAYBE REMOVE
+    "sort_items_1_out_group",  # MAYBE REMOVE later
+    "sort_items_2_indiv",  # MAYBE REMOVE later
     "build_report_dataframe",
     "handle_nan_values",
     "filter_no_show_rows",
@@ -95,9 +102,9 @@ __all__ = [
     "subsystem_docs",
     "subsystem_db_all",
     "alert_sym_overwrite",
-    "alert_in_doc_not_fs",  # New function
-    "consolidate_fields",  # Updated function name
-    "get_conditions_actions",  # New function
-    "remove_consolidated_columns",  # New function
+    "alert_in_doc_not_fs",
+    "consolidate_fields",
+    "get_conditions_actions",
+    "remove_consolidated_columns",
     "print_debug_info"
 ]
