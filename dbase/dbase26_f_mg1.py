@@ -6,14 +6,14 @@ from .dbase27_f_mg2 import (subsystem_docs, subsystem_db_all, alert_sym_overwrit
 def field_match_master(report_dataframe):
     """
     Perform full matching on the report_dataframe by calling various subsystems.
-    Updates the DataFrame with status columns: st_main, st_docs, st_db_all, st_alert.
+    Updates the DataFrame with status columns: dot_struc, st_docs, st_db_all, st_alert.
     """
     try:
         # Perform structure matches (full match, home only, repo only)
-        report_dataframe['st_main'] = dot_structure_status(report_dataframe)
+        report_dataframe['dot_struc'] = dot_structure_status(report_dataframe)
     except Exception as e:
         print(f"Error in dot_structure_status: {e}")
-        report_dataframe['st_main'] = ''
+        report_dataframe['dot_struc'] = ''
 
     try:
         # Perform CSV/YAML match
@@ -56,7 +56,7 @@ def check_full_match(report_dataframe, valid_types_repo, valid_types_home):
             ((report_dataframe['item_type_rp'].isin(valid_types_repo['file'])) & (report_dataframe['item_type_hm'] == valid_types_home['file'])) |
             ((report_dataframe['item_type_rp'].isin(valid_types_repo['folder'])) & (report_dataframe['item_type_hm'] == valid_types_home['folder']))
         ), 
-        'st_main'
+        'dot_struc'
     ] = 'rp>hm'
     return report_dataframe
 
@@ -65,10 +65,10 @@ def check_home_repo_only(report_dataframe):
     Check for items that are only in the repo or only in the home.
     """
     # Repo-only logic
-    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'st_main'] = 'rp_only'
+    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'dot_struc'] = 'rp_only'
 
     # Home-only logic
-    report_dataframe.loc[(report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == ''), 'st_main'] = 'hm_only'
+    report_dataframe.loc[(report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == ''), 'dot_struc'] = 'hm_only'
     
     return report_dataframe
 
@@ -82,7 +82,7 @@ def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home):
     ) | (
         (report_dataframe['item_name_hm_di'] != '') & (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] == '')
     )
-    report_dataframe.loc[no_fs_match_n, 'st_main'] = 'no_fs_N'
+    report_dataframe.loc[no_fs_match_n, 'dot_struc'] = 'no_fs_N'
 
     # NO FS MATCH-T (Type) logic
     name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
@@ -91,7 +91,7 @@ def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home):
         (report_dataframe['item_type_rp'].isin(valid_types_repo['folder']) & (report_dataframe['item_type_hm'] != valid_types_home['folder']))
     )
     no_fs_match_t = name_match & type_mismatch
-    report_dataframe.loc[no_fs_match_t, 'st_main'] = 'no_fs_T'
+    report_dataframe.loc[no_fs_match_t, 'dot_struc'] = 'no_fs_T'
     return report_dataframe
 
 def dot_structure_status(report_dataframe):
@@ -113,4 +113,4 @@ def dot_structure_status(report_dataframe):
     report_dataframe = check_home_repo_only(report_dataframe)
     report_dataframe = check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home)
 
-    return report_dataframe['st_main']
+    return report_dataframe['dot_struc']

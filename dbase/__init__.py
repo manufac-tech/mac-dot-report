@@ -34,7 +34,7 @@ from .dbase09_load_di import (
 )
 
 from .dbase18_org import (
-    add_and_populate_out_group,
+    # add_and_populate_out_group,
     apply_output_grouping,
     reorder_columns_main,
     sort_items_1_out_group,  # MAYBE REMOVE
@@ -53,7 +53,11 @@ from .dbase26_f_mg1 import (
     alert_sym_overwrite
 )
 from .dbase27_f_mg2 import alert_in_doc_not_fs  # New import
-from .dbase28_f_mg3 import consolidate_fields  # Updated import statement
+from .dbase28_f_mg3 import (
+    consolidate_fields,
+    get_conditions_actions,
+    remove_consolidated_columns
+)
 
 from .dbase30_debug import print_debug_info
 
@@ -78,7 +82,7 @@ __all__ = [
     "load_dotbot_yaml_dataframe",
     "correct_and_validate_dot_info_df",
     "load_di_dataframe",
-    "add_and_populate_out_group",
+    # "add_and_populate_out_group",
     "apply_output_grouping",
     "reorder_columns_main",
     "sort_items_1_out_group",  # MAYBE REMOVE
@@ -93,5 +97,7 @@ __all__ = [
     "alert_sym_overwrite",
     "alert_in_doc_not_fs",  # New function
     "consolidate_fields",  # Updated function name
+    "get_conditions_actions",  # New function
+    "remove_consolidated_columns",  # New function
     "print_debug_info"
 ]

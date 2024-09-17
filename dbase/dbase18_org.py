@@ -6,41 +6,11 @@ import numpy as np
 from .dbase07_load_hm import load_hm_dataframe
 from .dbase09_load_di import load_di_dataframe
 
-def add_and_populate_out_group(df):
-    # Create 'sort_out' column to indicate new, missing, or matched items in the report
-    df['sort_out'] = pd.Series(dtype='Int64')  # Create sort_out column
-
-    # Group 2: Matched items (based on di_match status)
-    # df.loc[df['m_status_3'] == 'di_match', 'sort_out'] = 1  
-
-    # Group 1: Missing items (based on ERR:unmatched_di status)
-    # df.loc[df['m_status_3'] == 'ERR:unmatched_di', 'sort_out'] = 2  
-
-    # Group 3: New items (based on ERR:home_only status)
-    # df.loc[df['m_status_1'] == 'ERR:home_only', 'sort_out'] = 3
-
-    # Group 4: Catch-all for uncategorized items
-    # df['sort_out'].fillna(4, inplace=True)
-    df['sort_out'] = df['sort_out'].fillna(4)
-
-    return df
 
 def apply_output_grouping(df):
-    # Convert sort_out to an integer for sorting
-    df['sort_out'] = df['sort_out'].astype(int)
-
-    # Sort each group individually, ensuring all groups are included
-    group1 = df[df['sort_out'] == 1].sort_values('sort_orig', ascending=True)  # Sort by sort_orig for group 1
-    group2 = df[df['sort_out'] == 2].sort_values('item_name', ascending=True)       # Sort by item_name for group 2
-    group3 = df[df['sort_out'] == 3].sort_values('item_name', ascending=True)       # Sort by item_name for group 3
-    group4 = df[df['sort_out'] == 4].sort_values('item_name', ascending=True)       # Sort by item_name for group 4 (catch-all)
-
-    # Concatenate the sorted groups back together, including group 4
-    df_sorted = pd.concat([group1, group2, group3, group4])
-
-    # Reset index to maintain a continuous index if needed
+    # Sort the entire DataFrame by 'sort_orig'
+    df_sorted = df.sort_values('sort_orig', ascending=True)
     df_sorted = df_sorted.reset_index(drop=True)
-
     return df_sorted
 
 def reorder_columns_main(df):
@@ -50,7 +20,7 @@ def reorder_columns_main(df):
         'item_name_hm', 'item_type_hm', 'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db',
         'item_type_rp_db', 'item_name_rp_di', 'item_name_hm_di', 'dot_struc_di', 'item_type_rp_di',
         'item_type_hm_di', 'cat_1_di', 'cat_1_name_di', 'comment_di', 'cat_2_di', 'no_show_di', 'sort_orig',
-        'sort_out'
+        # 'sort_out'
     ]
     
     # Ensure all columns in desired_order are in the DataFrame
@@ -75,14 +45,15 @@ def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, sh
         'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo',
         # 'st_misc',
         'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di',
-        'dot_struc_di',
-        'st_main', 'st_db_all', 'st_docs', 'st_alert',
         # 'comment_di',
+        'dot_struc_di',
+        'dot_struc', 'st_db_all', 'st_docs', 'st_alert',
+        'sort_orig', 'sort_out',
     ]
 
     # Field Merge Group
     field_merge_columns = [
-        'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'st_main',
+        'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'dot_struc',
         'sort_out', 'sort_orig'
     ]
 

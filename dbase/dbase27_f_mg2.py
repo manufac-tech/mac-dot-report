@@ -52,7 +52,7 @@ def alert_sym_overwrite(report_dataframe):
 
     # Set 'SymLink Overwrite' if names match but types differ as described above
     report_dataframe.loc[name_match & type_mismatch, 'st_alert'] = 'SymLink Overwrite'
-    # report_dataframe.loc[name_match & type_mismatch, 'st_main'] = 'no_fs_T'
+    # report_dataframe.loc[name_match & type_mismatch, 'dot_struc'] = 'no_fs_T'
 
     return report_dataframe['st_alert']
 
@@ -74,6 +74,6 @@ def alert_in_doc_not_fs(report_dataframe):
 
     # Set 'In Doc Not FS' if the condition is met
     report_dataframe.loc[in_doc_not_fs, 'st_alert'] = 'In Doc Not FS'
-    report_dataframe.loc[in_doc_not_fs, 'st_main'] = 'no_fs_N'
+    report_dataframe.loc[in_doc_not_fs, 'dot_struc'] = 'no_fs_N'
 
     return report_dataframe['st_alert']

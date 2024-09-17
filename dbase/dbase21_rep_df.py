@@ -14,10 +14,8 @@ def build_report_dataframe(main_df_dict):
     """Create the report dataframe based on a copy of the full_main_dataframe."""
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
-    # print(report_dataframe[['item_name_rp', 'item_type_rp', 'no_show_di']].tail(10))
-
     # Handle NaN values globally
-    # report_dataframe = handle_nan_values(report_dataframe)
+    report_dataframe = handle_nan_values(report_dataframe)
 
     # Create new target fields
     report_dataframe['item_name_repo'] = ''
@@ -25,13 +23,16 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['item_name_home'] = ''
     report_dataframe['item_type_home'] = ''
 
+    report_dataframe['sort_out'] = pd.Series(dtype='Int64')  # Create sort_out column
+    report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
+
     # Re-apply blank handling to the newly copied fields
     report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Add status fields for tracking matching results and system status
     report_dataframe['st_docs'] = ''
     report_dataframe['st_alert'] = ''
-    report_dataframe['st_main'] = ''
+    report_dataframe['dot_struc'] = ''
     report_dataframe['st_db_all'] = ''
     report_dataframe['st_misc'] = ''
 
@@ -41,22 +42,22 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['fm_merge_summary'] = [{} for _ in range(len(report_dataframe))]
 
     # Apply the field consolidation (the field_merge_main function)
-    # report_dataframe = field_merge_main(report_dataframe)  # Call the new function here
+    # report_dataframe = field_merge_main(report_dataframe)
 
-    report_dataframe = field_match_master(report_dataframe)  # Updated to call new matching logic
+    report_dataframe = field_match_master(report_dataframe)
 
     # Consolidate name, type, and unique_id fields based on the matching logic
-    report_dataframe = consolidate_fields(report_dataframe)  # <--- Call the consolidation function here
+    report_dataframe = consolidate_fields(report_dataframe)
 
-    # report_dataframe = filter_no_show_rows(report_dataframe) # Filter out rows w 'no_show_di' = True
+    # report_dataframe = filter_no_show_rows(report_dataframe)
 
     # Reorder columns for the report DataFrame with new argument names
     report_dataframe = reorder_columns_rep(
         report_dataframe,
-        show_field_merge=True,         # Set to True or False as needed
-        show_field_merge_dicts=False,  # Set to True or False as needed
+        show_all_fields=False,         # Set to True or False as needed
         show_final_output=True,        # Set to True or False as needed
-        show_all_fields=False          # Set to True or False as needed
+        show_field_merge=False,         # Set to True or False as needed
+        show_field_merge_dicts=False  # Set to True or False as needed
     )
 
     return report_dataframe
