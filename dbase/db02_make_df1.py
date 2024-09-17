@@ -2,7 +2,7 @@ import pandas as pd
 
 from .db18_org import (
     apply_output_grouping,
-    reorder_columns_main
+    reorder_dfm_cols_perm
 )
 from .db30_debug import print_debug_info
 from .db06_load_rp import load_rp_dataframe
@@ -39,7 +39,7 @@ def build_main_dataframe():
     main_df = main_df.sort_values('sort_orig', ascending=True) # Sort the entire DataFrame by 'sort_orig'
     main_df = main_df.reset_index(drop=True)
 
-    main_df = reorder_columns_main(main_df)
+    main_df = reorder_dfm_cols_perm(main_df)
     full_main_dataframe = main_df
 
     return full_main_dataframe

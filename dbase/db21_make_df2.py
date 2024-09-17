@@ -1,11 +1,11 @@
 import pandas as pd
 
 # from .db01_setup import build_main_dataframe
-from .db18_org import reorder_columns_rep
-from .db26_f_mg1 import (
+from .db18_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
+from .db26_merge_f1 import (
     field_match_master
 )
-from .db28_f_mg3 import (
+from .db28_merge_f3 import (
     consolidate_fields
 )
 
@@ -42,11 +42,13 @@ def build_report_dataframe(main_df_dict):
 
     # Consolidate name, type, and unique_id fields based on the matching logic
     report_dataframe = consolidate_fields(report_dataframe)
-
     report_dataframe = filter_no_show_rows(report_dataframe)
 
-    # Reorder columns for the report DataFrame with new argument names
-    report_dataframe = reorder_columns_rep(
+    report_dataframe = reorder_dfr_cols_perm(report_dataframe) # Reorder columns perm
+
+    report_dataframe = sort_report_df_rows(report_dataframe) # Sort rows permanently
+
+    report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
         report_dataframe,
         show_all_fields=False,
         show_final_output=True,
@@ -77,3 +79,10 @@ def handle_nan_values(df):
 def filter_no_show_rows(report_dataframe):
     """Filter out rows where 'no_show_di' is set to True."""
     return report_dataframe[report_dataframe['no_show_di'] == False].copy()
+
+def sort_report_df_rows(df):
+    """
+    Sort the DataFrame by 'sort_out' and then by 'sort_orig'.
+    """
+    df = df.sort_values(by=['sort_out', 'sort_orig'], ascending=[True, True])
+    return df

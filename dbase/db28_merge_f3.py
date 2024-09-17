@@ -40,7 +40,7 @@ def get_conditions_actions(report_dataframe):
                 'item_name_home': 'item_name_hm',
                 'item_type_home': 'item_type_hm',
                 'unique_id': 'unique_id_rp',
-                'sort_out': 10
+                'sort_out': 30
             }
         },
                 'hm_only': {

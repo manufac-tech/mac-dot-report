@@ -13,7 +13,7 @@ def apply_output_grouping(df):
     df_sorted = df_sorted.reset_index(drop=True)
     return df_sorted
 
-def reorder_columns_main(df):
+def reorder_dfm_cols_perm(df):
     # Define the desired column order based on the provided fields
     desired_order = [
         'item_name', 'item_type', 'unique_id',
@@ -35,7 +35,27 @@ def reorder_columns_main(df):
     
     return df
 
-def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, show_field_merge, show_field_merge_dicts):
+def reorder_dfr_cols_perm(df):
+    # Define the desired column order based on the provided fields
+    desired_order = [
+        'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
+        'dot_struc_di',
+        'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
+        'sort_orig', 'sort_out',
+        'no_show_di', 'unique_id'
+    ]
+    
+    # Ensure all columns in desired_order are in the DataFrame
+    for col in desired_order:
+        if col not in df.columns:
+            print(f"Warning: Column {col} not found in DataFrame")
+    
+    # Reorder columns
+    df = df[desired_order]
+    
+    return df
+
+def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_output, show_field_merge, show_field_merge_dicts):
     # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH
     
     # All Fields Group
@@ -44,13 +64,14 @@ def reorder_columns_rep(report_dataframe, show_all_fields, show_final_output, sh
     # Final Output Group
     final_output_columns = [
         # 'unique_id',
+        'st_alert',
         'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
         'git_rp', 'cat_1_di', 'cat_1_name_di', 'cat_2_di',
         'comment_di',
         'dot_struc_di',
-        'dot_struc', 'st_alert', 'st_db_all', 'st_docs',
+        'dot_struc', 'st_db_all', 'st_docs',
         'st_misc',
-        'sort_orig', 'sort_out',
+        'sort_orig', 'sort_out'
     ]
 
     # Field Merge Group
@@ -111,3 +132,4 @@ def sort_items_2_indiv(df):
     # df_sorted = df_sorted.reset_index(drop=True)
 
     return df_sorted
+

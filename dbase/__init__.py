@@ -39,24 +39,27 @@ from .db17_merge import (
 
 from .db18_org import (
     apply_output_grouping,
-    reorder_columns_main,
+    reorder_dfm_cols_perm,
+    reorder_dfr_cols_perm,
+    reorder_dfr_cols_for_cli,
     sort_items_1_out_group,  # MAYBE REMOVE
     sort_items_2_indiv  # MAYBE REMOVE
 )
 from .db21_make_df2 import (
     build_report_dataframe,
     handle_nan_values,
-    filter_no_show_rows
+    filter_no_show_rows,
+    sort_report_df_rows  # Added here
 )
-from .db26_f_mg1 import (
+from .db26_merge_f1 import (
     field_match_master,
     dot_structure_status,
     subsystem_docs,
     subsystem_db_all,
     alert_sym_overwrite
 )
-from .db27_f_mg2 import alert_in_doc_not_fs
-from .db28_f_mg3 import (
+from .db27_merge_f2 import alert_in_doc_not_fs
+from .db28_merge_f3 import (
     consolidate_fields,
     get_conditions_actions,
     remove_consolidated_columns
@@ -89,12 +92,15 @@ __all__ = [
     "consolidate_post_merge1",
     "consolidate_post_merge3",
     "apply_output_grouping",
-    "reorder_columns_main",
+    "reorder_dfm_cols_perm",
+    "reorder_dfr_cols_perm",
+    "reorder_dfr_cols_for_cli",
     "sort_items_1_out_group",  # MAYBE REMOVE later
     "sort_items_2_indiv",  # MAYBE REMOVE later
     "build_report_dataframe",
     "handle_nan_values",
     "filter_no_show_rows",
+    "sort_report_df_rows",
     "field_match_master",
     "dot_structure_status",
     "subsystem_docs",
