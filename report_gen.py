@@ -1,10 +1,10 @@
 import os
 import logging
-
 import pandas as pd
-from jinja2 import Environment, FileSystemLoader
 import regex as re
 from datetime import datetime
+
+from jinja2 import Environment, FileSystemLoader
 
 def generate_timestamped_output_paths(csv_directory_path, csv_base_name, markdown_directory_path, markdown_base_name):
     timestamp = datetime.now().strftime('%y%m%d-%H%M%S')
@@ -23,7 +23,7 @@ def export_dataframe_to_csv(df, filename, columns=None):
     except Exception as e:
         print(f"Failed to export DataFrame to CSV: {e}")
 
-def export_to_markdown(dot_info_path, dot_info_file, output_file, df=None):
+def export_to_markdown(dot_info_path, dot_info_file, output_file, df=None, fs_not_in_di=None, di_not_in_fs=None):
     try:
         if df is None:
             raise ValueError("DataFrame 'df' must be provided")
@@ -36,10 +36,12 @@ def export_to_markdown(dot_info_path, dot_info_file, output_file, df=None):
         )
         env.globals['pd'] = pd
 
-        # Render dot_info - pass the DataFrame directly
+        # Render dot_info - pass the DataFrame and additional lists
         dot_info = env.get_template(dot_info_file)
         rendered_markdown = dot_info.render(
-            csv_data=df.to_dict(orient='records')  # Pass the entire DataFrame
+            csv_data=df.to_dict(orient='records'),  # Pass the entire DataFrame
+            fs_not_in_di=fs_not_in_di if fs_not_in_di else [],
+            di_not_in_fs=di_not_in_fs if di_not_in_fs else []
         )
 
         # Output the rendered Markdown to a file

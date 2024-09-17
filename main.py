@@ -26,7 +26,9 @@ def save_markdown(main_df_dict, markdown_output_path):
         dot_info_path='data',
         dot_info_file='report_md.jinja2',
         output_file=markdown_output_path,
-        df=main_df_dict['report_dataframe']  # Use report_dataframe for the Markdown report
+        df=main_df_dict['report_dataframe'],  # Use report_dataframe for the Markdown report
+        fs_not_in_di=main_df_dict.get('fs_not_in_di', []),
+        di_not_in_fs=main_df_dict.get('di_not_in_fs', [])
     )
 
 def save_report_csv(main_df_dict, csv_output_path):
