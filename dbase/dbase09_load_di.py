@@ -16,7 +16,7 @@ def load_di_dataframe():
         dot_info_df = pd.read_csv(dot_info_file_path, dtype={
             "item_name_rp_di": "string",
             "item_name_hm_di": "string",
-            "dot_structure_di": "string",
+            "dot_struc_di": "string",
             "item_type_rp_di": "string",
             "item_type_hm_di": "string",
             "cat_1_di": "string",
@@ -27,7 +27,7 @@ def load_di_dataframe():
         }).copy()
 
         # Record the original order of rows
-        dot_info_df['original_order'] = (dot_info_df.index + 1).astype("Int64")  # Convert to Int64 explicitly
+        dot_info_df['sort_orig'] = (dot_info_df.index + 1).astype("Int64")  # Convert to Int64 explicitly
 
         # Assign unique IDs
         dot_info_df['unique_id_di'] = dot_info_df.apply(lambda row: get_next_unique_id(), axis=1)

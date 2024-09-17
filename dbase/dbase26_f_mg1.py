@@ -57,7 +57,7 @@ def check_full_match(report_dataframe, valid_types_repo, valid_types_home):
             ((report_dataframe['item_type_rp'].isin(valid_types_repo['folder'])) & (report_dataframe['item_type_hm'] == valid_types_home['folder']))
         ), 
         'st_main'
-    ] = 'Full Match'
+    ] = 'rp>hm'
     return report_dataframe
 
 def check_home_repo_only(report_dataframe):
@@ -65,10 +65,10 @@ def check_home_repo_only(report_dataframe):
     Check for items that are only in the repo or only in the home.
     """
     # Repo-only logic
-    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'st_main'] = 'Repo-only'
+    report_dataframe.loc[(report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != ''), 'st_main'] = 'rp_only'
 
     # Home-only logic
-    report_dataframe.loc[(report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == ''), 'st_main'] = 'Home-only'
+    report_dataframe.loc[(report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == ''), 'st_main'] = 'hm_only'
     
     return report_dataframe
 
@@ -82,7 +82,7 @@ def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home):
     ) | (
         (report_dataframe['item_name_hm_di'] != '') & (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] == '')
     )
-    report_dataframe.loc[no_fs_match_n, 'st_main'] = 'NO FS MATCH-N'
+    report_dataframe.loc[no_fs_match_n, 'st_main'] = 'no_fs_N'
 
     # NO FS MATCH-T (Type) logic
     name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
@@ -91,8 +91,7 @@ def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home):
         (report_dataframe['item_type_rp'].isin(valid_types_repo['folder']) & (report_dataframe['item_type_hm'] != valid_types_home['folder']))
     )
     no_fs_match_t = name_match & type_mismatch
-    report_dataframe.loc[no_fs_match_t, 'st_main'] = 'NO FS MATCH-T'
-
+    report_dataframe.loc[no_fs_match_t, 'st_main'] = 'no_fs_T'
     return report_dataframe
 
 def dot_structure_status(report_dataframe):

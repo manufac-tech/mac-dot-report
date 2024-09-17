@@ -14,9 +14,9 @@ def generate_timestamped_output_paths(csv_directory_path, csv_base_name, markdow
 
 def prepare_output_dataframes(main_dataframe):
     # Filter and sort for each group
-    group1_df = main_dataframe[main_dataframe['out_group'] == 1].sort_values('item_name')
-    group2_df = main_dataframe[main_dataframe['out_group'] == 2].sort_values('original_order')
-    group3_df = main_dataframe[main_dataframe['out_group'] == 3].sort_values('item_name')
+    group1_df = main_dataframe[main_dataframe['sort_out'] == 1].sort_values('item_name')
+    group2_df = main_dataframe[main_dataframe['sort_out'] == 2].sort_values('sort_orig')
+    group3_df = main_dataframe[main_dataframe['sort_out'] == 3].sort_values('item_name')
 
 
     return group1_df, group2_df, group3_df

@@ -2,11 +2,11 @@ import pandas as pd
 
 from .dbase02_main_df import build_main_dataframe
 from .dbase21_rep_df import build_report_dataframe
-from .dbase18_org import reorder_columns_main
+# from .dbase18_org import reorder_columns_main
 
 # Set pandas display options globally
 pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', 30)
+pd.set_option('display.max_columns', 40)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 

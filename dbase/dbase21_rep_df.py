@@ -56,7 +56,7 @@ def build_report_dataframe(main_df_dict):
         show_field_merge=True,         # Set to True or False as needed
         show_field_merge_dicts=False,  # Set to True or False as needed
         show_final_output=True,        # Set to True or False as needed
-        show_all_fields=True          # Set to True or False as needed
+        show_all_fields=False          # Set to True or False as needed
     )
 
     return report_dataframe

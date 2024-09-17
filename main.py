@@ -23,12 +23,12 @@ output_base_name_csv = "mac-dot-report"
 output_base_name_md = "mac-dot-report"
 
 def save_outputs(main_df_dict, csv_output_path, markdown_output_path):
-    export_dataframe_to_csv(main_df_dict['full_main_dataframe'], filename=csv_output_path)
+    export_dataframe_to_csv(main_df_dict['main_dataframe'], filename=csv_output_path)
     # export_dataframe_to_csv(main_df_dict['report_dataframe'], filename=csv_output_path)
 
     # Export Markdown report
     # export_to_markdown(
-    #     df=main_df_dict['full_main_dataframe'],  # Or report_dataframe depending on which you want
+    #     df=main_df_dict['main_dataframe'],  # Or report_dataframe depending on which you want
     #     dot_info_path='data',
     #     dot_info_file='report_md.jinja2',
     #     output_file=markdown_output_path

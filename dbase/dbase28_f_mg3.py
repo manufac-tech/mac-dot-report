@@ -9,7 +9,7 @@ def consolidate_fields(report_dataframe):
     # Define the conditions and corresponding actions
     conditions_actions = {
         'Full Match': {
-            'condition': report_dataframe['st_main'] == 'Full Match',
+            'condition': report_dataframe['st_main'] == 'rp>hm',
             'actions': {
                 'item_name_repo': 'item_name_rp',
                 'item_type_repo': 'item_type_rp',
@@ -18,8 +18,8 @@ def consolidate_fields(report_dataframe):
                 'unique_id': 'unique_id_rp'
             }
         },
-        'Home-only': {
-            'condition': report_dataframe['st_main'] == 'Home-only',
+        'hm_only': {
+            'condition': report_dataframe['st_main'] == 'hm_only',
             'actions': {
                 'item_name_home': 'item_name_hm',
                 'item_type_home': 'item_type_hm',
@@ -28,8 +28,8 @@ def consolidate_fields(report_dataframe):
                 'unique_id': 'unique_id_hm'
             }
         },
-        'Repo-only': {
-            'condition': report_dataframe['st_main'] == 'Repo-only',
+        'rp_only': {
+            'condition': report_dataframe['st_main'] == 'rp_only',
             'actions': {
                 'item_name_repo': 'item_name_rp',
                 'item_type_repo': 'item_type_rp',

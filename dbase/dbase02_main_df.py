@@ -33,7 +33,7 @@ def build_main_dataframe():
     # POST-MERGE OPERATIONS
     main_df = add_and_populate_out_group(main_df)
 
-    main_df['original_order'] = main_df['original_order'].fillna(-1).astype('Int64') # original_order = Int64, handle missing vals
+    main_df['sort_orig'] = main_df['sort_orig'].fillna(-1).astype('Int64') # sort_orig = Int64, handle missing vals
 
     main_df = apply_output_grouping(main_df)
 
