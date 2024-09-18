@@ -2,8 +2,8 @@ import os
 import logging
 import pandas as pd
 
-from .db17_merge import get_next_unique_id
-from .db05_get_type import determine_item_type
+from .db11_merge import get_next_unique_id
+from .db04_get_type import determine_item_type
 
 def load_hm_dataframe():
     dot_items = []

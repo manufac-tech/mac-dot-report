@@ -5,6 +5,7 @@
     ".venv": true,
     ".vscode": true,
     "__pycache__": true,
-    "README.md": true
+    "README.md": true,
+    "requirements.txt": true
   }
 }

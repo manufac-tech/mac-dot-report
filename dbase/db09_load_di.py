@@ -1,7 +1,7 @@
 import os
 import logging
 import pandas as pd
-from .db17_merge import get_next_unique_id
+from .db11_merge import get_next_unique_id
 
 def correct_and_validate_dot_info_df(dot_info_df):
     # Correct values: Replace NaN with empty strings in 'comment_di' field
