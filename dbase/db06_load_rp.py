@@ -5,6 +5,7 @@ import fnmatch
 
 from .db11_merge import get_next_unique_id
 from .db04_get_type import determine_item_type
+from .db03_dtype_dict import field_types
 
 def load_rp_dataframe():
     repo_items = []
@@ -24,10 +25,10 @@ def load_rp_dataframe():
 
     df = pd.DataFrame(repo_items).copy()
 
-    # Explicitly set data types
-    df["item_name_rp"] = df["item_name_rp"].astype("string")
-    df["item_type_rp"] = df["item_type_rp"].astype("string")
-    df["unique_id_rp"] = df["unique_id_rp"].astype("Int64")  # Ensure unique_id_rp is Int64
+    # Explicitly set data types using the field_types dictionary
+    df["item_name_rp"] = df["item_name_rp"].astype(field_types["item_name_rp"])
+    df["item_type_rp"] = df["item_type_rp"].astype(field_types["item_type_rp"])
+    df["unique_id_rp"] = df["unique_id_rp"].astype(field_types["unique_id_rp"])
 
     # Create the git_rp column based on .gitignore
     df = create_git_rp_column(df, repo_path)

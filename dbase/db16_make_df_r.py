@@ -2,13 +2,9 @@ import pandas as pd
 
 # from .db01_setup import build_main_dataframe
 from .db12_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
-from .db26_merge_match1 import (
-    field_match_master
-)
-from .db28_merge_update import (
-    consolidate_fields
-)
-
+from .db26_merge_match1 import field_match_master
+from .db28_merge_update import consolidate_fields
+from .db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def build_report_dataframe(main_df_dict):
     """Create the report dataframe based on a copy of the full_main_dataframe."""
@@ -23,7 +19,7 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['item_name_home'] = ''
     report_dataframe['item_type_home'] = ''
 
-    report_dataframe['sort_out'] = pd.Series(dtype='Int64')  # Create sort_out column
+    report_dataframe['sort_out'] = pd.Series(dtype=field_types['sort_out'])  # Create sort_out column
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
     # Re-apply blank handling to the newly copied fields
@@ -35,6 +31,19 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['dot_struc'] = ''
     report_dataframe['st_db_all'] = ''
     report_dataframe['st_misc'] = ''
+
+    # Set data types for the new columns using the field_types dictionary
+    report_dataframe = report_dataframe.astype({
+        'item_name_repo': field_types['item_name_repo'],
+        'item_type_repo': field_types['item_type_repo'],
+        'item_name_home': field_types['item_name_home'],
+        'item_type_home': field_types['item_type_home'],
+        'st_docs': field_types['st_docs'],
+        'st_alert': field_types['st_alert'],
+        'dot_struc': field_types['dot_struc'],
+        'st_db_all': field_types['st_db_all'],
+        'st_misc': field_types['st_misc']
+    })
 
     # report_dataframe = field_merge_main(report_dataframe) # field merge/consolidation
 
@@ -57,7 +66,6 @@ def build_report_dataframe(main_df_dict):
     )
 
     return report_dataframe
-
 
 def handle_nan_values(df):
     """

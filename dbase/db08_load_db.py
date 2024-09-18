@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from .db11_merge import get_next_unique_id
+from .db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def load_dotbot_yaml_dataframe():
     dotbot_yaml_path = os.path.join(os.path.expanduser("~"), "._dotfiles/dotfiles_srb_repo/install.conf.yaml")
@@ -40,12 +41,12 @@ def load_dotbot_yaml_dataframe():
     dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=[
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db', 'unique_id_db']).copy()
 
-    # Explicitly set data types
-    dotbot_yaml_df["item_name_hm_db"] = dotbot_yaml_df["item_name_hm_db"].astype("string")
-    dotbot_yaml_df["item_name_rp_db"] = dotbot_yaml_df["item_name_rp_db"].astype("string")
-    dotbot_yaml_df["item_type_hm_db"] = dotbot_yaml_df["item_type_hm_db"].astype("string")
-    dotbot_yaml_df["item_type_rp_db"] = dotbot_yaml_df["item_type_rp_db"].astype("string")
-    dotbot_yaml_df["unique_id_db"] = dotbot_yaml_df["unique_id_db"].astype("Int64")
+    # Explicitly set data types using the field_types dictionary
+    dotbot_yaml_df["item_name_hm_db"] = dotbot_yaml_df["item_name_hm_db"].astype(field_types["item_name_hm_db"])
+    dotbot_yaml_df["item_name_rp_db"] = dotbot_yaml_df["item_name_rp_db"].astype(field_types["item_name_rp_db"])
+    dotbot_yaml_df["item_type_hm_db"] = dotbot_yaml_df["item_type_hm_db"].astype(field_types["item_type_hm_db"])
+    dotbot_yaml_df["item_type_rp_db"] = dotbot_yaml_df["item_type_rp_db"].astype(field_types["item_type_rp_db"])
+    dotbot_yaml_df["unique_id_db"] = dotbot_yaml_df["unique_id_db"].astype(field_types["unique_id_db"])
 
     # Toggle output directly within the function
     show_output = False  # Change to False to disable output
