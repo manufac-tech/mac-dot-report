@@ -6,6 +6,8 @@ from .db02_make_df_m import (
     build_main_dataframe
 )
 
+from .db03_dtype_dict import field_types
+
 from .db04_get_type import (
     determine_item_type,
     is_symlink,
@@ -47,7 +49,7 @@ from .db16_make_df_r import (
     build_report_dataframe,
     handle_nan_values,
     filter_no_show_rows,
-    sort_report_df_rows  # Added here
+    sort_report_df_rows
 )
 from .db26_merge_match1 import (
     field_match_master,
@@ -68,6 +70,7 @@ from .db30_debug import print_debug_info
 __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
+    "field_types",
     "determine_item_type",
     "is_symlink",
     "is_alias",

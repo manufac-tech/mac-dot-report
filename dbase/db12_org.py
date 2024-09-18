@@ -67,7 +67,6 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_outpu
         'st_alert',
         'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
         'git_rp', 'cat_1_di', 
-        # 'cat_1_name_di', 
         'cat_2_di',
         'comment_di',
         'dot_struc_di',
@@ -84,21 +83,25 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_outpu
 
     # Display All Fields Section
     if show_all_fields:
-        print("All Fields Group:")
-        print(report_dataframe[all_fields_columns])
-        print("\n" * 2)
+        print_dataframe_section(report_dataframe, all_fields_columns, "All Fields Group")
 
     # Display Final Output Section
     if show_final_output:
-        print("Final Output Group:")
-        print(report_dataframe[final_output_columns])
-        print("\n" * 2)
+        print_dataframe_section(report_dataframe, final_output_columns, "Final Output Group")
 
     # Display Field Merge Section
     if show_field_merge:
-        print("Field Merge Group:")
-        print(report_dataframe[field_merge_columns])
-        print("\n" * 2)
+        print_dataframe_section(report_dataframe, field_merge_columns, "Field Merge Group")
 
     # Return reordered DataFrame if needed
     return report_dataframe
+
+def print_dataframe_section(df, columns, title):
+    print(f"{title}:")
+    print(df[columns])
+    print("\n" * 2)
+
+    print(f"{title} (Data Types):")
+    data_types_df = df[columns].apply(lambda col: col.apply(lambda x: type(x).__name__))
+    print(data_types_df)
+    print("\n" * 2)
