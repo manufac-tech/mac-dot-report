@@ -1,15 +1,17 @@
 import os
 import logging
 import pandas as pd
+
 from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
-# Define the home directory and paths for output
+# Define user paths without including User's actual $HOME folder name
 HOME_DIR = os.path.expanduser("~")
 USER_MAIN_PATH = os.path.join(HOME_DIR, "Library/Mobile Documents/com~apple~CloudDocs")
 USER_PATH_MD = os.path.join(USER_MAIN_PATH, "Documents_SRB iCloud/Filespace control/FS Ctrl - LOGS/Info Reports + Logs IN")
 USER_PATH_CSV = os.path.join(USER_MAIN_PATH, "Documents_SRB iCloud/Filespace control/FS Ctrl - LOGS/Info Reports + Logs IN")
 
+# Define input and output paths
 DOT_INFO_CSV_PATH = 'data'
 REPORT_TEMPLATE_J2 = 'report_md.jinja2'
 OUTPUT_BASE_NAME = "mac-dot-report"
@@ -23,13 +25,7 @@ def generate_timestamped_output_paths(directory_path, base_name):
     
     return csv_output_path, full_csv_output_path, markdown_output_path
 
-def export_dataframe_to_csv(df, filename, columns=None):
-    try:
-        df.to_csv(filename, index=False, columns=columns)
-        logging.info(f"DataFrame exported to '{filename}'")
-    except Exception as e:
-        logging.error(f"Failed to export DataFrame to CSV: {e}")
-
+# CONVERT DATAFRAMES TO OUTPUT FORMATS
 def export_to_markdown(output_file, df=None, fs_not_in_di=None, di_not_in_fs=None):
     try:
         if df is None:
@@ -56,6 +52,14 @@ def export_to_markdown(output_file, df=None, fs_not_in_di=None, di_not_in_fs=Non
     except Exception as e:
         logging.error(f"Failed to export DataFrame to Markdown: {e}")
 
+def export_dataframe_to_csv(df, filename, columns=None):
+    try:
+        df.to_csv(filename, index=False, columns=columns)
+        logging.info(f"DataFrame exported to '{filename}'")
+    except Exception as e:
+        logging.error(f"Failed to export DataFrame to CSV: {e}")
+
+# SAVE OUTPUTS TO DISK
 def save_outputs(main_df_dict):
     csv_output_path, full_csv_output_path, markdown_output_path = generate_timestamped_output_paths(USER_PATH_CSV, OUTPUT_BASE_NAME)
 

@@ -102,36 +102,3 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_outpu
 
     # Return reordered DataFrame if needed
     return report_dataframe
-
-def sort_items_1_out_group(df):
-    # # Assign output groups based on matching conditions
-    # df.loc[df['_merge'] == 'left_only', 'sort_out'] = 1  # Group 1: FS items not in dot_info
-    # df.loc[df['_merge'] == 'both', 'sort_out'] = 2       # Group 2: Matched items
-    # df.loc[df['_merge'] == 'right_only', 'sort_out'] = 3  # Group 3: dot_info items not in FS
-
-    # # Convert sort_out to an integer for sorting
-    # df['sort_out'] = df['sort_out'].astype(int)
-
-    # # Sort by sort_out in ascending order
-    # df.sort_values(by='sort_out', ascending=True, inplace=True)
-
-    return df
-
-def sort_items_2_indiv(df):
-    # # Group 1: Sort by item_name
-    # group1 = df[df['sort_out'] == 1].sort_values('item_name')
-
-    # # Group 2: Sort by sort_orig
-    # group2 = df[df['sort_out'] == 2].sort_values('sort_orig')
-
-    # # Group 3: Sort by item_name
-    # group3 = df[df['sort_out'] == 3].sort_values('item_name')
-
-    # # Concatenate the sorted groups
-    # df_sorted = pd.concat([group1, group2, group3])
-
-    # # Reset index to maintain a continuous index if needed
-    # df_sorted = df_sorted.reset_index(drop=True)
-
-    return df_sorted
-
