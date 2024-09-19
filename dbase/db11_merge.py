@@ -1,4 +1,5 @@
 import pandas as pd
+import logging
 
 from .db03_dtype_dict import field_types  # Import the field_types dictionary
 
@@ -13,12 +14,12 @@ def get_next_unique_id():
 
 def print_data_types(df, title):
     print(f"{title} (Data Types):")
-    data_types_df = df.apply(lambda col: col.map(lambda x: type(x).__name__))
+    data_types_df = df.apply(lambda col: col.map(lambda x: type(x).__name__)).head()
     print(data_types_df)
     print("\n" * 2)
     
     print(f"{title} (Actual Values):")
-    actual_values_df = df
+    actual_values_df = df.head()
     print(actual_values_df)
     print("\n" * 2)
 
@@ -43,83 +44,80 @@ def enforce_data_types(df, field_types):
             df[column] = df[column].astype(dtype)
     return df
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def safe_convert_to_int64(series):
+    logger.info(f"Converting column: {series.name}")
+    try:
+        before = series.copy()
+        converted = series.astype(float).fillna(pd.NA).astype('Int64')
+        after = converted.copy()
+        
+        # Log before and after states for debugging
+        logger.debug(f"Before conversion: {before.head()}\nTypes: {before.apply(type).value_counts()}")
+        logger.debug(f"After conversion: {after.head()}\nTypes: {after.apply(type).value_counts()}")
+        
+        if not (after.apply(type) == pd.Int64Dtype()).all():
+            logger.warning(f"Column {series.name} not fully converted to Int64.")
+        
+        return converted
+    except ValueError as e:
+        logger.error(f"ValueError encountered converting {series.name}: {e}")
+        problematic_rows = series[pd.to_numeric(series, errors='coerce').isna()]
+        logger.error(f"Problematic rows for {series.name}:\n{problematic_rows}")
+        raise
+
 def df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df):
+    pd.options.display.float_format = '{:.1f}'.format
     left_merge_field = 'item_name'  # Only declared once; it remains the "left input" for all merges
 
-    # Print data types before any merge
     print_data_types(main_df, "Before any merge")
     print_actual_data_types(main_df, "Before any merge")
 
-    # Handle missing values before the first merge
-    # main_df = handle_missing_values(main_df, field_types)
-    # home_df = handle_missing_values(home_df, field_types)
+    # Ensure consistent data types before merging
+    main_df = enforce_data_types(main_df, field_types)
+    home_df = enforce_data_types(home_df, field_types)
+    dotbot_df = enforce_data_types(dotbot_df, field_types)
+    dot_info_df = enforce_data_types(dot_info_df, field_types)
 
     # First merge: repo and home
     right_merge_field = 'item_name_hm'
-    main_df = df_merge_2_actual(main_df, home_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    main_df = consolidate_post_merge1(main_df)
+    try:
+        main_df = pd.merge(
+            main_df, home_df,
+            left_on=left_merge_field,
+            right_on=right_merge_field,
+            how='outer'
+        ).copy()
+    except Exception as e:
+        raise RuntimeError(f"Error during first merge: {e}")
 
-    # Manually set the data types after the first merge
-    # main_df = replace_string_blanks(main_df)
-    # main_df = enforce_data_types(main_df, field_types)
+    # Handle missing values and enforce data types
+    main_df = handle_missing_values(main_df, field_types)
+    main_df = enforce_data_types(main_df, field_types)
 
-    # Print data types after corrections
+    # Apply conversion to all relevant columns
+    int64_columns = ['unique_id', 'unique_id_rp', 'unique_id_hm', 'unique_id_di']  # Adjust as necessary
+    for col in int64_columns:
+        if col in main_df.columns:
+            main_df[col] = safe_convert_to_int64(main_df[col])
+
+    # Replace NaN with pd.NA and convert back to Int64
+    for col in int64_columns:
+        if col in main_df.columns:
+            main_df[col] = main_df[col].replace({float('nan'): pd.NA}).astype('Int64')
+
+    # Inspect DataFrame state after the first merge
+    inspect_df(main_df, "first merge")
+
     print_data_types(main_df, "After first merge (repo and home)")
     print_actual_data_types(main_df, "After first merge (repo and home)")
-
-    # Handle missing values before the second merge
-    # dotbot_df = handle_missing_values(dotbot_df, field_types)
-
-    # Second merge: repo+home and dotbot R+H
-    right_merge_field = 'item_name_rp_db'
-    main_df = df_merge_2_actual(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-
-    # Manually set the data types after the second merge
-    main_df = replace_string_blanks(main_df)
-    main_df = enforce_data_types(main_df, field_types)
-
-    # Print data types after corrections
-    print_data_types(main_df, "After second merge (repo+home and dotbot R+H)")
-    print_actual_data_types(main_df, "After second merge (repo+home and dotbot R+H)")
-
-    # Handle missing values before the third merge
-    dot_info_df = handle_missing_values(dot_info_df, field_types)
-
-    # Third merge: repo+home+dotbot and dot_info R+H
-    right_merge_field = 'item_name_rp_di'
-    main_df = df_merge_2_actual(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
-    main_df = consolidate_post_merge3(main_df)
-
-    # Manually set the data types after the third merge
-    main_df = replace_string_blanks(main_df)
-    main_df = enforce_data_types(main_df, field_types)
-
-    # Print data types after corrections
-    print_data_types(main_df, "After third merge (repo+home+dotbot and dot_info R+H)")
-    print_actual_data_types(main_df, "After third merge (repo+home+dotbot and dot_info R+H)")
 
     return main_df
 
 def df_merge_2_actual(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
-    # Perform the merge operation
-    try:
-        merged_dataframe = pd.merge(
-            main_df, input_df,
-            left_on=left_merge_field,
-            right_on=right_merge_field,
-            how=merge_type
-        ).copy()
-
-        # Apply the blank replacement after the merge
-        # merged_dataframe = replace_string_blanks(merged_dataframe)
-
-        # Enforce data types on key columns
-        # merged_dataframe = enforce_data_types(merged_dataframe, field_types)
-
-    except Exception as e:
-        raise RuntimeError(f"Error during merge: {e}")
-    
-    return merged_dataframe
+    pass
 
 def replace_string_blanks(df):
     for column in df.columns:  # Iterates through each column in the DataFrame
@@ -172,3 +170,10 @@ def consolidate_post_merge3(main_df): # MERGE REQUIREMENT: Copies the priority n
 
     main_df['item_name'] = main_df.apply(consolidate, axis=1)
     return main_df
+
+def inspect_df(df, step):
+    logger.info(f"DataFrame state after {step}")
+    logger.info(df.dtypes)
+    for col in df.columns:
+        if 'unique_id' in col:
+            logger.info(f"{col} types: {df[col].apply(type).value_counts()}")
