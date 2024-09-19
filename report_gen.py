@@ -60,16 +60,19 @@ def export_dataframe_to_csv(df, filename, columns=None):
         logging.error(f"Failed to export DataFrame to CSV: {e}")
 
 # SAVE OUTPUTS TO DISK
-def save_outputs(main_df_dict):
+def save_outputs(main_df_dict, config):
     csv_output_path, full_csv_output_path, markdown_output_path = generate_timestamped_output_paths(USER_PATH_CSV, OUTPUT_BASE_NAME)
 
     logging.info(f"Report CSV path: {csv_output_path}")
     logging.info(f"Full CSV path: {full_csv_output_path}")
     logging.info(f"Markdown path: {markdown_output_path}")
 
-    save_markdown(main_df_dict, markdown_output_path)
-    save_report_csv(main_df_dict, csv_output_path)
-    save_full_csv(main_df_dict, full_csv_output_path)
+    if config.get('save_markdown', True):
+        save_markdown(main_df_dict, markdown_output_path)
+    if config.get('save_report_csv', True):
+        save_report_csv(main_df_dict, csv_output_path)
+    if config.get('save_full_csv', True):
+        save_full_csv(main_df_dict, full_csv_output_path)
 
 def save_markdown(main_df_dict, markdown_output_path):
     export_to_markdown(

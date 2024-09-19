@@ -7,57 +7,46 @@ from .db28_merge_update import consolidate_fields
 from .db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def build_report_dataframe(main_df_dict):
-    """Create the report dataframe based on a copy of the full_main_dataframe."""
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
     # Handle NaN values globally
     report_dataframe = handle_nan_values(report_dataframe)
 
-    # Create new target fields
-    report_dataframe['item_name_repo'] = ''
-    report_dataframe['item_type_repo'] = ''
-    report_dataframe['item_name_home'] = ''
-    report_dataframe['item_type_home'] = ''
-
-    report_dataframe['sort_out'] = pd.Series(dtype=field_types['sort_out'])  # Create sort_out column
-    report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
-
-    # Re-apply blank handling to the newly copied fields
-    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
-
-    # Add status fields for tracking matching results and system status
-    report_dataframe['st_docs'] = ''
-    report_dataframe['st_alert'] = ''
-    report_dataframe['dot_struc'] = ''
-    report_dataframe['st_db_all'] = ''
-    report_dataframe['st_misc'] = ''
-
-    # Set data types for the new columns using the field_types dictionary
-    report_dataframe = report_dataframe.astype({
+    # Define new columns and their data types
+    new_columns = {
         'item_name_repo': field_types['item_name_repo'],
         'item_type_repo': field_types['item_type_repo'],
         'item_name_home': field_types['item_name_home'],
         'item_type_home': field_types['item_type_home'],
+        'sort_out': field_types['sort_out'],
         'st_docs': field_types['st_docs'],
         'st_alert': field_types['st_alert'],
         'dot_struc': field_types['dot_struc'],
         'st_db_all': field_types['st_db_all'],
         'st_misc': field_types['st_misc']
-    })
+    }
 
-    # report_dataframe = field_merge_main(report_dataframe) # field merge/consolidation
+    # Create new columns with appropriate data types
+    for column, dtype in new_columns.items():
+        report_dataframe[column] = pd.Series(dtype=dtype)
 
+    # Initialize 'sort_out' column with -1
+    report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
+
+    # Re-apply blank handling to the newly copied fields
+    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
+
+    # Apply field matching and consolidation
     report_dataframe = field_match_master(report_dataframe)
-
-    # Consolidate name, type, and unique_id fields based on the matching logic
     report_dataframe = consolidate_fields(report_dataframe)
-    report_dataframe = filter_no_show_rows(report_dataframe)
+    report_dataframe = sort_filter_report_df(report_dataframe)  # Filter and sort rows
 
-    report_dataframe = reorder_dfr_cols_perm(report_dataframe) # Reorder columns perm
+    report_dataframe = insert_blank_rows(report_dataframe) # Insert blank rows
 
-    report_dataframe = sort_report_df_rows(report_dataframe) # Sort rows permanently
+    report_dataframe = reorder_dfr_cols_perm(report_dataframe)  # Reorder & sort cols perm
 
-    report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
+    # Reorder columns for CLI display
+    report_dataframe = reorder_dfr_cols_for_cli(
         report_dataframe,
         show_all_fields=False,
         show_final_output=True,
@@ -68,9 +57,6 @@ def build_report_dataframe(main_df_dict):
     return report_dataframe
 
 def handle_nan_values(df):
-    """
-    Replace NaN values in the DataFrame with appropriate defaults.
-    """
     # Replace NaN values in string columns with empty strings
     string_columns = df.select_dtypes(include=['object']).columns
     df[string_columns] = df[string_columns].fillna('')
@@ -84,13 +70,49 @@ def handle_nan_values(df):
 
     return df
 
-def filter_no_show_rows(report_dataframe):
-    """Filter out rows where 'no_show_di' is set to True."""
-    return report_dataframe[report_dataframe['no_show_di'] == False].copy()
-
-def sort_report_df_rows(df):
-    """
-    Sort the DataFrame by 'sort_out' and then by 'sort_orig'.
-    """
+def sort_filter_report_df(df):
+    # Filter out rows where 'no_show_di' is set to True
+    df = df[df['no_show_di'] == False].copy()
+    
+    # Sort the DataFrame by 'sort_out' and then by 'sort_orig'
     df = df.sort_values(by=['sort_out', 'sort_orig'], ascending=[True, True])
+    
     return df
+
+def insert_blank_rows(df):
+    # Get unique sort_out values
+    unique_sort_out_values = df['sort_out'].unique()
+    
+    # Create a list to hold the new rows
+    new_rows = []
+    
+    # Iterate through unique sort_out values
+    for i, value in enumerate(unique_sort_out_values):
+        # Get the rows with the current sort_out value
+        group = df[df['sort_out'] == value]
+        
+        # Append the group to the new rows list
+        new_rows.append(group)
+        
+        # Create a blank row with the correct data types
+        blank_row = {}
+        for col in df.columns:
+            if field_types.get(col) == 'string':
+                blank_row[col] = ''
+            elif field_types.get(col) == 'boolean':
+                blank_row[col] = ''
+            elif field_types.get(col) in ['Int64', 'float']:
+                blank_row[col] = ''
+            else:
+                blank_row[col] = ''
+        
+        blank_row = pd.Series(blank_row)
+        
+        # Append the blank row only if it's not the last group
+        if i < len(unique_sort_out_values) - 1:
+            new_rows.append(pd.DataFrame([blank_row]))
+    
+    # Concatenate the new rows into a new DataFrame
+    new_df = pd.concat(new_rows, ignore_index=True)
+    
+    return new_df

@@ -101,7 +101,7 @@ def print_dataframe_section(df, columns, title):
     print(df[columns])
     print("\n" * 2)
 
-    print(f"{title} (Data Types):")
-    data_types_df = df[columns].apply(lambda col: col.apply(lambda x: type(x).__name__))
-    print(data_types_df)
-    print("\n" * 2)
+    # print(f"{title} (Data Types):")
+    # data_types_df = df[columns].apply(lambda col: col.apply(lambda x: type(x).__name__))
+    # print(data_types_df)
+    # print("\n" * 2)

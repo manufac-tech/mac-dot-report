@@ -52,8 +52,7 @@ from .db14_org import (
 from .db16_make_df_r import (
     build_report_dataframe,
     handle_nan_values,
-    filter_no_show_rows,
-    sort_report_df_rows
+    sort_filter_report_df  # Updated import
 )
 from .db26_merge_match1 import (
     field_match_master,
@@ -91,9 +90,9 @@ __all__ = [
     "correct_and_validate_dot_info_df",
     "load_di_dataframe",
     "get_next_unique_id",
-    "df_merge_2_actual",
+    "df_merge",
     "replace_string_blanks",
-    "df_merge_1_setup",
+    "df_merge_sequence",
     "consolidate_post_merge1",
     "consolidate_post_merge3",
     "print_main_df_build_hist",
@@ -103,8 +102,7 @@ __all__ = [
     "reorder_dfr_cols_for_cli",
     "build_report_dataframe",
     "handle_nan_values",
-    "filter_no_show_rows",
-    "sort_report_df_rows",
+    "sort_filter_report_df",  # Updated export
     "field_match_master",
     "dot_structure_status",
     "subsystem_docs",
