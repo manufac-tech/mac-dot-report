@@ -1,10 +1,10 @@
 import pandas as pd
 
 # from .db01_setup import build_main_dataframe
-from .db14_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
+from dbase1_main.db14_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
 from .db26_merge_match1 import field_match_master
 from .db28_merge_update import consolidate_fields
-from .db03_dtype_dict import field_types  # Import the field_types dictionary
+from dbase1_main.db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def build_report_dataframe(main_df_dict):
     report_dataframe = main_df_dict['full_main_dataframe'].copy()

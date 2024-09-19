@@ -1,5 +1,5 @@
 import logging
-from dbase.db01_setup import build_full_output_dict
+from dbase1_main.db01_setup import build_full_output_dict
 from report_gen import save_outputs
 
 def main():
@@ -7,9 +7,9 @@ def main():
 
     # Configuration to control which outputs to save
     save_config = {
-        # 'save_markdown': True,
+        'save_markdown': False,
         'save_report_csv': True,
-        # 'save_full_csv': True
+        'save_full_csv': False
     }
 
     save_outputs(main_df_dict, save_config)

@@ -3,9 +3,9 @@ import logging
 import pandas as pd
 import fnmatch
 
-from .db11_merge import get_next_unique_id
-from .db04_get_type import determine_item_type
-from .db03_dtype_dict import field_types
+from dbase1_main.db11_merge import get_next_unique_id
+from dbase1_main.db04_get_type import determine_item_type
+from dbase1_main.db03_dtype_dict import field_types
 
 def load_rp_dataframe():
     repo_items = []

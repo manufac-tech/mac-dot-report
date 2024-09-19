@@ -2,9 +2,9 @@ import os
 import logging
 import pandas as pd
 
-from .db11_merge import get_next_unique_id
-from .db04_get_type import determine_item_type
-from .db03_dtype_dict import field_types  # Import the field_types dictionary
+from dbase1_main.db11_merge import get_next_unique_id
+from dbase1_main.db04_get_type import determine_item_type
+from dbase1_main.db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def load_hm_dataframe():
     dot_items = []
