@@ -8,7 +8,7 @@ def main():
     # Configuration to control which outputs to save
     save_config = {
         'save_markdown': False,
-        'save_report_csv': True,
+        'save_report_csv': False,
         'save_full_csv': False
     }
 

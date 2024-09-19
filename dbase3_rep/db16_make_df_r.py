@@ -74,8 +74,14 @@ def sort_filter_report_df(df):
     # Filter out rows where 'no_show_di' is set to True
     df = df[df['no_show_di'] == False].copy()
     
-    # Sort the DataFrame by 'sort_out' and then by 'sort_orig'
-    df = df.sort_values(by=['sort_out', 'sort_orig'], ascending=[True, True])
+    # Create a new column for the secondary sort key
+    df['secondary_sort_key'] = df.apply(lambda row: row['sort_orig'] if row['sort_out'] == 30 else row['dot_struc_di'], axis=1)
+    
+    # Sort the DataFrame by 'sort_out' and then by the new secondary sort key
+    df = df.sort_values(by=['sort_out', 'secondary_sort_key'], ascending=[True, True])
+    
+    # Drop the temporary secondary sort key column
+    df = df.drop(columns=['secondary_sort_key'])
     
     return df
 
