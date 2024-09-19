@@ -34,9 +34,13 @@ from .db11_merge import (
     get_next_unique_id,
     df_merge,
     replace_string_blanks,
-    df_merge_sequence,
+    df_merge_sequence
+)
+
+from .db12_merge_sup import (
     consolidate_post_merge1,
-    consolidate_post_merge3
+    consolidate_post_merge3,
+    print_main_df_build_hist
 )
 
 from .db14_org import (
@@ -92,6 +96,7 @@ __all__ = [
     "df_merge_1_setup",
     "consolidate_post_merge1",
     "consolidate_post_merge3",
+    "print_main_df_build_hist",
     "apply_output_grouping",
     "reorder_dfm_cols_perm",
     "reorder_dfr_cols_perm",
