@@ -68,83 +68,64 @@ def safe_convert_to_int64(series):
         logger.error(f"Problematic rows for {series.name}:\n{problematic_rows}")
         raise
 
-def df_merge_1_setup(main_df, home_df, dotbot_df, dot_info_df, print_df):
-    pd.options.display.float_format = '{:.1f}'.format
-    left_merge_field = 'item_name'  # Only declared once; it remains the "left input" for all merges
-
-    print_data_types(main_df, "Before any merge")
-    print_actual_data_types(main_df, "Before any merge")
-
-    # Ensure consistent data types before merging
-    main_df = enforce_data_types(main_df, field_types)
-    home_df = enforce_data_types(home_df, field_types)
-    dotbot_df = enforce_data_types(dotbot_df, field_types)
-    dot_info_df = enforce_data_types(dot_info_df, field_types)
+def df_merge_sequence(main_df, home_df, dotbot_df, dot_info_df, print_df):
+    left_merge_field = 'item_name' # Only declared once; it remains the "left input" for all merges
 
     # First merge: repo and home
     right_merge_field = 'item_name_hm'
-    try:
-        main_df = pd.merge(
-            main_df, home_df,
-            left_on=left_merge_field,
-            right_on=right_merge_field,
-            how='outer'
-        ).copy()
-    except Exception as e:
-        raise RuntimeError(f"Error during first merge: {e}")
+    main_df = df_merge(main_df, home_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    main_df = consolidate_post_merge1(main_df)
 
-    # Handle missing values and enforce data types
-    main_df = handle_missing_values(main_df, field_types)
-    main_df = enforce_data_types(main_df, field_types)
+    # Second merge: repo+home and dotbot R+H
+    right_merge_field = 'item_name_rp_db'
+    main_df = df_merge(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
 
-    # Apply conversion to all relevant columns
-    int64_columns = ['unique_id', 'unique_id_rp', 'unique_id_hm', 'unique_id_di']  # Adjust as necessary
-    for col in int64_columns:
-        if col in main_df.columns:
-            main_df[col] = safe_convert_to_int64(main_df[col])
-
-    # Replace NaN with pd.NA and convert back to Int64
-    for col in int64_columns:
-        if col in main_df.columns:
-            main_df[col] = main_df[col].replace({float('nan'): pd.NA}).astype('Int64')
-
-    # Inspect DataFrame state after the first merge
-    inspect_df(main_df, "first merge")
-
-    print_data_types(main_df, "After first merge (repo and home)")
-    print_actual_data_types(main_df, "After first merge (repo and home)")
+    # Third merge: repo+home+dotbot and dot_info R+H
+    right_merge_field = 'item_name_rp_di'
+    main_df = df_merge(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    main_df = consolidate_post_merge3(main_df)
 
     return main_df
 
-def df_merge_2_actual(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
-    pass
+def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
+    main_df_build_hist = {"df1": main_df.copy(), "df2": input_df.copy()}
+
+    try:
+        merged_dataframe = pd.merge(
+            main_df, input_df,
+            left_on=left_merge_field,
+            right_on=right_merge_field,
+            how=merge_type
+        ).copy()
+
+        merged_dataframe = replace_string_blanks(merged_dataframe)
+
+        main_df_build_hist["df3"] = merged_dataframe.copy()
+        # print_main_df_build_hist(main_df_build_hist) # Print the build history
+
+    except Exception as e:
+        raise RuntimeError(f"Error during merge: {e}")
+    
+    return merged_dataframe
+
 
 def replace_string_blanks(df):
-    for column in df.columns:  # Iterates through each column in the DataFrame
-        if column in field_types:  # Checks if the column is in the field_types dictionary
-            dtype = field_types[column]  # Retrieves the expected data type for the column
-            if dtype == 'string':  # Checks if the data type is 'string'
-                # Convert everything to string to ensure we can replace all forms of NA
-                df[column] = df[column].astype(str)
-                # Replace all variations of NA, including case-insensitive matches
-                df[column] = df[column].str.replace(r'(?i)^<na>$', '', regex=True)
-                df[column] = df[column].str.replace(r'(?i)^nan$', '', regex=True)
-                df[column] = df[column].str.replace(r'(?i)^none$', '', regex=True)
-                # Fill remaining NaN values with empty string
-                df[column] = df[column].fillna('')
-            elif dtype == 'bool':
-                # Fill NaN values in boolean columns with False
-                df[column] = df[column].fillna(False)
-            elif dtype == 'int':
-                # Fill NaN values in integer columns with 0
-                df[column] = df[column].fillna(0).astype(int)
-            elif dtype == 'float':
-                # Fill NaN values in float columns with 0.0
-                df[column] = df[column].fillna(0.0).astype(float)
-            elif dtype == 'Int64':
-                # Convert to float first to handle NaN, then to Int64
-                df[column] = df[column].astype(float).fillna(pd.NA).astype('Int64')
-            # Add more data types as needed
+    for column in df.columns:
+        # Handle string columns
+        if pd.api.types.is_string_dtype(df[column]):
+            df[column] = df[column].astype(str)
+            # Replace variations of NA, including case-insensitive matches
+            df[column] = df[column].str.replace(r'(?i)^<na>$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^nan$', '', regex=True)
+            df[column] = df[column].str.replace(r'(?i)^none$', '', regex=True)
+            # Fill remaining NaN values with empty string
+            df[column] = df[column].fillna('')
+
+        # Handle Int64 columns
+        elif pd.api.types.is_integer_dtype(df[column]) or pd.api.types.is_dtype_equal(df[column].dtype, "Int64"):
+            # Replace NaN or pd.NA with 0 for Int64 columns
+            df[column] = df[column].fillna(0).astype('Int64')
+
     return df
 
 def consolidate_post_merge1(main_df): # MERGE REQUIREMENT: Copies the priority name to item_name
@@ -171,9 +152,31 @@ def consolidate_post_merge3(main_df): # MERGE REQUIREMENT: Copies the priority n
     main_df['item_name'] = main_df.apply(consolidate, axis=1)
     return main_df
 
-def inspect_df(df, step):
-    logger.info(f"DataFrame state after {step}")
-    logger.info(df.dtypes)
-    for col in df.columns:
-        if 'unique_id' in col:
-            logger.info(f"{col} types: {df[col].apply(type).value_counts()}")
+def print_main_df_build_hist(df_dict):
+    # Initialize a static counter
+    if not hasattr(print_main_df_build_hist, "merge_counter"):
+        print_main_df_build_hist.merge_counter = 1
+
+    for key, df in df_dict.items():
+        if key == "df1":
+            value_title = f"🟩 Main DataFrame (Before Merge) - Merge {print_main_df_build_hist.merge_counter} - First 5 Rows"
+            type_title = f"Main DataFrame (Before Merge) - Merge {print_main_df_build_hist.merge_counter} - Data Types (First 5 Rows)"
+        elif key == "df2":
+            value_title = f"Input DataFrame (Before Merge) - Merge {print_main_df_build_hist.merge_counter} - First 5 Rows"
+            type_title = f"Input DataFrame (Before Merge) - Merge {print_main_df_build_hist.merge_counter} - Data Types (First 5 Rows)"
+        elif key == "df3":
+            value_title = f"Merged DataFrame (After Merge) - Merge {print_main_df_build_hist.merge_counter} - First 5 Rows"
+            type_title = f"Merged DataFrame (After Merge) - Merge {print_main_df_build_hist.merge_counter} - Data Types (First 5 Rows)"
+
+        print(f"{value_title}:")
+        # print(df.head(5))
+        print(df)
+        print("\n")
+
+        print(f"{type_title}:")
+        # print(df.dtypes.head(5))
+        print(df.dtypes)
+        print("\n" * 2)
+
+    # Increment the counter after processing the DataFrames
+    print_main_df_build_hist.merge_counter += 1
