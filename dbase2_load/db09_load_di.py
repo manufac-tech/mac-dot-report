@@ -11,7 +11,7 @@ def correct_and_validate_dot_info_df(dot_info_df):
 
 def load_di_dataframe():
     try:
-        dot_info_file_path = "./data/dot-info.csv"
+        dot_info_file_path = "./data/dotrep_config.csv"
         
         # Load the CSV with explicit data types for the columns using the field_types dictionary
         dot_info_df = pd.read_csv(dot_info_file_path, dtype={

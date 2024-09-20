@@ -6,7 +6,7 @@ from .db02_make_df_m import (
     build_main_dataframe
 )
 
-from .db03_dtype_dict import field_types
+from .db03_dtype_dict import field_types, field_types_with_defaults
 
 from .db04_get_type import (
     determine_item_type,
@@ -45,6 +45,7 @@ __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
     "field_types",
+    field_types_with_defaults,
     "determine_item_type",
     "is_symlink",
     "is_alias",

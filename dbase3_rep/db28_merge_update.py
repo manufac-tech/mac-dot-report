@@ -11,6 +11,11 @@ def consolidate_fields(report_dataframe):
     # Get the conditions and corresponding actions
     conditions_actions = get_conditions_actions(report_dataframe)
 
+    # blank_symbol = 'x'
+    # blank_symbol = '|____'
+    # blank_symbol = '_____'
+    # blank_symbol = ''
+    blank_symbol = '-'
     # Apply the conditions and actions
     for key, value in conditions_actions.items():
         condition = value['condition']
@@ -21,8 +26,7 @@ def consolidate_fields(report_dataframe):
             elif source_field is not None:
                 report_dataframe.loc[condition, target_field] = report_dataframe[source_field]
             else:
-                report_dataframe.loc[condition, target_field] = None
-        # report_dataframe.loc[condition, 'st_misc'] = 'x'  # Mark as updated with correct data
+                report_dataframe.loc[condition, target_field] = blank_symbol
 
     # Call the new function to remove unnecessary columns
     report_dataframe = remove_consolidated_columns(report_dataframe)
@@ -41,6 +45,17 @@ def get_conditions_actions(report_dataframe):
                 'item_type_home': 'item_type_hm',
                 'unique_id': 'unique_id_rp',
                 'sort_out': 30
+            }
+        },
+        'Full Match Not Tracked by Git': {
+            'condition': (report_dataframe['dot_struc'] == 'rp>hm') & (report_dataframe['git_rp'] == False),
+            'actions': {
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'unique_id': 'unique_id_rp',
+                'sort_out': 35
             }
         },
                 'hm_only': {
@@ -99,7 +114,7 @@ def get_conditions_actions(report_dataframe):
             }
         },
 
-        'In Doc Not FS (dot-info.csv)': {
+        'In Doc Not FS (dotrep_config.csv)': {
             'condition': (report_dataframe['st_alert'] == 'In Doc Not FS') & report_dataframe['item_name_rp_di'].notna(),
             'actions': {
                 'item_name_repo': 'item_name_rp_di',

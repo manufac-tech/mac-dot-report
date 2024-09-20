@@ -1,5 +1,5 @@
 item_name_rp_di,item_name_hm_di,dot_struc_di,item_type_rp_di,item_type_hm_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,no_show_di
-._dotfiles,._dotfiles,rp>hm,folder,folder_sym,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,FALSE
+._dotfiles,._dotfiles,hm_only,folder,folder_sym,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,FALSE
 .zshrc,.zshrc,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zsh_history,.zsh_history,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .zshrc_aliases,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
@@ -7,10 +7,10 @@ item_name_rp_di,item_name_hm_di,dot_struc_di,item_type_rp_di,item_type_hm_di,cat
 .zshrc_themes_omp,.zshrc_themes_omp,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_autocomplete1,.zshrc_autocomplete1,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zprofile,.zprofile,rp>hm,file,file_sym,term,Terminal,zsh profile file,zsh other,FALSE
-.zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,rp>hm,file,file_sym,term,Terminal,zsh completion dump file,zsh other,FALSE
 .zsh_sessions,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
-.zcompdump,.zcompdump,rp>hm,file,file_sym,term,Terminal,,zsh other,FALSE
-.zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,rp>hm,file,file_sym,term,Terminal,,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,hm_only,file,file_sym,term,Terminal,zsh completion dump file,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,hm_only,file,file_sym,term,Terminal,,zsh other,FALSE
+.zcompdump,.zcompdump,hm_only,file,file_sym,term,Terminal,,zsh other,FALSE
 .oh-my-posh,.oh-my-posh,rp>hm,folder,folder_sym,term,Terminal,,zsh themes,FALSE
 .bashrc,.bashrc,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
 .bash_history,.bash_history,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
@@ -62,7 +62,7 @@ item_name_rp_di,item_name_hm_di,dot_struc_di,item_type_rp_di,item_type_hm_di,cat
 .local,.local,rp>hm,folder,folder_sym,sys,System,,general,FALSE
 .IdentityService,.IdentityService,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
 .DS_Store,.DS_Store,rp>hm,file,file_sym,sys,System,,macos,TRUE
-.Trash,.Trash,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
+.Trash,.Trash,hm_only,folder,folder_sym,sys,System,,macos,TRUE
 .CFUserTextEncoding,.CFUserTextEncoding,rp>hm,file,file_sym,sys,System,macOS - stores the user’s preferred text encoding settings,macos,FALSE
 .netrc,.netrc,rp>hm,file,file_sym,sys,System,Unix file stores login & init info for connecting to remote systems,unix,FALSE
 .thumbnails,.thumbnails,rp>hm,folder,folder_sym,sys,System,Thumbnail cache,unix,FALSE
