@@ -1,5 +1,34 @@
 import pandas as pd
 
+from .db28_rpt_mg3 import write_st_alert_value
+
+def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home):
+    """
+    Check for items with no filesystem match by name or type.
+    """
+    # NO FS MATCH-N (Name) logic
+    no_fs_match_n = (
+        (report_dataframe['item_name_rp_di'] != '') & (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] == '')
+    ) | (
+        (report_dataframe['item_name_hm_di'] != '') & (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] == '')
+    )
+    report_dataframe.loc[no_fs_match_n, 'dot_struc'] = 'no_fs_N'
+
+    # NO FS MATCH-T (Type) logic
+    name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
+    type_mismatch = (
+        (report_dataframe['item_type_rp'].isin(valid_types_repo['file']) & (report_dataframe['item_type_hm'] != valid_types_home['file'])) |
+        (report_dataframe['item_type_rp'].isin(valid_types_repo['folder']) & (report_dataframe['item_type_hm'] != valid_types_home['folder']))
+    )
+    no_fs_match_t = name_match & type_mismatch
+    report_dataframe.loc[no_fs_match_t, 'dot_struc'] = 'no_fs_T'
+
+    # Update st_alert field with "FS-Doc Mismatch" for no_fs_match_n and no_fs_match_t
+    for index in report_dataframe[no_fs_match_n | no_fs_match_t].index:
+        report_dataframe = write_st_alert_value(report_dataframe, index, 'FS-Doc Mismatch')
+
+    return report_dataframe
+
 def subsystem_docs(report_dataframe):
     for index, row in report_dataframe.iterrows():
         if (row['item_name_rp_di'] == row['item_name_rp_db'] and
@@ -33,47 +62,30 @@ def subsystem_db_all(report_dataframe):
     return report_dataframe['st_db_all']
 
 def alert_sym_overwrite(report_dataframe):
-    """
-    Function to check for SymLink Overwrite: when a file/folder in the home directory 
-    has the same name as an item in the repo but is not a symlink.
-    Updates 'st_alert' with 'SymLink Overwrite' based on the conditions.
-    """
-
     # Check if item names match between repo and home
     name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
 
     # Check if types differ in a way that suggests a symlink has been overwritten
-    # Expect home type to be file_sym or folder_sym and repo type to be file or folder
     type_mismatch = (
         (report_dataframe['item_type_rp'] == 'file') & (report_dataframe['item_type_hm'] != 'file_sym')
     ) | (
         (report_dataframe['item_type_rp'] == 'folder') & (report_dataframe['item_type_hm'] != 'folder_sym')
     )
 
-    # Set 'SymLink Overwrite' if names match but types differ as described above
-    report_dataframe.loc[name_match & type_mismatch, 'st_alert'] = 'SymLink Overwrite'
-    # report_dataframe.loc[name_match & type_mismatch, 'dot_struc'] = 'no_fs_T'
+    # Append 'SymLink Overwrite' if names match but types differ as described above
+    for index in report_dataframe[name_match & type_mismatch].index:
+        report_dataframe = write_st_alert_value(report_dataframe, index, 'SymLink Overwrite')
 
-    return report_dataframe['st_alert']
-
-    import pandas as pd
+    return report_dataframe
 
 def alert_in_doc_not_fs(report_dataframe):
-    """
-    Function to check for entries that exist in the documentation (YAML or CSV)
-    but do not exist in the filesystem.
-    Updates 'st_alert' with 'In Doc Not FS' based on the conditions.
-    """
-
-    # Check for entries that exist in the documentation but not in the filesystem
-    in_doc_not_fs = (
-        (report_dataframe['item_name_rp_di'] != '') & (report_dataframe['item_name_rp'] == '') & (report_dataframe['item_name_hm'] == '')
-    ) | (
-        (report_dataframe['item_name_hm_di'] != '') & (report_dataframe['item_name_rp'] == '') & (report_dataframe['item_name_hm'] == '')
-    )
-
-    # Set 'In Doc Not FS' if the condition is met
-    report_dataframe.loc[in_doc_not_fs, 'st_alert'] = 'In Doc Not FS'
-    report_dataframe.loc[in_doc_not_fs, 'dot_struc'] = 'no_fs_N'
-
-    return report_dataframe['st_alert']
+    condition = (report_dataframe['item_name_hm'].notna()) & (report_dataframe['item_name_rp'].isna())
+    
+    # Debug: Print the condition results
+    # print("Condition (item_name_hm.notna() & item_name_rp.isna()):")
+    # print(condition)
+    
+    for index in report_dataframe[condition].index:
+        report_dataframe = write_st_alert_value(report_dataframe, index, 'New Home Item')
+    
+    return report_dataframe

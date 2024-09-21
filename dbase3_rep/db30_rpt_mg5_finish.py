@@ -1,6 +1,6 @@
 import pandas as pd
 
-import pandas as pd
+from .db31_rpt_mg6_fsup import check_repo_only, check_home_only, remove_consolidated_columns
 
 def consolidate_fields(report_dataframe):
     """
@@ -14,8 +14,8 @@ def consolidate_fields(report_dataframe):
     # blank_symbol = 'x'
     # blank_symbol = '|____'
     # blank_symbol = '_____'
-    # blank_symbol = ''
-    blank_symbol = '-'
+    blank_symbol = ''
+    # blank_symbol = '-'
     # Apply the conditions and actions
     for key, value in conditions_actions.items():
         condition = value['condition']
@@ -33,8 +33,7 @@ def consolidate_fields(report_dataframe):
 
     return report_dataframe
 
-
-def get_conditions_actions(report_dataframe):
+def get_conditions_actions(report_dataframe): # Match status read from status fields, and acted upon
     return {
         'Full Match': {
             'condition': report_dataframe['dot_struc'] == 'rp>hm',
@@ -58,7 +57,7 @@ def get_conditions_actions(report_dataframe):
                 'sort_out': 35
             }
         },
-                'hm_only': {
+        'Home Only': {
             'condition': report_dataframe['dot_struc'] == 'hm_only',
             'actions': {
                 'item_name_home': 'item_name_hm',
@@ -69,7 +68,7 @@ def get_conditions_actions(report_dataframe):
                 'sort_out': 11
             }
         },
-        'rp_only': {
+        'Repo Only': {
             'condition': report_dataframe['dot_struc'] == 'rp_only',
             'actions': {
                 'item_name_repo': 'item_name_rp',
@@ -103,44 +102,68 @@ def get_conditions_actions(report_dataframe):
             }
         },
         'In Doc Not FS (dotbot.yaml)': {
-            'condition': (report_dataframe['st_alert'] == 'In Doc Not FS') & report_dataframe['item_name_rp_db'].notna(),
+            'condition': report_dataframe['st_alert'] == 'In Doc Not FS (dotbot.yaml)',
             'actions': {
-                'item_name_repo': 'item_name_rp_db',
-                'item_type_repo': 'item_type_rp_db',
-                'item_name_home': 'item_name_hm_db',
-                'item_type_home': 'item_type_hm_db',
-                'unique_id': 'unique_id_db',
-                'sort_out': 21
-            }
-        },
-
-        'In Doc Not FS (dotrep_config.csv)': {
-            'condition': (report_dataframe['st_alert'] == 'In Doc Not FS') & report_dataframe['item_name_rp_di'].notna(),
-            'actions': {
-                'item_name_repo': 'item_name_rp_di',
-                'item_type_repo': 'item_type_rp_di',
-                'item_name_home': 'item_name_hm_di',
-                'item_type_home': 'item_type_hm_di',
-                'unique_id': 'unique_id_di',
-                'sort_out': 22
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': None,
+                'item_type_home': None,
+                'unique_id': 'unique_id_rp',
+                'sort_out': 25
             }
         }
     }
 
-def remove_consolidated_columns(report_dataframe):
-    # Remove extra unique_id fields
-    columns_to_remove = ['unique_id_rp', 'unique_id_hm', 'unique_id_db', 'unique_id_di']
-    columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
-    report_dataframe.drop(columns=columns_to_remove, inplace=True)
 
-    # Remove source fields for name and type
-    columns_to_remove = [
-        'item_name_rp', 'item_type_rp', 'item_name_hm', 'item_type_hm',
-        'item_name_rp_db', 'item_type_rp_db', 'item_name_hm_db', 'item_type_hm_db',
-        'item_name_rp_di', 'item_type_rp_di', 'item_name_hm_di', 'item_type_hm_di',
-        'item_name', 'item_type'
-    ]
-    columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
-    report_dataframe.drop(columns=columns_to_remove, inplace=True)
+# def check_repo_only(report_dataframe):
+#     # Repo-only logic
+#     repo_only_condition = (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != '')
+#     report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp_only'
+    
+#     # Debug print for repo-only condition
+#     print("🟨 Repo-only items:")
+#     print(report_dataframe[repo_only_condition][['item_name_hm', 'item_name_rp', 'dot_struc']])
+    
+#     # Update st_alert field for repo-only items
+#     report_dataframe.loc[repo_only_condition, 'st_alert'] = 'Repo Only'
+    
+#     return report_dataframe
 
-    return report_dataframe
+# def check_home_only(report_dataframe):
+#     # Home-only logic
+#     home_only_condition = (report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == '')
+#     report_dataframe.loc[home_only_condition, 'dot_struc'] = 'hm_only'
+    
+#     # Debug print for home-only condition
+#     print("Home-only items:")
+#     print(report_dataframe[home_only_condition][['item_name_hm', 'item_name_rp', 'dot_struc']])
+    
+#     # Update st_alert field for home-only items
+#     for index, row in report_dataframe[home_only_condition].iterrows():
+#         if ((row['item_name_hm'] == row['item_name_hm_di']) and 
+#             (row['item_type_hm'] == row['item_type_hm_di'])):
+#             report_dataframe.at[index, 'st_alert'] = 'Home Only'
+#         else:
+#             report_dataframe.at[index, 'st_alert'] = 'New Home Item'
+    
+#     return report_dataframe
+
+    
+
+# def remove_consolidated_columns(report_dataframe):
+#     # Remove extra unique_id fields
+#     columns_to_remove = ['unique_id_rp', 'unique_id_hm', 'unique_id_db', 'unique_id_di']
+#     columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
+#     report_dataframe.drop(columns=columns_to_remove, inplace=True)
+
+#     # Remove source fields for name and type
+#     columns_to_remove = [
+#         'item_name_rp', 'item_type_rp', 'item_name_hm', 'item_type_hm',
+#         'item_name_rp_db', 'item_type_rp_db', 'item_name_hm_db', 'item_type_hm_db',
+#         'item_name_rp_di', 'item_type_rp_di', 'item_name_hm_di', 'item_type_hm_di',
+#         'item_name', 'item_type'
+#     ]
+#     columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
+#     report_dataframe.drop(columns=columns_to_remove, inplace=True)
+
+#     return report_dataframe

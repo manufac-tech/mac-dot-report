@@ -39,7 +39,7 @@ from .db14_org import (
     reorder_dfr_cols_for_cli,
 )
 
-from .db30_debug import print_debug_info
+from .db50_debug import print_debug_info
 
 __all__ = [
     "build_full_output_dict",

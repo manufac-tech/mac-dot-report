@@ -40,13 +40,13 @@ def print_main_df_build_hist(df_dict):
             type_title = f"Merged DataFrame (After Merge) - Merge {print_main_df_build_hist.merge_counter} - Data Types (First 5 Rows)"
 
         print(f"{value_title}:")
-        print(df.head(5))
-        # print(df)
+        # print(df.head(5))
+        print(df)
         print("\n")
 
         print(f"{type_title}:")
-        print(df.dtypes.head(5))
-        # print(df.dtypes)
+        # print(df.dtypes.head(5))
+        print(df.dtypes)
         print("\n" * 2)
 
     # Increment the counter after processing the DataFrames

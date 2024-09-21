@@ -8,6 +8,7 @@
     "requirements.txt": true,
     "dbase3_rep/__pycache__": true,
     "dbase2_load/__pycache__": true,
-    "dbase1_main/__pycache__": true
+    "dbase1_main/__pycache__": true,
+    "README.md": true
   }
 }

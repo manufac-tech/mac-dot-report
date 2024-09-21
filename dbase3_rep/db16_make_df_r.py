@@ -1,9 +1,9 @@
 import pandas as pd
 
-# from .db01_setup import build_main_dataframe
 from dbase1_main.db14_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
-from .db26_merge_match1 import field_match_master
-from .db28_merge_update import consolidate_fields
+from .db17_make_df_r_sup import insert_blank_rows
+from .db26_rpt_mg1_match import field_match_master
+from .db30_rpt_mg5_finish import consolidate_fields
 from dbase1_main.db03_dtype_dict import field_types, field_types_with_defaults
 
 def build_report_dataframe(main_df_dict):
@@ -60,7 +60,7 @@ def build_report_dataframe(main_df_dict):
 def handle_nan_values(df):
     # Replace NaN values in string columns with empty strings
     string_columns = df.select_dtypes(include=['object', 'string']).columns
-    df[string_columns] = df[string_columns].fillna('-')
+    df[string_columns] = df[string_columns].fillna('')
 
     # Replace NaN values in numeric columns with 0 or another appropriate value
     numeric_columns = df.select_dtypes(include=['number']).columns
@@ -72,8 +72,7 @@ def handle_nan_values(df):
     return df
 
 def sort_filter_report_df(df):
-    # Filter out rows where 'no_show_di' is set to True
-    df = df[df['no_show_di'] == False].copy()
+    # df = df[df['no_show_di'] == False].copy()  # Filter out rows where 'no_show_di' is set to True
     
     # Create a new column for the secondary sort key based on git_rp
     df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
@@ -89,40 +88,3 @@ def sort_filter_report_df(df):
     
     return df
 
-def insert_blank_rows(df):
-    # Get unique sort_out values
-    unique_sort_out_values = df['sort_out'].unique()
-    
-    # Create a list to hold the new rows
-    new_rows = []
-    
-    # Iterate through unique sort_out values
-    for i, value in enumerate(unique_sort_out_values):
-        # Get the rows with the current sort_out value
-        group = df[df['sort_out'] == value]
-        
-        # Append the group to the new rows list
-        new_rows.append(group)
-        
-        # Create a blank row with the correct data types
-        blank_row = {}
-        for col in df.columns:
-            if field_types.get(col) == 'string':
-                blank_row[col] = ''
-            elif field_types.get(col) == 'boolean':
-                blank_row[col] = ''
-            elif field_types.get(col) in ['Int64', 'float']:
-                blank_row[col] = ''
-            else:
-                blank_row[col] = ''
-        
-        blank_row = pd.Series(blank_row)
-        
-        # Append the blank row only if it's not the last group
-        if i < len(unique_sort_out_values) - 1:
-            new_rows.append(pd.DataFrame([blank_row]))
-    
-    # Concatenate the new rows into a new DataFrame
-    new_df = pd.concat(new_rows, ignore_index=True)
-    
-    return new_df
