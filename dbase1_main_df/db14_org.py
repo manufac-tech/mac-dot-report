@@ -57,14 +57,14 @@ def reorder_dfr_cols_perm(df):
     
     return df
 
-def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_output, show_field_merge, show_field_merge_dicts):
+def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields, show_status_fields):
     # PROVIDES DATAFRAME FIELD _GROUPS_ TO DISPLAY IN CLI W/O EXCEEDING WIDTH
     
     # All Fields Group
     all_fields_columns = report_dataframe.columns.tolist()
 
     # Final Output Group
-    final_output_columns = [
+    regular_field_columns = [
         # 'unique_id',
         'st_alert',
         'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
@@ -79,22 +79,23 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_final_outpu
     ]
 
     # Field Merge Group
-    field_merge_columns = [
+    status_field_columns = [
+        'item_name_repo', 'item_name_home',
         'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'dot_struc',
         'sort_out', 'sort_orig'
     ]
 
-    # Display All Fields Section
+    # Display Complete Report_Dataframe
     if show_all_fields:
-        print_dataframe_section(report_dataframe, all_fields_columns, "All Fields Group")
+        print_dataframe_section(report_dataframe, all_fields_columns, "Report_Dataframe, Complete")
 
-    # Display Final Output Section
-    if show_final_output:
-        print_dataframe_section(report_dataframe, final_output_columns, "Final Output Group")
+    # Display Report_Dataframe
+    if show_main_fields:
+        print_dataframe_section(report_dataframe, regular_field_columns, "Report_Dataframe")
 
-    # Display Field Merge Section
-    if show_field_merge:
-        print_dataframe_section(report_dataframe, field_merge_columns, "Field Merge Group")
+    # Display Report_Dataframe Status Fields
+    if show_status_fields:
+        print_dataframe_section(report_dataframe, status_field_columns, "Report_Dataframe Merge Status Fields")
 
     # Return reordered DataFrame if needed
     return report_dataframe

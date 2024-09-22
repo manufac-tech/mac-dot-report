@@ -2,9 +2,9 @@ import os
 import logging
 import pandas as pd
 
-from dbase1_main.db11_merge import get_next_unique_id
-from dbase1_main.db04_get_type import determine_item_type
-from dbase1_main.db03_dtype_dict import field_types  # Import the field_types dictionary
+from dbase1_main_df.db11_merge import get_next_unique_id
+from dbase1_main_df.db04_get_type import determine_item_type
+from dbase1_main_df.db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def load_hm_dataframe():
     dot_items = []
@@ -30,8 +30,8 @@ def load_hm_dataframe():
     df["unique_id_hm"] = df["unique_id_hm"].astype(field_types["unique_id_hm"])
 
     # Toggle output directly within the function
-    show_output = False  # Change to False to disable output
-    show_full_df = False  # Change to True to show the full DataFrame
+    show_output = True  # Change to False to disable output
+    show_full_df = True  # Change to True to show the full DataFrame
 
     if show_output:
         if show_full_df:

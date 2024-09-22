@@ -1,15 +1,9 @@
 import pandas as pd
 
 def check_repo_only(report_dataframe):
-    # Repo-only logic
     repo_only_condition = (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != '')
     report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp_only'
     
-    # Debug print for repo-only condition
-    print("🟨 Repo-only items:")
-    print(report_dataframe[repo_only_condition][['item_name_hm', 'item_name_rp', 'dot_struc']])
-    
-    # Update st_alert field for repo-only items
     report_dataframe.loc[repo_only_condition, 'st_alert'] = 'Repo Only'
     
     return report_dataframe

@@ -1,8 +1,8 @@
 import os
 import logging
 import pandas as pd
-from dbase1_main.db11_merge import get_next_unique_id
-from dbase1_main.db03_dtype_dict import field_types  # Import the field_types dictionary
+from dbase1_main_df.db11_merge import get_next_unique_id
+from dbase1_main_df.db03_dtype_dict import field_types  # Import the field_types dictionary
 
 def correct_and_validate_dot_info_df(dot_info_df):
     # Correct values: Replace NaN with empty strings in 'comment_di' field
