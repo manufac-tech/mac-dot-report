@@ -1,5 +1,5 @@
 import logging
-from dbase1_main_df.db01_setup import build_full_output_dict
+from db1_main_df.db01_setup import build_full_output_dict
 from report_gen import save_outputs
 
 def main():

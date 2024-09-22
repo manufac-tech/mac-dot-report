@@ -1,5 +1,21 @@
 
 
+
+def get_valid_types():
+    valid_types_repo = {
+        'file': ['file', 'file_alias'],
+        'folder': ['folder', 'folder_alias']
+    }
+
+    valid_types_home = {
+        'file': 'file_sym',
+        'folder': 'folder_sym'
+    }
+
+    return valid_types_repo, valid_types_home
+
+
+
 field_types = {
 
     # Unique ID Fields

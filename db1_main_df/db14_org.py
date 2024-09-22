@@ -3,8 +3,8 @@ import logging
 import pandas as pd
 import numpy as np
 
-from dbase2_load.db07_load_hm import load_hm_dataframe
-from dbase2_load.db09_load_di import load_di_dataframe
+from db2_load.db07_load_hm import load_hm_dataframe
+from db2_load.db09_load_di import load_di_dataframe
 
 
 def apply_output_grouping(df):
@@ -39,7 +39,6 @@ def reorder_dfr_cols_perm(df):
     # Define the desired column order based on the provided fields
     desired_order = [
         'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp', 
-        # 'secondary_sort_key', 'tertiary_sort_key',
         'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
         'dot_struc_di',
         'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
@@ -67,15 +66,14 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
     regular_field_columns = [
         # 'unique_id',
         'st_alert',
-        'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
+        'dot_struc', 'dot_struc_di',
+        'item_name_home', 'item_name_repo', 'item_type_home', 'item_type_repo', 
         'git_rp',
-        # 'secondary_sort_key', 'tertiary_sort_key',
-        'dot_struc_di',
-        'dot_struc', 'st_db_all', 'st_docs',
+        'st_db_all', 'st_docs',
         'cat_1_di', 'cat_2_di',
         # 'comment_di',
-        # 'st_misc',
-        # 'sort_orig', 'sort_out'
+        'st_misc',
+        'sort_orig', 'sort_out'
     ]
 
     # Field Merge Group
@@ -109,3 +107,18 @@ def print_dataframe_section(df, columns, title):
     # data_types_df = df[columns].apply(lambda col: col.apply(lambda x: type(x).__name__))
     # print(data_types_df)
     # print("\n" * 2)
+
+
+    # regular_field_columns = [
+    #     # 'unique_id',
+    #     'st_alert',
+    #     'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 
+    #     'git_rp',
+    #     # 'secondary_sort_key', 'tertiary_sort_key',
+    #     'dot_struc_di',
+    #     'dot_struc', 'st_db_all', 'st_docs',
+    #     'cat_1_di', 'cat_2_di',
+    #     # 'comment_di',
+    #     # 'st_misc',
+    #     # 'sort_orig', 'sort_out'
+    # ]

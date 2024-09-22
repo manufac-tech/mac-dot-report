@@ -6,7 +6,11 @@ from .db02_make_df_m import (
     build_main_dataframe
 )
 
-from .db03_dtype_dict import field_types, field_types_with_defaults
+from .db03_dtype_dict import (
+    get_valid_types,
+    field_types,
+    field_types_with_defaults
+)
 
 from .db04_get_type import (
     determine_item_type,

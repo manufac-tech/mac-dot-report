@@ -1,10 +1,15 @@
 import pandas as pd
 
+from db1_main_df.db03_dtype_dict import (
+    field_types_with_defaults, 
+    get_valid_types
+)
+
 from .db27_rpt_mg2_alert import (
     field_match_2_alert,
     check_no_fs_match, 
     alert_sym_overwrite, 
-    alert_in_doc_not_fs
+    # alert_in_doc_not_fs
 )
 from .db28_rpt_mg3_oth import (
     write_st_alert_value,
@@ -19,10 +24,15 @@ def field_match_master(report_dataframe):
 
 
 def field_match_1_structure(report_dataframe):
+    # Get valid types for repo and home
+    
     # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
-    valid_types_repo = {'file': ['file', 'file_alias'], 'folder': ['folder', 'folder_alias']}
-    valid_types_home = {'file': 'file_sym', 'folder': 'folder_sym'}
+    # valid_types_repo = {'file': ['file', 'file_alias'], 'folder': ['folder', 'folder_alias']}
+    # valid_types_home = {'file': 'file_sym', 'folder': 'folder_sym'}
+    
+    valid_types_repo, valid_types_home = get_valid_types()
 
+    # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
     report_dataframe = check_full_match(report_dataframe, valid_types_repo, valid_types_home)
 
     try: # Check for Repo-only items
@@ -34,11 +44,6 @@ def field_match_1_structure(report_dataframe):
         report_dataframe = check_home_only(report_dataframe)
     except Exception as e:
         print(f"Error in check_home_only: {e}")
-
-    try: # Check for no file system match
-        report_dataframe = check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home)
-    except Exception as e:
-        print(f"Error in check_no_fs_match: {e}")
 
     return report_dataframe
 

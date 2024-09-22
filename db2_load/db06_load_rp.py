@@ -3,9 +3,9 @@ import logging
 import pandas as pd
 import fnmatch
 
-from dbase1_main_df.db11_merge import get_next_unique_id
-from dbase1_main_df.db04_get_type import determine_item_type
-from dbase1_main_df.db03_dtype_dict import field_types
+from db1_main_df.db11_merge import get_next_unique_id
+from db1_main_df.db04_get_type import determine_item_type
+from db1_main_df.db03_dtype_dict import field_types
 
 def load_rp_dataframe():
     repo_items = []
@@ -33,15 +33,9 @@ def load_rp_dataframe():
     # Create the git_rp column based on .gitignore
     df = create_git_rp_column(df, repo_path)
 
-    # Toggle output directly within the function
+    # Input dataframe display toggle
     show_output = False
     show_full_df = False
-    
-    if show_output:
-        if show_full_df:
-            print("5️⃣ Repo DataFrame:\n", df)
-        else:
-            print("5️⃣ Repo DataFrame (First 5 rows):\n", df.head())
 
     return df
 

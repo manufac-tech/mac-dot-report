@@ -1,7 +1,8 @@
-import os  # For basic file system operations (checking if it's a file, directory, symlink, etc.)
-import subprocess  # For running shell commands to identify macOS aliases if necessary
-import plistlib  # For reading macOS alias plist data if you go deeper into alias identification
-import stat  # For interpreting file system status flags, especially for symlinks
+import os
+
+import subprocess
+import plistlib
+import stat
 
 def determine_item_type(item_path):
     """
