@@ -1,0 +1,79 @@
+item_name_rp_di,item_name_hm_di,dot_struc_di,item_type_rp_di,item_type_hm_di,cat_1_di,cat_1_name_di,comment_di,cat_2_di,no_show_di
+._dotfiles,._dotfiles,hm_only,none,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,FALSE
+.zshrc,.zshrc,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zsh_history,.zsh_history,hm_only,none,file,term,Terminal,,zshrc,FALSE
+.zshrc_aliases,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_scripts,.zshrc_scripts,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_JIMBO,.zshrc,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_themes_omp,.zshrc_themes_omp,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_autocomplete1,.zshrc_autocomplete1,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zprofile,.zprofile,rp>hm,file,file_sym,term,Terminal,zsh profile file,zsh other,FALSE
+.zsh_sessions,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,hm_only,none,file,term,Terminal,zsh completion dump file,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,hm_only,none,file,term,Terminal,,zsh other,FALSE
+.zcompdump,.zcompdump,hm_only,none,file,term,Terminal,,zsh other,FALSE
+.oh-my-posh,.oh-my-posh,rp>hm,folder,folder_sym,term,Terminal,,zsh themes,FALSE
+.bashrc,.bashrc,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
+.bash_history,.bash_history,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
+.bash_sessions,.bash_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous bash sessions,bash,FALSE
+.sh_history,.sh_history,rp>hm,file,file_sym,term,Terminal,Shell history file,bash,FALSE
+.iterm2_shell_integration.zsh,.iterm2_shell_integration.zsh,rp>hm,file,file_sym,term,Terminal,iTerm2 shell integration file,other,FALSE
+.iterm2,.iterm2,rp>hm,folder,folder_sym,term,Terminal,iTerm2 configuration files,other,FALSE
+.viminfo,.viminfo,hm_only,none,file,term,Terminal,,other,FALSE
+.npm,.npm,rp>hm,folder,folder_sym,swd,Software Development,Node.js package manager,pkg mgrs plus,FALSE
+.npmrc,.npmrc,rp>hm,file,file_sym,swd,Software Development,Node.js package manager configuration file,pkg mgrs plus,FALSE
+.nvm,.nvm,rp>hm,folder,folder_sym,swd,Software Development,Node.js version manager,pkg mgrs plus,FALSE
+.yarnrc,.yarnrc,rp>hm,file,file_sym,swd,Software Development,Yarn package manager,pkg mgrs plus,FALSE
+.node-gyp,.node-gyp,rp>hm,folder,folder_sym,swd,Software Development,Node.js native addon build tool,pkg mgrs plus,FALSE
+.docker,.docker,rp>hm,folder,folder_sym,swd,Software Development,Docker containerization platform,pkg mgrs plus,FALSE
+.gem,.gem,rp>hm,folder,folder_sym,swd,Software Development,Ruby Gems (Ruby libraries and packages),pkg mgrs plus,FALSE
+.vuerc,.vuerc,rp>hm,file,file_sym,swd,Software Development,Vue.js configuration file,frameworks,FALSE
+.vue-cli-ui,.vue-cli-ui,rp>hm,folder,folder_sym,swd,Software Development,Vue.js CLI User Interface config,frameworks,FALSE
+.nuxtrc,.nuxtrc,rp>hm,file,file_sym,swd,Software Development,Nuxt.js configuration file,frameworks,FALSE
+.python_history,.python_history,rp>hm,file,file_sym,swd,Software Development,,python,FALSE
+.pyenv,.pyenv,rp>hm,folder,folder_sym,swd,Software Development,Python version manager,python,FALSE
+.ipython,.ipython,rp>hm,folder,folder_sym,swd,Software Development,Python interactive shell,python,FALSE
+.pylint.d,.pylint.d,rp>hm,folder,folder_sym,swd,Software Development,Python linting tool,python,FALSE
+.matplotlib,.matplotlib,rp>hm,folder,folder_sym,swd,Software Development,Python plotting library,python,FALSE
+.streamlit,.streamlit,rp>hm,folder,folder_sym,swd,Software Development,Python framework for creating interactive web apps,python,FALSE
+.jupyter,.jupyter,rp>hm,folder,folder_sym,swd,Software Development,Python interactive computing,python,FALSE
+.vscode,.vscode,rp>hm,folder,folder_sym,swd,Software Development,,microsoft,FALSE
+.vscode-react-native,.vscode-react-native,rp>hm,folder,folder_sym,swd,Software Development,Visual Studio Code extension for React Native,microsoft,FALSE
+.dotnet,.dotnet,rp>hm,folder,folder_sym,swd,Software Development,.NET SDK,microsoft,FALSE
+.nuget,.nuget,rp>hm,folder,folder_sym,swd,Software Development,.NET package manager,microsoft,FALSE
+.mono,.mono,rp>hm,folder,folder_sym,swd,Software Development,Mono runtime (cross-platform .NET),microsoft,FALSE
+.aspnet,.aspnet,rp>hm,folder,folder_sym,swd,Software Development,ASP.NET Core,microsoft,FALSE
+.ms_eclipsetemurinjdk_config,.ms_eclipsetemurinjdk_config,rp>hm,file,file_sym,swd,Software Development,Microsoft Eclipse Temurin JDK configuration file,microsoft,FALSE
+.ms_openjdk_config,.ms_openjdk_config,rp>hm,file,file_sym,swd,Software Development,Microsoft OpenJDK configuration file,microsoft,FALSE
+.swiftpm,.swiftpm,rp>hm,folder,folder_sym,swd,Software Development,"Xcode: Stores Swift pkg dependencies, build artifacts, & md",other,FALSE
+.quokka,.quokka,rp>hm,folder,folder_sym,swd,Software Development,debugging tool for JavaScript & TypeScript,other,FALSE
+.sonar,.sonar,rp>hm,folder,folder_sym,swd,Software Development,"SonarQube, a tool for continuous inspection of code quality",other,FALSE
+.flowise,.flowise,rp>hm,folder,folder_sym,swd,Software Development,LLM AI No-code coding tool,other,FALSE
+.installbuilder,.installbuilder,rp>hm,folder,folder_sym,swd,Software Development,dev tool for building cross-platform installers for dtop & server sw,other,FALSE
+.android,.android,rp>hm,folder,folder_sym,swd,Software Development,Android SDK,other,FALSE
+.degit,.degit,rp>hm,folder,folder_sym,swd,Software Development,quickly scaffold projects by downloading/extracting a repo,other,FALSE
+.gitignore_global,.gitignore_global,rp>hm,file,file_sym,swd,Software Development,Global .gitignore file,vcs git,FALSE
+.gitignore,.gitignore,rp_only,file,none,swd,Software Development,Repo .gitignore file,vcs git,FALSE
+.git,.git,rp_only,folder,none,swd,Software Development,Repo .git folder,vcs git,FALSE
+.gitflow_export,.gitflow_export,rp>hm,file,file_sym,swd,Software Development,GitFlow configuration file,vcs git,FALSE
+.gitconfig,.gitconfig,rp>hm,file,file_sym,swd,Software Development,Git configuration file,vcs git,FALSE
+.hgignore_global,.hgignore_global,rp>hm,file,file_sym,swd,Software Development,Global .hgignore file,vcs other,FALSE
+.subversion,.subversion,rp>hm,folder,folder_sym,swd,Software Development,Subversion configuration files,vcs other,FALSE
+.config,.config,rp>hm,folder,folder_sym,sys,System,,general,FALSE
+.cache,.cache,rp>hm,folder,folder_sym,sys,System,,general,FALSE
+.local,.local,rp>hm,folder,folder_sym,sys,System,,general,FALSE
+.IdentityService,.IdentityService,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
+.DS_Store,.DS_Store,rp>hm,file,file_sym,sys,System,,macos,TRUE
+.Trash,.Trash,hm_only,folder,folder_sym,sys,System,,macos,TRUE
+.CFUserTextEncoding,.CFUserTextEncoding,rp>hm,file,file_sym,sys,System,macOS - stores the user’s preferred text encoding settings,macos,FALSE
+.netrc,.netrc,rp>hm,file,file_sym,sys,System,Unix file stores login & init info for connecting to remote systems,unix,FALSE
+.thumbnails,.thumbnails,rp>hm,folder,folder_sym,sys,System,Thumbnail cache,unix,FALSE
+.ssh,.ssh,rp>hm,folder,folder_sym,sys,System,Unix SSH configuration files,unix,FALSE
+.fontconfig,.fontconfig,rp>hm,folder,folder_sym,sys,System,Unix font configuration,unix,FALSE
+.lesshst,.lesshst,hm_only,none,file,sys,System,command history file for the Unix less text viewer command,unix,FALSE
+.cups,.cups,rp>hm,folder,folder_sym,sys,System,Common Unix Printing System,unix,FALSE
+.Xencelabs,.Xencelabs,rp>hm,folder,folder_sym,apps,Applications,Xencelabs dedicated controller config,regular,FALSE
+.adobe,.adobe,rp>hm,folder,folder_sym,apps,Applications,,regular,FALSE
+.dropbox,.dropbox,rp>hm,folder,folder_sym,apps,Applications,,cloud,FALSE
+.pcloud,.pcloud,rp>hm,folder,folder_sym,apps,Applications,,cloud,FALSE
+.omniboard,.omniboard,rp>hm,folder,folder_sym,oth,Other,Omniboard project management tool,projects,FALSE

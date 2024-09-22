@@ -47,7 +47,7 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
         merged_dataframe = replace_string_blanks(merged_dataframe)
 
         main_df_build_hist["df3"] = merged_dataframe.copy()
-        # print_main_df_build_hist(main_df_build_hist) # Print the build history
+        print_main_df_build_hist(main_df_build_hist) # Print the build history
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")

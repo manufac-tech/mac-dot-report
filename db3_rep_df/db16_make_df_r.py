@@ -40,7 +40,7 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = field_match_master(report_dataframe)
     report_dataframe = consolidate_fields(report_dataframe).copy()
 
-    report_dataframe = sort_filter_report_df(report_dataframe)
+    report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
 
     report_dataframe = insert_blank_rows(report_dataframe)
 
@@ -70,12 +70,14 @@ def handle_nan_values(df):
     # pass
     return df
 
-def sort_filter_report_df(df):
+def sort_filter_report_df(df, unhide_hidden):
     # df = df[df['no_show_di'] == False].copy()  # Filter out rows where 'no_show_di' is set to True
-    
+    if unhide_hidden:
+        df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
+
     # Create a new column for the secondary sort key based on git_rp
     df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
-    
+
     # The tertiary sort key is the original sort order
     df['tertiary_sort_key'] = df['sort_orig']
     
