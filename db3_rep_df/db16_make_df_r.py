@@ -29,14 +29,14 @@ def build_report_dataframe(main_df_dict):
     # Create new columns with appropriate data types and default values
     for column, properties in new_columns.items():
         dtype = properties['dtype']
-        default_value = properties['val_0']  # Updated from 'default' to 'val_0'
+        default_value = properties['default']  # Updated from 'default' to 'default'
         report_dataframe[column] = pd.Series([default_value] * len(report_dataframe), dtype=dtype)
 
     # Initialize 'sort_out' column with -1
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
     # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
-    # report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
+    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Apply field matching and consolidation
     report_dataframe = field_match_master(report_dataframe)

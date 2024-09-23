@@ -62,14 +62,14 @@ def subsystem_db_all(report_dataframe):
 
     # Check for default values in any of the relevant fields
     default_check = (
-        (report_dataframe['item_name_rp'] == f_types_vals['item_name_rp']['val_0']) |
-        (report_dataframe['item_type_rp'] == f_types_vals['item_type_rp']['val_0']) |
-        (report_dataframe['item_name_hm'] == f_types_vals['item_name_hm']['val_0']) |
-        (report_dataframe['item_type_hm'] == f_types_vals['item_type_hm']['val_0']) |
-        (report_dataframe['item_name_rp_db'] == f_types_vals['item_name_rp_db']['val_0']) |
-        (report_dataframe['item_type_rp_db'] == f_types_vals['item_type_rp_db']['val_0']) |
-        (report_dataframe['item_name_hm_db'] == f_types_vals['item_name_hm_db']['val_0']) |
-        (report_dataframe['item_type_hm_db'] == f_types_vals['item_type_hm_db']['val_0'])
+        (report_dataframe['item_name_rp'] == f_types_vals['item_name_rp']['default']) |
+        (report_dataframe['item_type_rp'] == f_types_vals['item_type_rp']['default']) |
+        (report_dataframe['item_name_hm'] == f_types_vals['item_name_hm']['default']) |
+        (report_dataframe['item_type_hm'] == f_types_vals['item_type_hm']['default']) |
+        (report_dataframe['item_name_rp_db'] == f_types_vals['item_name_rp_db']['default']) |
+        (report_dataframe['item_type_rp_db'] == f_types_vals['item_type_rp_db']['default']) |
+        (report_dataframe['item_name_hm_db'] == f_types_vals['item_name_hm_db']['default']) |
+        (report_dataframe['item_type_hm_db'] == f_types_vals['item_type_hm_db']['default'])
     )
 
     # Set 'Valid' or 'Invalid' based on name and type match and default check

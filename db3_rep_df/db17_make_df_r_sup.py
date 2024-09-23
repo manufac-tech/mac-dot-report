@@ -21,7 +21,7 @@ def insert_blank_rows(df):
         for col in df.columns:
             if col in f_types_vals:
                 dtype = f_types_vals[col]['dtype']
-                default_value = f_types_vals[col]['val_0']
+                default_value = f_types_vals[col]['default']
                 if dtype == 'string':
                     blank_row[col] = default_value  # Typically empty string
                 elif dtype == 'bool':

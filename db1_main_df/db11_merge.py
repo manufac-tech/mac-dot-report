@@ -44,10 +44,10 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
             how=merge_type
         ).copy()
 
-        merged_dataframe = replace_string_blanks(merged_dataframe)
+        # merged_dataframe = replace_string_blanks(merged_dataframe) # ⭕️ BLANK HANDLING 
 
         main_df_build_hist["df3"] = merged_dataframe.copy()
-        print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
+        # print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
@@ -55,7 +55,7 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
     return merged_dataframe
 
 
-def replace_string_blanks(df):
+def replace_string_blanks(df): # ⭕️ BLANK HANDLING 
     # pass
     for column in df.columns:
         # Handle string columns
