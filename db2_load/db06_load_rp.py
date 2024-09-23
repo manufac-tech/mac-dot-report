@@ -5,7 +5,7 @@ import fnmatch
 
 from db1_main_df.db11_merge import get_next_unique_id
 from db1_main_df.db04_get_type import determine_item_type
-from db1_main_df.db03_dtype_dict import field_types
+from db1_main_df.db03_dtype_dict import f_types_vals
 
 def load_rp_dataframe():
     repo_items = []
@@ -18,17 +18,18 @@ def load_rp_dataframe():
             item_path = os.path.join(repo_path, item)
             item_type = determine_item_type(item_path)
             repo_items.append({
-                "item_name_rp": item,  # Use the suffix '_rp' consistently
-                "item_type_rp": item_type,  # Use the suffix '_rp' consistently
-                "unique_id_rp": get_next_unique_id()  # Use the suffix '_rp' consistently
+                "item_name_rp": item,
+                "item_type_rp": item_type,
+                "unique_id_rp": get_next_unique_id()
             })
 
     df = pd.DataFrame(repo_items).copy()
 
-    # Explicitly set data types using the field_types dictionary
-    df["item_name_rp"] = df["item_name_rp"].astype(field_types["item_name_rp"])
-    df["item_type_rp"] = df["item_type_rp"].astype(field_types["item_type_rp"])
-    df["unique_id_rp"] = df["unique_id_rp"].astype(field_types["unique_id_rp"])
+    # Explicitly set data types using the first element (data type) from f_types_vals
+    df["item_name_rp"] = df["item_name_rp"].astype(f_types_vals["item_name_rp"]['dtype'])
+    df["item_type_rp"] = df["item_type_rp"].astype(f_types_vals["item_type_rp"]['dtype'])
+    df["unique_id_rp"] = df["unique_id_rp"].astype(f_types_vals["unique_id_rp"]['dtype'])
+
 
     # Create the git_rp column based on .gitignore
     df = create_git_rp_column(df, repo_path)

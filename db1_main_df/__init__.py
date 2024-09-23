@@ -8,8 +8,8 @@ from .db02_make_df_m import (
 
 from .db03_dtype_dict import (
     get_valid_types,
-    field_types,
-    field_types_with_defaults
+    # field_types,
+    f_types_vals
 )
 
 from .db04_get_type import (
@@ -48,8 +48,8 @@ from .db50_debug import print_debug_info
 __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
-    "field_types",
-    field_types_with_defaults,
+    # "field_types",
+    f_types_vals,
     "determine_item_type",
     "is_symlink",
     "is_alias",

@@ -1,6 +1,6 @@
 import pandas as pd
 from db1_main_df.db03_dtype_dict import (
-    field_types_with_defaults, 
+    f_types_vals, 
     get_valid_types
 )
 
@@ -62,14 +62,14 @@ def subsystem_db_all(report_dataframe):
 
     # Check for default values in any of the relevant fields
     default_check = (
-        (report_dataframe['item_name_rp'] == field_types_with_defaults['item_name_rp'][1]) |
-        (report_dataframe['item_type_rp'] == field_types_with_defaults['item_type_rp'][1]) |
-        (report_dataframe['item_name_hm'] == field_types_with_defaults['item_name_hm'][1]) |
-        (report_dataframe['item_type_hm'] == field_types_with_defaults['item_type_hm'][1]) |
-        (report_dataframe['item_name_rp_db'] == field_types_with_defaults['item_name_rp_db'][1]) |
-        (report_dataframe['item_type_rp_db'] == field_types_with_defaults['item_type_rp_db'][1]) |
-        (report_dataframe['item_name_hm_db'] == field_types_with_defaults['item_name_hm_db'][1]) |
-        (report_dataframe['item_type_hm_db'] == field_types_with_defaults['item_type_hm_db'][1])
+        (report_dataframe['item_name_rp'] == f_types_vals['item_name_rp']['val_0']) |
+        (report_dataframe['item_type_rp'] == f_types_vals['item_type_rp']['val_0']) |
+        (report_dataframe['item_name_hm'] == f_types_vals['item_name_hm']['val_0']) |
+        (report_dataframe['item_type_hm'] == f_types_vals['item_type_hm']['val_0']) |
+        (report_dataframe['item_name_rp_db'] == f_types_vals['item_name_rp_db']['val_0']) |
+        (report_dataframe['item_type_rp_db'] == f_types_vals['item_type_rp_db']['val_0']) |
+        (report_dataframe['item_name_hm_db'] == f_types_vals['item_name_hm_db']['val_0']) |
+        (report_dataframe['item_type_hm_db'] == f_types_vals['item_type_hm_db']['val_0'])
     )
 
     # Set 'Valid' or 'Invalid' based on name and type match and default check

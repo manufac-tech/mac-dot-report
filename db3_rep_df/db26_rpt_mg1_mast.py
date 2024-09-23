@@ -1,16 +1,15 @@
 import pandas as pd
 
 from db1_main_df.db03_dtype_dict import (
-    field_types_with_defaults, 
+    f_types_vals, 
     get_valid_types
 )
 
 from .db27_rpt_mg2_alert import (
     field_match_2_alert,
-    check_no_fs_match, 
     alert_sym_overwrite, 
-    # alert_in_doc_not_fs
 )
+
 from .db28_rpt_mg3_oth import (
     write_st_alert_value,
     field_match_3_subsys
@@ -24,12 +23,6 @@ def field_match_master(report_dataframe):
 
 
 def field_match_1_structure(report_dataframe):
-    # Get valid types for repo and home
-    
-    # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
-    # valid_types_repo = {'file': ['file', 'file_alias'], 'folder': ['folder', 'folder_alias']}
-    # valid_types_home = {'file': 'file_sym', 'folder': 'folder_sym'}
-    
     valid_types_repo, valid_types_home = get_valid_types()
 
     # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
@@ -44,7 +37,7 @@ def field_match_1_structure(report_dataframe):
         report_dataframe = check_home_only(report_dataframe)
     except Exception as e:
         print(f"Error in check_home_only: {e}")
-
+    pass
     return report_dataframe
 
 
@@ -79,3 +72,4 @@ def check_home_only(report_dataframe):
             report_dataframe = write_st_alert_value(report_dataframe, index, 'New Home Item')
     
     return report_dataframe
+

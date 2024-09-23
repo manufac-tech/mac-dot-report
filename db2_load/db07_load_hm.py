@@ -4,7 +4,7 @@ import pandas as pd
 
 from db1_main_df.db11_merge import get_next_unique_id
 from db1_main_df.db04_get_type import determine_item_type
-from db1_main_df.db03_dtype_dict import field_types  # Import the field_types dictionary
+from db1_main_df.db03_dtype_dict import f_types_vals
 
 def load_hm_dataframe():
     dot_items = []
@@ -24,10 +24,10 @@ def load_hm_dataframe():
 
     df = pd.DataFrame(dot_items).copy()
 
-    # Explicitly set data types using the field_types dictionary
-    df["item_name_hm"] = df["item_name_hm"].astype(field_types["item_name_hm"])
-    df["item_type_hm"] = df["item_type_hm"].astype(field_types["item_type_hm"])
-    df["unique_id_hm"] = df["unique_id_hm"].astype(field_types["unique_id_hm"])
+    # Explicitly set data types using the 'dtype' value from the f_types_vals dictionary
+    df["item_name_hm"] = df["item_name_hm"].astype(f_types_vals["item_name_hm"]['dtype'])
+    df["item_type_hm"] = df["item_type_hm"].astype(f_types_vals["item_type_hm"]['dtype'])
+    df["unique_id_hm"] = df["unique_id_hm"].astype(f_types_vals["unique_id_hm"]['dtype'])
 
     # Input dataframe display toggle
     show_output = False

@@ -4,37 +4,39 @@ from db1_main_df.db14_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
 from .db17_make_df_r_sup import insert_blank_rows
 from .db26_rpt_mg1_mast import field_match_master
 from .db30_rpt_mg5_finish import consolidate_fields
-from db1_main_df.db03_dtype_dict import field_types, field_types_with_defaults
+from db1_main_df.db03_dtype_dict import f_types_vals
 
 def build_report_dataframe(main_df_dict):
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
-    # Handle NaN values globally
-    report_dataframe = handle_nan_values(report_dataframe)
+    # Handle NaN values globally # ⭕️ BLANK HANDLING 
+    # report_dataframe = handle_nan_values(report_dataframe)
 
     # Define new columns and their data types with default values
     new_columns = {
-        'item_name_repo': field_types_with_defaults['item_name_repo'],
-        'item_type_repo': field_types_with_defaults['item_type_repo'],
-        'item_name_home': field_types_with_defaults['item_name_home'],
-        'item_type_home': field_types_with_defaults['item_type_home'],
-        'sort_out': field_types_with_defaults['sort_out'],
-        'st_docs': field_types_with_defaults['st_docs'],
-        'st_alert': field_types_with_defaults['st_alert'],
-        'dot_struc': field_types_with_defaults['dot_struc'],
-        'st_db_all': field_types_with_defaults['st_db_all'],
-        'st_misc': field_types_with_defaults['st_misc']
+        'item_name_repo': f_types_vals['item_name_repo'],
+        'item_type_repo': f_types_vals['item_type_repo'],
+        'item_name_home': f_types_vals['item_name_home'],
+        'item_type_home': f_types_vals['item_type_home'],
+        'sort_out': f_types_vals['sort_out'],
+        'st_docs': f_types_vals['st_docs'],
+        'st_alert': f_types_vals['st_alert'],
+        'dot_struc': f_types_vals['dot_struc'],
+        'st_db_all': f_types_vals['st_db_all'],
+        'st_misc': f_types_vals['st_misc']
     }
 
     # Create new columns with appropriate data types and default values
-    for column, (dtype, default_value) in new_columns.items():
+    for column, properties in new_columns.items():
+        dtype = properties['dtype']
+        default_value = properties['val_0']  # Updated from 'default' to 'val_0'
         report_dataframe[column] = pd.Series([default_value] * len(report_dataframe), dtype=dtype)
 
     # Initialize 'sort_out' column with -1
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
-    # Re-apply blank handling to the newly copied fields
-    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
+    # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
+    # report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Apply field matching and consolidation
     report_dataframe = field_match_master(report_dataframe)
@@ -56,7 +58,7 @@ def build_report_dataframe(main_df_dict):
 
     return report_dataframe
 
-def handle_nan_values(df):
+def handle_nan_values(df): # ⭕️ BLANK HANDLING 
     # Replace NaN values in string columns with empty strings
     string_columns = df.select_dtypes(include=['object', 'string']).columns
     df[string_columns] = df[string_columns].fillna('')
@@ -88,4 +90,3 @@ def sort_filter_report_df(df, unhide_hidden):
     df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key'])
     
     return df
-
