@@ -38,12 +38,14 @@ def reorder_dfm_cols_perm(df):
 def reorder_dfr_cols_perm(df):
     # Define the desired column order based on the provided fields
     desired_order = [
+        # 'item_name',
         'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp', 
         'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
         'dot_struc_di',
         'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
         'sort_orig', 'sort_out',
-        'no_show_di', 'unique_id'
+        'no_show_di', 'unique_id',
+        'match_dict'
     ]
     
     # Ensure all columns in desired_order are in the DataFrame
@@ -73,7 +75,8 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'cat_1_di', 'cat_2_di',
         # 'comment_di',
         'st_misc',
-        'sort_orig', 'sort_out'
+        'sort_orig', 'sort_out',
+        'match_dict'
     ]
 
     # Field Merge Group

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def get_valid_types():
+def get_valid_item_types():
     valid_types_repo = {
         'file': ['file', 'file_alias'],
         'folder': ['folder', 'folder_alias']
@@ -61,5 +61,7 @@ f_types_vals = {
     'st_alert': {'dtype': 'string', 'default': np.nan},
     'st_db_all': {'dtype': 'string', 'default': np.nan},
     'st_docs': {'dtype': 'string', 'default': np.nan},
-    'st_misc': {'dtype': 'string', 'default': np.nan}
+    'st_misc': {'dtype': 'string', 'default': np.nan},
+
+    'match_dict': {'dtype': 'object', 'default': {}}
 }

@@ -7,7 +7,7 @@ from .db02_make_df_m import (
 )
 
 from .db03_dtype_dict import (
-    get_valid_types,
+    get_valid_item_types,
     # field_types,
     f_types_vals
 )

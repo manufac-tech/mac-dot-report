@@ -8,7 +8,7 @@ none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .zshrc_themes_omp,.zshrc_themes_omp,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_autocomplete1,.zshrc_autocomplete1,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zprofile,.zprofile,rp>hm,file,file_sym,term,Terminal,zsh profile file,zsh other,FALSE
-.zsh_sessions_TEST_ITEM,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
+.zsh_sessions_TEST_ITEM🔵,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
 .zsh_sessions,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
 .zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,hm_only,none,file,term,Terminal,zsh completion dump file,zsh other,FALSE
 .zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,hm_only,none,file,term,Terminal,,zsh other,FALSE

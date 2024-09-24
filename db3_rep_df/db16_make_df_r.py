@@ -23,31 +23,30 @@ def build_report_dataframe(main_df_dict):
         'st_alert': f_types_vals['st_alert'],
         'dot_struc': f_types_vals['dot_struc'],
         'st_db_all': f_types_vals['st_db_all'],
-        'st_misc': f_types_vals['st_misc']
+        'st_misc': f_types_vals['st_misc'],
+        'match_dict': f_types_vals['match_dict'],
     }
 
     # Create new columns with appropriate data types and default values
     for column, properties in new_columns.items():
         dtype = properties['dtype']
-        default_value = properties['default']  # Updated from 'default' to 'default'
+        default_value = properties['default']
         report_dataframe[column] = pd.Series([default_value] * len(report_dataframe), dtype=dtype)
 
     # Initialize 'sort_out' column with -1
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
     # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
-    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
+    # report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Apply field matching and consolidation
     report_dataframe = field_match_master(report_dataframe)
     report_dataframe = consolidate_fields(report_dataframe).copy()
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
-
-    report_dataframe = insert_blank_rows(report_dataframe)
-
+    # report_dataframe = insert_blank_rows(report_dataframe)
     report_dataframe = reorder_dfr_cols_perm(report_dataframe)
-
+    
     # Reorder columns for CLI display
     report_dataframe = reorder_dfr_cols_for_cli(
         report_dataframe,
@@ -55,6 +54,9 @@ def build_report_dataframe(main_df_dict):
         show_main_fields=True,
         show_status_fields=False,
     )
+
+    return report_dataframe
+
 
     return report_dataframe
 

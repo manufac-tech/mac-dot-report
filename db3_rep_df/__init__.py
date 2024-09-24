@@ -11,9 +11,9 @@ from .db26_rpt_mg1_mast import (
     check_home_only
 )
 from .db27_rpt_mg2_alert import (
-    check_no_fs_match,
+    # check_no_fs_match,
     alert_sym_overwrite,
-    alert_in_doc_not_fs,
+    # alert_in_doc_not_fs,
     field_match_2_alert
 )
 from .db28_rpt_mg3_oth import (
@@ -26,11 +26,12 @@ from .db28_rpt_mg3_oth import (
 from .db30_rpt_mg5_finish import (
     consolidate_fields,
     get_conditions_actions,
-    remove_consolidated_columns
+    remove_consolidated_columns,
+    check_doc_names_no_fs  # Added the new function here
 )
 from .db31_rpt_mg6_fsup import (
-    check_repo_only,
-    check_home_only,
+    # check_repo_only,
+    # check_home_only,
     remove_consolidated_columns
 )
 
@@ -45,14 +46,15 @@ __all__ = [
     "check_full_match",
     "check_repo_only",
     "check_home_only",
-    "check_no_fs_match",
+    # "check_no_fs_match",
     "subsystem_docs",
     "subsystem_db_all",
     "alert_sym_overwrite",
-    "alert_in_doc_not_fs",
+    # "alert_in_doc_not_fs",
     "write_st_alert_value",
     # "handle_mult_st_alerts_TEMP",
     "consolidate_fields",
     "get_conditions_actions",
-    "remove_consolidated_columns"
+    "remove_consolidated_columns",
+    "check_doc_names_no_fs"  # Added the new function here
 ]

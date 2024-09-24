@@ -1,11 +1,11 @@
 import pandas as pd
 from colorama import init, Fore, Style
-from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_types
+from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
 from .db28_rpt_mg3_oth import write_st_alert_value
 
 def field_match_2_alert(report_dataframe):
     
-    valid_types_repo, valid_types_home = get_valid_types()
+    valid_types_repo, valid_types_home = get_valid_item_types()
 
     try: # Check for Symlink Overwrite condition: rp/hm match but same (actual) type. (ALERT)
         report_dataframe = alert_sym_overwrite(report_dataframe)
@@ -26,6 +26,7 @@ def field_match_2_alert(report_dataframe):
         report_dataframe = check_no_fs(report_dataframe)
     except Exception as e:
         print(f"Error in check_no_fs: {e}")
+
 
     return report_dataframe
 
@@ -52,7 +53,7 @@ def alert_sym_overwrite(report_dataframe):
 
     return report_dataframe
 
-def check_no_fs(report_dataframe):
+# def check_no_fs(report_dataframe):
     """
     Function to check for items present in YAML/CSV but missing in the filesystem (repo/home).
     Updates 'st_alert' and 'st_misc' fields with the appropriate 'No FS' message.
@@ -88,7 +89,7 @@ def check_no_fs(report_dataframe):
     return report_dataframe
 
 
-def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home): # STANDALONE 2 - simply called above.
+# def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home): # STANDALONE 2 - simply called above.
     pass
     # valid_types_repo, valid_types_home = get_valid_types()
 
@@ -115,7 +116,7 @@ def check_no_fs_match(report_dataframe, valid_types_repo, valid_types_home): # S
 
     return report_dataframe
 
-def alert_in_doc_not_fs(report_dataframe): # STANDALONE 1 - simply called above.
+# def alert_in_doc_not_fs(report_dataframe): # STANDALONE 1 - simply called above.
     pass
     # condition = (report_dataframe['item_name_hm'].notna()) & (report_dataframe['item_name_rp'].isna())
     
@@ -129,7 +130,7 @@ def alert_in_doc_not_fs(report_dataframe): # STANDALONE 1 - simply called above.
     
     return report_dataframe
 
-def check_discrepancies(report_dataframe, valid_types_repo, valid_types_home):
+# def check_discrepancies(report_dataframe, valid_types_repo, valid_types_home):
     pass
     # NO FS MATCH-N (Name) logic
     # no_fs_match_n = (

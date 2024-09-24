@@ -1,7 +1,7 @@
 import pandas as pd
 from db1_main_df.db03_dtype_dict import (
     f_types_vals, 
-    get_valid_types
+    get_valid_item_types
 )
 
 import pandas as pd
@@ -35,15 +35,17 @@ def field_match_3_subsys(report_dataframe):
     return report_dataframe
 
 def subsystem_docs(report_dataframe):
-    for index, row in report_dataframe.iterrows():
-        if (row['item_name_rp_di'] == row['item_name_rp_db'] and
-            row['item_type_rp_di'] == row['item_type_rp_db'] and
-            row['item_name_hm_di'] == row['item_name_hm_db'] and
-            row['item_type_hm_di'] == row['item_type_hm_db']):
-            report_dataframe.at[index, 'st_docs'] = 'Valid'
-        else:
-            report_dataframe.at[index, 'st_docs'] = 'Invalid'
-    
+    # Use vectorized operations to check for equality and handle NaN values
+    condition = (
+        (report_dataframe['item_name_rp_di'] == report_dataframe['item_name_rp_db']) &
+        (report_dataframe['item_type_rp_di'] == report_dataframe['item_type_rp_db']) &
+        (report_dataframe['item_name_hm_di'] == report_dataframe['item_name_hm_db']) &
+        (report_dataframe['item_type_hm_di'] == report_dataframe['item_type_hm_db'])
+    ).fillna(False)  # Treat NaN comparisons as False
+
+    # Set 'st_docs' based on the condition
+    report_dataframe['st_docs'] = condition.map({True: 'Valid', False: 'Invalid'})
+
     return report_dataframe['st_docs']
 
 def subsystem_db_all(report_dataframe):
