@@ -1,92 +1,35 @@
 import pandas as pd
 
 from .db31_rpt_mg6_fsup import remove_consolidated_columns
-from .db26_rpt_mg1_mast import get_conditions_actions
 
-def check_name_consistency(row):
-    # Collect all non-NaN names
-    names = [name for name in [row['item_name_rp_db'], row['item_name_hm_db'], 
-                               row['item_name_rp_di'], row['item_name_hm_di']] if pd.notna(name)]
-    
-    # Check for conflict
-    if len(names) <= 1:
-        return False
-    return len(set(names)) > 1  # True if names are different, False otherwise
 
-def merge_logic(row):
-    # For repo, we prioritize db over di
-    if pd.notna(row['item_name_rp_db']):
-        row['item_name_repo'] = row['item_name_rp_db']
-    else:
-        row['item_name_repo'] = row['item_name_rp_di']
-    
-    # For home, we prioritize db over di
-    if pd.notna(row['item_name_hm_db']):
-        row['item_name_home'] = row['item_name_hm_db']
-    else:
-        row['item_name_home'] = row['item_name_hm_di']
-    
-    return row
-
-def check_doc_names_no_fs(df):
-    # Check for document names without corresponding file system names
-    doc_names_no_fs_condition = (
-        ((df['item_name_rp_db'].notna()) | (df['item_name_hm_db'].notna()) |
-         (df['item_name_rp_di'].notna()) | (df['item_name_hm_di'].notna())) &
-        (df['item_name_rp'].isna()) & (df['item_name_hm'].isna())
-    )
-
-    # Set the st_misc field to 'doc_no_fs' for any row that matches the condition
-    df.loc[doc_names_no_fs_condition, 'st_misc'] = 'doc_no_fs'
-
-    # Check name consistency and update st_docs field
-    df.loc[doc_names_no_fs_condition, 'st_docs'] = df[doc_names_no_fs_condition].apply(
-        lambda row: 'error' if check_name_consistency(row) else 'ok', axis=1
-    )
-
-    # Apply merge logic to populate item_name_repo and item_name_home
-    df = df.apply(merge_logic, axis=1)
-
-    return df
-
-def consolidate_fields(report_dataframe):
+def consolidate_fields(report_dataframe, field_merge_rules):
     """
     Consolidates item_name_repo, item_type_repo, item_name_home, item_type_home, and unique_id based on match statuses.
     Sets 'st_misc' to 'x' if any unique ID gets copied to the actual unique_id.
     """
 
-    # blank_symbol = 'x'
-    # blank_symbol = '|____'
-    # blank_symbol = '_____'
     blank_symbol = ''
-    # blank_symbol = '-'
-    
-    # Get the conditions and corresponding actions from the old system
-    conditions_actions = get_conditions_actions(report_dataframe)
 
-    # Apply the conditions and actions from the old system
-    for key, value in conditions_actions.items():
+    # Apply the conditions and actions from the combined dictionary
+    for key, value in field_merge_rules.items():
         condition = value['condition']
         actions = value['actions']
         for target_field, source_field in actions.items():
             if target_field == 'sort_out':
+                report_dataframe.loc[condition, target_field] = source_field
+            elif target_field == 'st_alert':
                 report_dataframe.loc[condition, target_field] = source_field
             elif source_field is not None:
                 report_dataframe.loc[condition, target_field] = report_dataframe[source_field]
             else:
                 report_dataframe.loc[condition, target_field] = pd.NA
 
-    # Apply dynamic consolidation based on match_dict
-    # report_dataframe = apply_dynamic_consolidation(report_dataframe)
-
-    # INSERT "check_doc_names_no_fs()" function call here
-    report_dataframe = check_doc_names_no_fs(report_dataframe)
-
     # Call the new function to remove unnecessary columns
     report_dataframe = remove_consolidated_columns(report_dataframe)
 
-
     return report_dataframe
+    
 
 def apply_dynamic_consolidation(report_dataframe):
     """
@@ -114,3 +57,96 @@ def apply_dynamic_consolidation(report_dataframe):
         report_dataframe.at[index, 'sort_out'] = 25
 
     return report_dataframe
+
+def get_field_merge_rules(report_dataframe, dynamic_conditions):
+    field_merge_rules = {
+        'full_match': {
+            'condition': report_dataframe['dot_struc'] == 'rp>hm',
+            'actions': {
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'unique_id': 'unique_id_rp',
+                'sort_out': 30,
+                # 'st_alert': 'Full Match'
+            }
+        },
+        'full_match_not_tracked_by_git': {
+            'condition': (report_dataframe['dot_struc'] == 'rp>hm') & (report_dataframe['git_rp'] == False),
+            'actions': {
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'unique_id': 'unique_id_rp',
+                'sort_out': 35,
+                # 'st_alert': 'Full Match Not Tracked by Git'
+            }
+        },
+        'repo_only': {
+            'condition': report_dataframe['dot_struc'] == 'rp_only',
+            'actions': {
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': None,
+                'item_type_home': None,
+                'unique_id': 'unique_id_rp',
+                'sort_out': 15,
+                # 'st_alert': 'Repo Only'
+            }
+        },
+        'home_only': {
+            'condition': report_dataframe['dot_struc'] == 'hm_only',
+            'actions': {
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'item_name_repo': None,
+                'item_type_repo': None,
+                'unique_id': 'unique_id_hm',
+                'sort_out': 11,
+                # 'st_alert': 'Home Only'
+            }
+        },
+        'new_home_item': {
+            'condition': report_dataframe['st_alert'] == 'New Home Item',
+            'actions': {
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'item_name_repo': None,
+                'item_type_repo': None,
+                'unique_id': 'unique_id_hm',
+                'sort_out': 20,
+                # 'st_alert': 'New Home Item'
+            }
+        },
+        'symlink_overwrite': {
+            'condition': report_dataframe['st_alert'] == 'SymLink Overwrite',
+            'actions': {
+                'item_name_repo': 'item_name_rp',
+                'item_type_repo': 'item_type_rp',
+                'item_name_home': 'item_name_hm',
+                'item_type_home': 'item_type_hm',
+                'unique_id': 'unique_id_rp',
+                'sort_out': 16,
+                # 'st_alert': 'SymLink Overwrite'
+            }
+        },
+
+        # 'in_doc_not_fs': {
+        #     'condition': report_dataframe['st_misc'] == 'doc_no_fs',
+        #     'actions': {
+        #         'item_name_repo': 'item_name_rp',
+        #         'item_type_repo': 'item_type_rp',
+        #         'item_name_home': None,
+        #         'item_type_home': None,
+        #         'unique_id': 'unique_id_rp',
+        #         'sort_out': 25,
+        #         # Optional action to set st_alert field
+        #         'st_alert': 'In Doc Not FS'
+        #     }
+        # }
+    }
+
+    return field_merge_rules
+

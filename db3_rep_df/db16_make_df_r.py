@@ -40,8 +40,8 @@ def build_report_dataframe(main_df_dict):
     # report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     # Apply field matching and consolidation
-    report_dataframe = field_match_master(report_dataframe)
-    report_dataframe = consolidate_fields(report_dataframe).copy()
+    report_dataframe, field_merge_rules = field_match_master(report_dataframe)
+    report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     # report_dataframe = insert_blank_rows(report_dataframe)
@@ -54,9 +54,6 @@ def build_report_dataframe(main_df_dict):
         show_main_fields=True,
         show_status_fields=False,
     )
-
-    return report_dataframe
-
 
     return report_dataframe
 
