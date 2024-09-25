@@ -71,8 +71,8 @@ def check_home_only(report_dataframe):
 
     # Update st_alert field for home-only items
     for index, row in report_dataframe[home_only_condition].iterrows():
-        if not ((row['item_name_hm'] == row['item_name_hm_di']) and
-                (row['item_type_hm'] == row['item_type_hm_di'])):
+        if not ((row['item_name_hm'] == row['item_name_hm_cf']) and
+                (row['item_type_hm'] == row['item_type_hm_cf'])):
             report_dataframe = write_st_alert_value(report_dataframe, index, 'New Home Item')
 
     return report_dataframe

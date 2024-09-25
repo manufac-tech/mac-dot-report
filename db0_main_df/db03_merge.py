@@ -17,7 +17,7 @@ def df_merge_sequence(main_df, home_df, dotbot_df, dot_info_df, print_df):
     main_df = df_merge(main_df, dotbot_df, left_merge_field, right_merge_field)  # Merge the DataFrames
 
     # Third merge: repo+home+dotbot and dot_info R+H
-    right_merge_field = 'item_name_rp_di'
+    right_merge_field = 'item_name_rp_cf'
     main_df = df_merge(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     main_df = consolidate_post_merge3(main_df)
 

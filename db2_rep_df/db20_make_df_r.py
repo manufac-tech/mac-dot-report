@@ -81,7 +81,7 @@ def post_build_nan_replace(df):
     return df
 
 def sort_filter_report_df(df, unhide_hidden):
-    df = df[df['no_show_di'] == False].copy()  # Filter out rows where 'no_show_di' is set to True
+    df = df[df['no_show_cf'] == False].copy()  # Filter out rows where 'no_show_cf' is set to True
     if unhide_hidden:
         df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
 

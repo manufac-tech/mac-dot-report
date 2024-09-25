@@ -7,7 +7,7 @@ from db5_global.db50_global_misc import print_debug_info
 from db1_load.db10_load_rp import load_rp_dataframe
 from db1_load.db11_load_hm import load_hm_dataframe
 from db1_load.db12_load_db import load_dotbot_yaml_dataframe
-from db1_load.db13_load_cf import load_di_dataframe
+from db1_load.db13_load_cf import load_cf_dataframe
 
 from .db03_merge import df_merge_sequence
 
@@ -16,7 +16,7 @@ def build_main_dataframe():
     repo_df = load_rp_dataframe()
     home_df = load_hm_dataframe()
     dotbot_df = load_dotbot_yaml_dataframe()
-    dot_info_df = load_di_dataframe()
+    dot_info_df = load_cf_dataframe()
     main_df = repo_df.copy() # Initialize the main_dataframe from the REPO FOLDER
 
     # Create global fields

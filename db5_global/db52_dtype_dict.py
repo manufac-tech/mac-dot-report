@@ -21,7 +21,7 @@ f_types_vals = {
     'unique_id_rp': {'dtype': 'Int64', 'default': 0},
     'unique_id_db': {'dtype': 'Int64', 'default': 0},
     'unique_id_hm': {'dtype': 'Int64', 'default': 0},
-    'unique_id_di': {'dtype': 'Int64', 'default': 0},
+    'unique_id_cf': {'dtype': 'Int64', 'default': 0},
 
     # Item Name Fields
     'item_name': {'dtype': 'string', 'default': np.nan},
@@ -29,8 +29,8 @@ f_types_vals = {
     'item_name_hm': {'dtype': 'string', 'default': np.nan},
     'item_name_rp_db': {'dtype': 'string', 'default': np.nan},
     'item_name_hm_db': {'dtype': 'string', 'default': np.nan},
-    'item_name_rp_di': {'dtype': 'string', 'default': np.nan},
-    'item_name_hm_di': {'dtype': 'string', 'default': np.nan},
+    'item_name_rp_cf': {'dtype': 'string', 'default': np.nan},
+    'item_name_hm_cf': {'dtype': 'string', 'default': np.nan},
     'item_name_repo': {'dtype': 'string', 'default': np.nan},
     'item_name_home': {'dtype': 'string', 'default': np.nan},
 
@@ -40,20 +40,20 @@ f_types_vals = {
     'item_type_hm': {'dtype': 'string', 'default': np.nan},
     'item_type_rp_db': {'dtype': 'string', 'default': np.nan},
     'item_type_hm_db': {'dtype': 'string', 'default': np.nan},
-    'item_type_rp_di': {'dtype': 'string', 'default': np.nan},
-    'item_type_hm_di': {'dtype': 'string', 'default': np.nan},
+    'item_type_rp_cf': {'dtype': 'string', 'default': np.nan},
+    'item_type_hm_cf': {'dtype': 'string', 'default': np.nan},
     'item_type_repo': {'dtype': 'string', 'default': np.nan},
     'item_type_home': {'dtype': 'string', 'default': np.nan},
 
     # Other Fields
     'git_rp': {'dtype': 'bool', 'default': np.nan},
     'dot_struc': {'dtype': 'string', 'default': np.nan},
-    'dot_struc_di': {'dtype': 'string', 'default': np.nan},
-    'cat_1_di': {'dtype': 'string', 'default': np.nan},
-    'cat_1_name_di': {'dtype': 'string', 'default': np.nan},
-    'cat_2_di': {'dtype': 'string', 'default': np.nan},
-    'comment_di': {'dtype': 'string', 'default': np.nan},
-    'no_show_di': {'dtype': 'bool', 'default': np.nan},
+    'dot_struc_cf': {'dtype': 'string', 'default': np.nan},
+    'cat_1_cf': {'dtype': 'string', 'default': np.nan},
+    'cat_1_name_cf': {'dtype': 'string', 'default': np.nan},
+    'cat_2_cf': {'dtype': 'string', 'default': np.nan},
+    'comment_cf': {'dtype': 'string', 'default': np.nan},
+    'no_show_cf': {'dtype': 'bool', 'default': np.nan},
     'sort_orig': {'dtype': 'Int64', 'default': 0},
     'sort_out': {'dtype': 'Int64', 'default': -1},
 

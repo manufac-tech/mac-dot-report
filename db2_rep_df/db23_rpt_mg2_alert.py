@@ -47,7 +47,7 @@ def fm_fm_alert_sym_overwrite(report_dataframe):
 def check_name_consistency(row):
     # Collect all non-NaN names
     names = [name for name in [row['item_name_rp_db'], row['item_name_hm_db'], 
-                               row['item_name_rp_di'], row['item_name_hm_di']] if pd.notna(name)]
+                               row['item_name_rp_cf'], row['item_name_hm_cf']] if pd.notna(name)]
     
     # Check for conflict
     if len(names) <= 1:
@@ -59,13 +59,13 @@ def doc_no_fs_merge_logic(row):
     if pd.notna(row['item_name_rp_db']):
         row['item_name_repo'] = row['item_name_rp_db']
     else:
-        row['item_name_repo'] = row['item_name_rp_di']
+        row['item_name_repo'] = row['item_name_rp_cf']
     
     # For home, we prioritize db over di
     if pd.notna(row['item_name_hm_db']):
         row['item_name_home'] = row['item_name_hm_db']
     else:
-        row['item_name_home'] = row['item_name_hm_di']
+        row['item_name_home'] = row['item_name_hm_cf']
     
     return row
 
@@ -73,7 +73,7 @@ def check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna):
     # Check for document names without corresponding file system names
     doc_names_no_fs_condition = (
         ((report_dataframe['item_name_rp_db'].notna()) | (report_dataframe['item_name_hm_db'].notna()) |
-         (report_dataframe['item_name_rp_di'].notna()) | (report_dataframe['item_name_hm_di'].notna())) &
+         (report_dataframe['item_name_rp_cf'].notna()) | (report_dataframe['item_name_hm_cf'].notna())) &
         (report_dataframe['item_name_rp'].isna()) & (report_dataframe['item_name_hm'].isna())
     )
 
@@ -94,10 +94,10 @@ def check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna):
         field_merge_rules_dyna[f'in_doc_not_fs_{index}'] = {
             'condition': report_dataframe.index == index,
             'actions': {
-                'item_name_repo': row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) else row['item_name_rp_di'],
-                'item_type_repo': row['item_type_rp_db'] if pd.notna(row['item_type_rp_db']) else row['item_type_rp_di'],
-                'item_name_home': row['item_name_hm_db'] if pd.notna(row['item_name_hm_db']) else row['item_name_hm_di'],
-                'item_type_home': row['item_type_hm_db'] if pd.notna(row['item_type_hm_db']) else row['item_type_hm_di'],
+                'item_name_repo': row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) else row['item_name_rp_cf'],
+                'item_type_repo': row['item_type_rp_db'] if pd.notna(row['item_type_rp_db']) else row['item_type_rp_cf'],
+                'item_name_home': row['item_name_hm_db'] if pd.notna(row['item_name_hm_db']) else row['item_name_hm_cf'],
+                'item_type_home': row['item_type_hm_db'] if pd.notna(row['item_type_hm_db']) else row['item_type_hm_cf'],
                 'unique_id': row['unique_id_rp'],
                 'sort_out': 25,
                 'st_alert': 'In Doc Not FS'

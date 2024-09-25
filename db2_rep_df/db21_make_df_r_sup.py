@@ -49,11 +49,11 @@ def reorder_dfr_cols_perm(df):
     desired_order = [
         # 'item_name',
         'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp', 
-        'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
-        'dot_struc_di',
+        'cat_1_cf', 'cat_1_name_cf', 'cat_2_cf', 'comment_cf',
+        'dot_struc_cf',
         'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
         'sort_orig', 'sort_out',
-        'no_show_di', 'unique_id',
+        'no_show_cf', 'unique_id',
         'match_dict'
     ]
     

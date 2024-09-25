@@ -6,7 +6,7 @@ def remove_consolidated_columns(report_dataframe):
     # Remove extra unique_id fields
 
 
-    columns_to_remove = ['unique_id_rp', 'unique_id_hm', 'unique_id_db', 'unique_id_di']
+    columns_to_remove = ['unique_id_rp', 'unique_id_hm', 'unique_id_db', 'unique_id_cf']
     columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
     report_dataframe.drop(columns=columns_to_remove, inplace=True)
 
@@ -14,7 +14,7 @@ def remove_consolidated_columns(report_dataframe):
     columns_to_remove = [
         'item_name_rp', 'item_type_rp', 'item_name_hm', 'item_type_hm',
         'item_name_rp_db', 'item_type_rp_db', 'item_name_hm_db', 'item_type_hm_db',
-        'item_name_rp_di', 'item_type_rp_di', 'item_name_hm_di', 'item_type_hm_di',
+        'item_name_rp_cf', 'item_type_rp_cf', 'item_name_hm_cf', 'item_type_hm_cf',
         'item_name', 'item_type'
     ]
     columns_to_remove = [col for col in columns_to_remove if col in report_dataframe.columns]
@@ -33,12 +33,12 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
     regular_field_columns = [
         # 'unique_id',
         'st_alert',
-        'dot_struc', 'dot_struc_di',
+        'dot_struc', 'dot_struc_cf',
         'item_name_home', 'item_name_repo', 'item_type_home', 'item_type_repo', 
         'git_rp',
         'st_db_all', 'st_docs',
-        'cat_1_di', 'cat_2_di',
-        # 'comment_di',
+        'cat_1_cf', 'cat_2_cf',
+        # 'comment_cf',
         'st_misc',
         'sort_orig', 'sort_out',
         'match_dict'

@@ -37,10 +37,10 @@ def field_match_3_subsys(report_dataframe):
 def subsystem_docs(report_dataframe):
     # Use vectorized operations to check for equality and handle NaN values
     condition = (
-        (report_dataframe['item_name_rp_di'] == report_dataframe['item_name_rp_db']) &
-        (report_dataframe['item_type_rp_di'] == report_dataframe['item_type_rp_db']) &
-        (report_dataframe['item_name_hm_di'] == report_dataframe['item_name_hm_db']) &
-        (report_dataframe['item_type_hm_di'] == report_dataframe['item_type_hm_db'])
+        (report_dataframe['item_name_rp_cf'] == report_dataframe['item_name_rp_db']) &
+        (report_dataframe['item_type_rp_cf'] == report_dataframe['item_type_rp_db']) &
+        (report_dataframe['item_name_hm_cf'] == report_dataframe['item_name_hm_db']) &
+        (report_dataframe['item_type_hm_cf'] == report_dataframe['item_type_hm_db'])
     ).fillna(False)  # Treat NaN comparisons as False
 
     # Set 'st_docs' based on the condition

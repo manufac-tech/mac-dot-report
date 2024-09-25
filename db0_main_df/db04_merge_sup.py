@@ -23,10 +23,10 @@ def consolidate_post_merge1(main_df): # MERGE REQUIREMENT: Copies the priority n
 
 def consolidate_post_merge3(main_df): # MERGE REQUIREMENT: Copies the priority name to item_name
     def consolidate(row):
-        if pd.notna(row['item_name_rp_di']) and row['item_name_rp_di'] != "":
-            return row['item_name_rp_di']
-        elif pd.notna(row['item_name_hm_di']) and row['item_name_hm_di'] != "":
-            return row['item_name_hm_di']
+        if pd.notna(row['item_name_rp_cf']) and row['item_name_rp_cf'] != "":
+            return row['item_name_rp_cf']
+        elif pd.notna(row['item_name_hm_cf']) and row['item_name_hm_cf'] != "":
+            return row['item_name_hm_cf']
         else:
             return row['item_name']  # If both are null, keep the original value
 
@@ -73,10 +73,10 @@ def reorder_dfm_cols_perm(df):
         'item_name', 'item_type', 'unique_id',
         'item_name_rp', 'item_type_rp', 'git_rp', 'item_name_hm', 'item_type_hm',
         'item_name_hm_db', 'item_type_hm_db', 'item_name_rp_db', 'item_type_rp_db',
-        'item_name_rp_di', 'item_type_rp_di', 'item_name_hm_di', 'item_type_hm_di',
-        'dot_struc_di', 'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di', 'no_show_di',
+        'item_name_rp_cf', 'item_type_rp_cf', 'item_name_hm_cf', 'item_type_hm_cf',
+        'dot_struc_cf', 'cat_1_cf', 'cat_1_name_cf', 'cat_2_cf', 'comment_cf', 'no_show_cf',
         'sort_orig',
-        'unique_id_rp', 'unique_id_db', 'unique_id_hm', 'unique_id_di'
+        'unique_id_rp', 'unique_id_db', 'unique_id_hm', 'unique_id_cf'
     ]
     
     # Ensure all columns in desired_order are in the DataFrame
