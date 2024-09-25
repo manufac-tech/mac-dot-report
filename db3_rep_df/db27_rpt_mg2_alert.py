@@ -1,6 +1,6 @@
 import pandas as pd
-from colorama import init, Fore, Style
-from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
+# from colorama import init, Fore, Style
+from db2_global.db03_dtype_dict import f_types_vals, get_valid_item_types
 from .db28_rpt_mg3_oth import write_st_alert_value
 from .db30_rpt_mg5_finish import get_field_merge_rules
 
@@ -9,9 +9,9 @@ def field_match_2_alert(report_dataframe, field_merge_rules_dyna):
     valid_types_repo, valid_types_home = get_valid_item_types()
 
     try: # Check for Symlink Overwrite condition: rp/hm match but same (actual) type. (ALERT)
-        report_dataframe = alert_sym_overwrite(report_dataframe)
+        report_dataframe = fm_fm_alert_sym_overwrite(report_dataframe)
     except Exception as e:
-        print(f"Error in alert_sym_overwrite: {e}")
+        print(f"Error in fm_alert_sym_overwrite: {e}")
 
     try: # Check for items in any doc, but not in filesystem
         report_dataframe = check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna)
@@ -21,7 +21,7 @@ def field_match_2_alert(report_dataframe, field_merge_rules_dyna):
 
     return report_dataframe
 
-def alert_sym_overwrite(report_dataframe):
+def fm_fm_alert_sym_overwrite(report_dataframe):
     # Check if item names match between repo and home
     name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
 
@@ -54,7 +54,7 @@ def check_name_consistency(row):
         return 'consistent'
     return 'Multiple Names' if len(set(names)) > 1 else 'consistent'
 
-def merge_logic(row):
+def doc_no_fs_merge_logic(row):
     # For repo, we prioritize db over di
     if pd.notna(row['item_name_rp_db']):
         row['item_name_repo'] = row['item_name_rp_db']
@@ -87,7 +87,7 @@ def check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna):
             report_dataframe = write_st_alert_value(report_dataframe, index, name_consistency_status)
 
     # Apply merge logic to populate item_name_repo and item_name_home
-    report_dataframe = report_dataframe.apply(merge_logic, axis=1)
+    report_dataframe = report_dataframe.apply(doc_no_fs_merge_logic, axis=1)
 
     # Dynamically update the field_merge_rules_dyna dictionary
     for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():

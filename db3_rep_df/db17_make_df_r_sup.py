@@ -1,5 +1,5 @@
 import pandas as pd
-from db1_main_df.db03_dtype_dict import f_types_vals
+from db2_global.db03_dtype_dict import f_types_vals
 
 def insert_blank_rows(df):
     # Get unique sort_out values
@@ -43,3 +43,26 @@ def insert_blank_rows(df):
     new_df = pd.concat(new_rows, ignore_index=True)
     
     return new_df
+
+def reorder_dfr_cols_perm(df):
+    # Define the desired column order based on the provided fields
+    desired_order = [
+        # 'item_name',
+        'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp', 
+        'cat_1_di', 'cat_1_name_di', 'cat_2_di', 'comment_di',
+        'dot_struc_di',
+        'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
+        'sort_orig', 'sort_out',
+        'no_show_di', 'unique_id',
+        'match_dict'
+    ]
+    
+    # Ensure all columns in desired_order are in the DataFrame
+    for col in desired_order:
+        if col not in df.columns:
+            print(f"Warning: Column {col} not found in DataFrame")
+    
+    # Reorder columns
+    df = df[desired_order]
+    
+    return df

@@ -1,9 +1,9 @@
 import pandas as pd
 
-from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
+from db2_global.db03_dtype_dict import f_types_vals, get_valid_item_types
 
 from .db27_rpt_mg2_alert import (
-    field_match_2_alert, alert_sym_overwrite, check_name_consistency, merge_logic,
+    field_match_2_alert, fm_fm_alert_sym_overwrite, check_name_consistency, doc_no_fs_merge_logic,
     check_doc_names_no_fs,
 )
 from .db28_rpt_mg3_oth import write_st_alert_value, field_match_3_subsys

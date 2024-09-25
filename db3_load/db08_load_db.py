@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from db1_main_df.db11_merge import get_next_unique_id
-from db1_main_df.db03_dtype_dict import f_types_vals
+from db2_global.db03_dtype_dict import f_types_vals
 
 def load_dotbot_yaml_dataframe():
     dotbot_yaml_path = os.path.join(os.path.expanduser("~"), "._dotfiles/dotfiles_srb_repo/install.conf.yaml")

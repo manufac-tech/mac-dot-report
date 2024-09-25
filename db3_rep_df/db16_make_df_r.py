@@ -1,16 +1,14 @@
 import pandas as pd
 
-from db1_main_df.db14_org import reorder_dfr_cols_for_cli, reorder_dfr_cols_perm
-from .db17_make_df_r_sup import insert_blank_rows
+from db2_global.db03_dtype_dict import f_types_vals
+
+from .db17_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
 from .db26_rpt_mg1_mast import field_match_master
 from .db30_rpt_mg5_finish import consolidate_fields
-from db1_main_df.db03_dtype_dict import f_types_vals
+from .db31_rpt_mg6_fsup import reorder_dfr_cols_for_cli
 
 def build_report_dataframe(main_df_dict):
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
-
-    # Handle NaN values globally # ⭕️ BLANK HANDLING 
-    # report_dataframe = handle_nan_values(report_dataframe)
 
     # Define new columns and their data types with default values
     new_columns = {
@@ -40,8 +38,7 @@ def build_report_dataframe(main_df_dict):
     report_dataframe, field_merge_rules = field_match_master(report_dataframe)
     report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
     
-    # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
-    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
+    report_dataframe = post_build_nan_replace(report_dataframe)  # Ensure blank handling is applied
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
@@ -57,7 +54,7 @@ def build_report_dataframe(main_df_dict):
 
     return report_dataframe
 
-def handle_nan_values(df): # ⭕️ BLANK HANDLING 
+def post_build_nan_replace(df):
     # Replace NaN values in string columns with empty strings
     string_columns = df.select_dtypes(include=['object', 'string']).columns
     df[string_columns] = df[string_columns].fillna('')

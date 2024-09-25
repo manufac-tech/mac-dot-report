@@ -1,5 +1,5 @@
 import pandas as pd
-from db1_main_df.db03_dtype_dict import (
+from db2_global.db03_dtype_dict import (
     f_types_vals, 
     get_valid_item_types
 )
