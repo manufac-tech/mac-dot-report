@@ -2,6 +2,14 @@ import pandas as pd
 from db5_global.db52_dtype_dict import f_types_vals
 
 def insert_blank_rows(df):
+    """
+    NOTE: Temporarily converted numeric columns to 'object' type for display purposes to allow insertion of empty strings.
+    This affects data types until conversion back to 'Int64' after display.
+    """
+    # Convert numeric columns to object just before adding blank rows
+    numeric_cols = df.select_dtypes(include=['Int64', 'float']).columns
+    df[numeric_cols] = df[numeric_cols].astype('object')
+    
     # Get unique sort_out values
     unique_sort_out_values = df['sort_out'].unique()
     
@@ -16,24 +24,21 @@ def insert_blank_rows(df):
         # Append the group to the new rows list
         new_rows.append(group)
         
-        # Create a blank row with the correct data types
+        # Create a blank row with the correct data types (empty strings for all fields)
         blank_row = {}
         for col in df.columns:
             if col in f_types_vals:
                 dtype = f_types_vals[col]['dtype']
-                default_value = f_types_vals[col]['default']
                 if dtype in ['object', 'string']:
                     blank_row[col] = ''  # Empty string for string columns
-                elif dtype == 'bool':
-                    blank_row[col] = False  # False for boolean columns
-                elif dtype in ['Int64', 'float']:
-                    blank_row[col] = 0  # 0 for numeric columns
+                elif dtype in ['Int64', 'float', 'boolean']:
+                    blank_row[col] = ''  # Empty string for numeric/boolean columns too (now object dtype)
                 else:
                     blank_row[col] = ''  # Fallback case
             else:
                 blank_row[col] = ''  # Default for unhandled columns
 
-        blank_row = pd.Series(blank_row)
+        blank_row = pd.Series(blank_row, index=df.columns)
         
         # Append the blank row only if it's not the last group
         if i < len(unique_sort_out_values) - 1:

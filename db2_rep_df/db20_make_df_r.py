@@ -52,6 +52,8 @@ def build_report_dataframe(main_df_dict):
         show_status_fields=False,
     )
 
+    df[numeric_cols] = df[numeric_cols].astype('Int64') # RECONVERTS NUMERIC COLUMNS (blank line workaround) TO INT64
+
     return report_dataframe
 
 def post_build_nan_replace(df):
