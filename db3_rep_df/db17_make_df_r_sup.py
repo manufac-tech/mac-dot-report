@@ -22,14 +22,14 @@ def insert_blank_rows(df):
             if col in f_types_vals:
                 dtype = f_types_vals[col]['dtype']
                 default_value = f_types_vals[col]['default']
-                if dtype == 'string':
-                    blank_row[col] = default_value  # Typically empty string
+                if dtype in ['object', 'string']:
+                    blank_row[col] = ''  # Empty string for string columns
                 elif dtype == 'bool':
-                    blank_row[col] = default_value  # Typically False or ''
+                    blank_row[col] = False  # False for boolean columns
                 elif dtype in ['Int64', 'float']:
-                    blank_row[col] = default_value  # Typically 0 or ''
+                    blank_row[col] = 0  # 0 for numeric columns
                 else:
-                    blank_row[col] = default_value  # Fallback case
+                    blank_row[col] = ''  # Fallback case
             else:
                 blank_row[col] = ''  # Default for unhandled columns
 

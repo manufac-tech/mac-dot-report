@@ -36,15 +36,15 @@ def build_report_dataframe(main_df_dict):
     # Initialize 'sort_out' column with -1
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
-    # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
-    # report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
-
     # Apply field matching and consolidation
     report_dataframe, field_merge_rules = field_match_master(report_dataframe)
     report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
+    
+    # Re-apply blank handling to the newly copied fields # ⭕️ BLANK HANDLING 
+    report_dataframe = handle_nan_values(report_dataframe)  # Ensure blank handling is applied
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
-    # report_dataframe = insert_blank_rows(report_dataframe)
+    report_dataframe = insert_blank_rows(report_dataframe)
     report_dataframe = reorder_dfr_cols_perm(report_dataframe)
     
     # Reorder columns for CLI display
@@ -66,9 +66,21 @@ def handle_nan_values(df): # ⭕️ BLANK HANDLING
     numeric_columns = df.select_dtypes(include=['number']).columns
     df[numeric_columns] = df[numeric_columns].fillna(0)
 
-    # Replace NA values in all columns with appropriate defaults
+    # Replace NaN values in boolean columns with False
+    boolean_columns = df.select_dtypes(include=['bool']).columns
+    df[boolean_columns] = df[boolean_columns].fillna(False)
+
+    # Replace NaN values in nullable integer columns with 0
+    nullable_int_columns = df.select_dtypes(include=['Int64', 'Int32', 'Int16']).columns
+    df[nullable_int_columns] = df[nullable_int_columns].fillna(0)
+
+    # Replace NaN values in nullable boolean columns with False
+    nullable_bool_columns = df.select_dtypes(include=['boolean']).columns
+    df[nullable_bool_columns] = df[nullable_bool_columns].fillna(False)
+
+    # Replace NaN values in all other columns with appropriate defaults
     df = df.fillna('')
-    # pass
+
     return df
 
 def sort_filter_report_df(df, unhide_hidden):

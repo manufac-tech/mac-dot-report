@@ -1,7 +1,7 @@
 import pandas as pd
 
+from .db28_rpt_mg3_oth import write_st_alert_value
 from .db31_rpt_mg6_fsup import remove_consolidated_columns
-
 
 def consolidate_fields(report_dataframe, field_merge_rules):
     """
@@ -25,38 +25,29 @@ def consolidate_fields(report_dataframe, field_merge_rules):
             else:
                 report_dataframe.loc[condition, target_field] = pd.NA
 
+    # Fix blank item names before removing unnecessary columns
+    report_dataframe = fix_blank_item_names(report_dataframe)
+
     # Call the new function to remove unnecessary columns
     report_dataframe = remove_consolidated_columns(report_dataframe)
 
     return report_dataframe
+
+def fix_blank_item_names(df):
+    # Ensure 'item_name' column exists
+    if 'item_name' not in df.columns:
+        raise KeyError("'item_name' column is missing from the DataFrame")
+
+    # Copy item_name to item_name_home and item_name_repo if they are blank
+    for index, row in df.iterrows():
+        if pd.isna(row['item_name_home']) or row['item_name_home'] == '':
+            df.at[index, 'item_name_home'] = row['item_name']
+            df = write_st_alert_value(df, index, "TMP: ITEM_NAME")
+        if pd.isna(row['item_name_repo']) or row['item_name_repo'] == '':
+            df.at[index, 'item_name_repo'] = row['item_name']
+            df = write_st_alert_value(df, index, "TMP: ITEM_NAME")
     
-
-# def apply_dynamic_consolidation(report_dataframe):
-#     """
-#     Applies dynamic consolidation based on the match_dict field.
-#     """
-#     for index, row in report_dataframe.iterrows():
-#         match_dict = row['match_dict']
-        
-#         # Example logic for consolidating fields using match_dict column
-#         if match_dict.get('check_doc_names_no_fs', {}).get('item_name_rp_db', False):
-#             report_dataframe.at[index, 'item_name_repo'] = row['item_name_rp']
-#             report_dataframe.at[index, 'item_type_repo'] = row['item_type_rp']
-#         else:
-#             report_dataframe.at[index, 'item_name_repo'] = pd.NA
-#             report_dataframe.at[index, 'item_type_repo'] = pd.NA
-
-#         if match_dict.get('check_doc_names_no_fs', {}).get('item_name_hm_db', False):
-#             report_dataframe.at[index, 'item_name_home'] = row['item_name_hm']
-#             report_dataframe.at[index, 'item_type_home'] = row['item_type_hm']
-#         else:
-#             report_dataframe.at[index, 'item_name_home'] = pd.NA
-#             report_dataframe.at[index, 'item_type_home'] = pd.NA
-
-#         report_dataframe.at[index, 'unique_id'] = row['unique_id_rp']
-#         report_dataframe.at[index, 'sort_out'] = 25
-
-#     return report_dataframe
+    return df
 
 def get_field_merge_rules(report_dataframe, dynamic_conditions):
     field_merge_rules = {
