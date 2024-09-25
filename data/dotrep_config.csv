@@ -4,6 +4,8 @@ item_name_rp_cf,item_name_hm_cf,dot_struc_cf,item_type_rp_cf,item_type_hm_cf,cat
 none,.zsh_history,hm_only,none,file,term,Terminal,,zshrc,FALSE
 none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .zshrc_aliases,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_aliases__TESTING,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
+.zshrc_aliases__TESTING,.zshrc_aliases__TESTING,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_scripts,.zshrc_scripts,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_themes_omp,.zshrc_themes_omp,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_autocomplete1,.zshrc_autocomplete1,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
