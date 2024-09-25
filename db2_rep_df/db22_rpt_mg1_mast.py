@@ -1,6 +1,6 @@
 import pandas as pd
 
-from db5_global.db50_dtype_dict import f_types_vals, get_valid_item_types
+from db5_global.db52_dtype_dict import f_types_vals, get_valid_item_types
 
 from .db23_rpt_mg2_alert import (
     field_match_2_alert, fm_fm_alert_sym_overwrite, check_name_consistency, doc_no_fs_merge_logic,

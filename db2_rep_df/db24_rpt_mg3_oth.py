@@ -1,5 +1,5 @@
 import pandas as pd
-from db5_global.db50_dtype_dict import (
+from db5_global.db52_dtype_dict import (
     f_types_vals, 
     get_valid_item_types
 )

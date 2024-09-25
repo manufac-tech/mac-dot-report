@@ -1,5 +1,5 @@
 import pandas as pd
-from db5_global.db50_dtype_dict import f_types_vals
+from db5_global.db52_dtype_dict import f_types_vals
 
 def insert_blank_rows(df):
     # Get unique sort_out values

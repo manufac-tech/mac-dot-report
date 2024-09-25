@@ -1,5 +1,14 @@
 import pandas as pd
 
+# Add the unique ID generation code
+current_unique_id = 1
+
+def get_next_unique_id():
+    global current_unique_id
+    unique_id = current_unique_id
+    current_unique_id += 1
+    return unique_id
+
 def consolidate_post_merge1(main_df): # MERGE REQUIREMENT: Copies the priority name to item_name
     def consolidate(row):
         if pd.notna(row['item_name_rp']) and row['item_name_rp'] != "":
