@@ -1,23 +1,8 @@
 {
   "files.exclude": {
-    "dbase/__pycache__": true,
     ".gitignore": true,
     ".venv": true,
     ".vscode": true,
-    "__pycache__": true,
-    "dbase3_rep/__pycache__": true,
-    "dbase2_load/__pycache__": true,
-    "dbase1_main/__pycache__": true,
-    "README.md": true,
-    "dbase1_main_df/__pycache__": true,
-    "dbase3_rep_df/__pycache__": true,
-    "db2_load/__pycache__": true,
-    "db1_main_df/__pycache__": true,
-    "db3_rep_df/__pycache__": true,
-    "db2_global/__pycache__": true,
-    "db1_global/__pycache__": true,
-    "db3_load/__pycache__": true,
-    "db0_main_df/__pycache__": true,
-    "db5_global/__pycache__": true
+    "README.md": true
   }
 }

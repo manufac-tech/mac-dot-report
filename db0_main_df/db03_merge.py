@@ -44,8 +44,6 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
             how=merge_type
         ).copy()
 
-        # merged_dataframe = replace_string_blanks(merged_dataframe) # ⭕️ BLANK HANDLING 
-
         main_df_build_hist["df3"] = merged_dataframe.copy()
         # print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
 
@@ -53,24 +51,3 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
         raise RuntimeError(f"Error during merge: {e}")
     
     return merged_dataframe
-
-
-def replace_string_blanks(df): # ⭕️ BLANK HANDLING 
-    # pass
-    for column in df.columns:
-        # Handle string columns
-        if pd.api.types.is_string_dtype(df[column]):
-            df[column] = df[column].astype(str)
-            # Replace variations of NA, including case-insensitive matches
-            df[column] = df[column].str.replace(r'(?i)^<na>$', '', regex=True)
-            df[column] = df[column].str.replace(r'(?i)^nan$', '', regex=True)
-            df[column] = df[column].str.replace(r'(?i)^none$', '', regex=True)
-            # Fill remaining NaN values with empty string
-            df[column] = df[column].fillna('')
-
-        # Handle Int64 columns
-        elif pd.api.types.is_integer_dtype(df[column]) or pd.api.types.is_dtype_equal(df[column].dtype, "Int64"):
-            # Replace NaN or pd.NA with 0 for Int64 columns
-            df[column] = df[column].fillna(0).astype('Int64')
-
-    return df
