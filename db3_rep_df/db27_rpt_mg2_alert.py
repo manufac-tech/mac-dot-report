@@ -4,7 +4,7 @@ from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
 from .db28_rpt_mg3_oth import write_st_alert_value
 from .db30_rpt_mg5_finish import get_field_merge_rules
 
-def field_match_2_alert(report_dataframe):
+def field_match_2_alert(report_dataframe, dynamic_conditions):
     
     valid_types_repo, valid_types_home = get_valid_item_types()
 
@@ -14,7 +14,7 @@ def field_match_2_alert(report_dataframe):
         print(f"Error in alert_sym_overwrite: {e}")
 
     try: # Check for items in any doc, but not in filesystem
-        report_dataframe = check_doc_names_no_fs(report_dataframe)
+        report_dataframe = check_doc_names_no_fs(report_dataframe, dynamic_conditions)
     except Exception as e:
         print(f"Error in check_doc_no_fs: {e}")
 
@@ -111,4 +111,3 @@ def check_doc_names_no_fs(report_dataframe, dynamic_conditions):
 
     return report_dataframe
 
-    

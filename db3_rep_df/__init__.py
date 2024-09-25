@@ -25,7 +25,7 @@ from .db28_rpt_mg3_oth import (
 )
 from .db30_rpt_mg5_finish import (
     consolidate_fields,
-    apply_dynamic_consolidation,
+    # apply_dynamic_consolidation,
     get_field_merge_rules,
 )
 from .db31_rpt_mg6_fsup import (
@@ -52,6 +52,6 @@ __all__ = [
     "check_doc_names_no_fs",
     "check_name_consistency",
     "merge_logic",
-    "apply_dynamic_consolidation",
+    # "apply_dynamic_consolidation",
     "get_field_merge_rules",
 ]

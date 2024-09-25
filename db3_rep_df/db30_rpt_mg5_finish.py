@@ -31,32 +31,32 @@ def consolidate_fields(report_dataframe, field_merge_rules):
     return report_dataframe
     
 
-def apply_dynamic_consolidation(report_dataframe):
-    """
-    Applies dynamic consolidation based on the match_dict field.
-    """
-    for index, row in report_dataframe.iterrows():
-        match_dict = row['match_dict']
+# def apply_dynamic_consolidation(report_dataframe):
+#     """
+#     Applies dynamic consolidation based on the match_dict field.
+#     """
+#     for index, row in report_dataframe.iterrows():
+#         match_dict = row['match_dict']
         
-        # Example logic for consolidating fields using match_dict column
-        if match_dict.get('check_doc_names_no_fs', {}).get('item_name_rp_db', False):
-            report_dataframe.at[index, 'item_name_repo'] = row['item_name_rp']
-            report_dataframe.at[index, 'item_type_repo'] = row['item_type_rp']
-        else:
-            report_dataframe.at[index, 'item_name_repo'] = pd.NA
-            report_dataframe.at[index, 'item_type_repo'] = pd.NA
+#         # Example logic for consolidating fields using match_dict column
+#         if match_dict.get('check_doc_names_no_fs', {}).get('item_name_rp_db', False):
+#             report_dataframe.at[index, 'item_name_repo'] = row['item_name_rp']
+#             report_dataframe.at[index, 'item_type_repo'] = row['item_type_rp']
+#         else:
+#             report_dataframe.at[index, 'item_name_repo'] = pd.NA
+#             report_dataframe.at[index, 'item_type_repo'] = pd.NA
 
-        if match_dict.get('check_doc_names_no_fs', {}).get('item_name_hm_db', False):
-            report_dataframe.at[index, 'item_name_home'] = row['item_name_hm']
-            report_dataframe.at[index, 'item_type_home'] = row['item_type_hm']
-        else:
-            report_dataframe.at[index, 'item_name_home'] = pd.NA
-            report_dataframe.at[index, 'item_type_home'] = pd.NA
+#         if match_dict.get('check_doc_names_no_fs', {}).get('item_name_hm_db', False):
+#             report_dataframe.at[index, 'item_name_home'] = row['item_name_hm']
+#             report_dataframe.at[index, 'item_type_home'] = row['item_type_hm']
+#         else:
+#             report_dataframe.at[index, 'item_name_home'] = pd.NA
+#             report_dataframe.at[index, 'item_type_home'] = pd.NA
 
-        report_dataframe.at[index, 'unique_id'] = row['unique_id_rp']
-        report_dataframe.at[index, 'sort_out'] = 25
+#         report_dataframe.at[index, 'unique_id'] = row['unique_id_rp']
+#         report_dataframe.at[index, 'sort_out'] = 25
 
-    return report_dataframe
+#     return report_dataframe
 
 def get_field_merge_rules(report_dataframe, dynamic_conditions):
     field_merge_rules = {
