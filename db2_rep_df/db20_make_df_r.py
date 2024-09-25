@@ -52,7 +52,8 @@ def build_report_dataframe(main_df_dict):
         show_status_fields=False,
     )
 
-    df[numeric_cols] = df[numeric_cols].astype('Int64') # RECONVERTS NUMERIC COLUMNS (blank line workaround) TO INT64
+    numeric_cols = report_dataframe.select_dtypes(include=['Int64']).columns  # Identify numeric columns for reconversion in line below
+    report_dataframe[numeric_cols] = report_dataframe[numeric_cols].astype('Int64')  # RECONVERTS NUMERIC COLUMNS (blank line workaround) TO INT64
 
     return report_dataframe
 
