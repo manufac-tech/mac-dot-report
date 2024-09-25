@@ -3,28 +3,22 @@ import pandas as pd
 from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
 
 from .db27_rpt_mg2_alert import (
-    field_match_2_alert,
-    alert_sym_overwrite,
-    check_name_consistency,
-    merge_logic,
+    field_match_2_alert, alert_sym_overwrite, check_name_consistency, merge_logic,
     check_doc_names_no_fs,
 )
 from .db28_rpt_mg3_oth import write_st_alert_value, field_match_3_subsys
 from .db30_rpt_mg5_finish import get_field_merge_rules
 
 def field_match_master(report_dataframe):
-    # Initialize dynamic conditions dictionary
-    dynamic_conditions = {}
+    field_merge_rules_dyna = {}  # Initialize dynamic conditions dictionary
 
     report_dataframe = field_match_1_structure(report_dataframe)
-    report_dataframe = field_match_2_alert(report_dataframe, dynamic_conditions)
+    report_dataframe = field_match_2_alert(report_dataframe, field_merge_rules_dyna)
     report_dataframe = field_match_3_subsys(report_dataframe)
     
-    # Check for document names without corresponding file system names and update dynamic conditions
-    report_dataframe = check_doc_names_no_fs(report_dataframe, dynamic_conditions)
+    report_dataframe = check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna)
 
-    # Combine static and dynamic conditions
-    field_merge_rules = get_field_merge_rules(report_dataframe, dynamic_conditions)
+    field_merge_rules = get_field_merge_rules(report_dataframe, field_merge_rules_dyna)
 
     return report_dataframe, field_merge_rules
 

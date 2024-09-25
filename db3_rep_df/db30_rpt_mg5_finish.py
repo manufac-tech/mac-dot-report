@@ -4,14 +4,7 @@ from .db28_rpt_mg3_oth import write_st_alert_value
 from .db31_rpt_mg6_fsup import remove_consolidated_columns
 
 def consolidate_fields(report_dataframe, field_merge_rules):
-    """
-    Consolidates item_name_repo, item_type_repo, item_name_home, item_type_home, and unique_id based on match statuses.
-    Sets 'st_misc' to 'x' if any unique ID gets copied to the actual unique_id.
-    """
-
-    blank_symbol = ''
-
-    # Apply the conditions and actions from the combined dictionary
+    # Apply field merge rules to update DataFrame based on conditions and actions
     for key, value in field_merge_rules.items():
         condition = value['condition']
         actions = value['actions']
@@ -25,10 +18,10 @@ def consolidate_fields(report_dataframe, field_merge_rules):
             else:
                 report_dataframe.loc[condition, target_field] = pd.NA
 
-    # Fix blank item names before removing unnecessary columns
+    # TEMP: Ensure blank item names are filled with appropriate values
     report_dataframe = fix_blank_item_names(report_dataframe)
 
-    # Call the new function to remove unnecessary columns
+    # Remove unnecessary columns after consolidation
     report_dataframe = remove_consolidated_columns(report_dataframe)
 
     return report_dataframe
@@ -49,7 +42,7 @@ def fix_blank_item_names(df):
     
     return df
 
-def get_field_merge_rules(report_dataframe, dynamic_conditions):
+def get_field_merge_rules(report_dataframe, field_merge_rules_dyna):
     field_merge_rules = {
         'full_match': {
             'condition': report_dataframe['dot_struc'] == 'rp>hm',

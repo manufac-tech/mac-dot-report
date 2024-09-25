@@ -4,7 +4,7 @@ from db1_main_df.db03_dtype_dict import f_types_vals, get_valid_item_types
 from .db28_rpt_mg3_oth import write_st_alert_value
 from .db30_rpt_mg5_finish import get_field_merge_rules
 
-def field_match_2_alert(report_dataframe, dynamic_conditions):
+def field_match_2_alert(report_dataframe, field_merge_rules_dyna):
     
     valid_types_repo, valid_types_home = get_valid_item_types()
 
@@ -14,7 +14,7 @@ def field_match_2_alert(report_dataframe, dynamic_conditions):
         print(f"Error in alert_sym_overwrite: {e}")
 
     try: # Check for items in any doc, but not in filesystem
-        report_dataframe = check_doc_names_no_fs(report_dataframe, dynamic_conditions)
+        report_dataframe = check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna)
     except Exception as e:
         print(f"Error in check_doc_no_fs: {e}")
 
@@ -69,7 +69,7 @@ def merge_logic(row):
     
     return row
 
-def check_doc_names_no_fs(report_dataframe, dynamic_conditions):
+def check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna):
     # Check for document names without corresponding file system names
     doc_names_no_fs_condition = (
         ((report_dataframe['item_name_rp_db'].notna()) | (report_dataframe['item_name_hm_db'].notna()) |
@@ -89,9 +89,9 @@ def check_doc_names_no_fs(report_dataframe, dynamic_conditions):
     # Apply merge logic to populate item_name_repo and item_name_home
     report_dataframe = report_dataframe.apply(merge_logic, axis=1)
 
-    # Dynamically update the dynamic_conditions dictionary
+    # Dynamically update the field_merge_rules_dyna dictionary
     for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():
-        dynamic_conditions[f'in_doc_not_fs_{index}'] = {
+        field_merge_rules_dyna[f'in_doc_not_fs_{index}'] = {
             'condition': report_dataframe.index == index,
             'actions': {
                 'item_name_repo': row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) else row['item_name_rp_di'],
@@ -106,7 +106,7 @@ def check_doc_names_no_fs(report_dataframe, dynamic_conditions):
 
     # Print the dynamic conditions to the terminal
     # print("Dynamic Conditions:")
-    # for key, value in dynamic_conditions.items():
+    # for key, value in field_merge_rules_dyna.items():
     #     print(f"{key}: {value}")
 
     return report_dataframe
