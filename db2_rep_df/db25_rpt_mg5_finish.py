@@ -1,7 +1,7 @@
 import pandas as pd
 
-from .db28_rpt_mg3_oth import write_st_alert_value
-from .db31_rpt_mg6_fsup import remove_consolidated_columns
+from .db24_rpt_mg3_oth import write_st_alert_value
+from .db26_rpt_mg6_fsup import remove_consolidated_columns
 
 def consolidate_fields(report_dataframe, field_merge_rules):
     # Apply field merge rules to update DataFrame based on conditions and actions

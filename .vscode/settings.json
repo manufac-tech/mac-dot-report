@@ -14,6 +14,10 @@
     "db2_load/__pycache__": true,
     "db1_main_df/__pycache__": true,
     "db3_rep_df/__pycache__": true,
-    "db2_global/__pycache__": true
+    "db2_global/__pycache__": true,
+    "db1_global/__pycache__": true,
+    "db3_load/__pycache__": true,
+    "db0_main_df/__pycache__": true,
+    "db5_global/__pycache__": true
   }
 }

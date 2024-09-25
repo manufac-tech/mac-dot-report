@@ -1,8 +1,8 @@
 import os
 import logging
 import pandas as pd
-from db1_main_df.db11_merge import get_next_unique_id
-from db2_global.db03_dtype_dict import f_types_vals
+from db0_main_df.db03_merge import get_next_unique_id
+from db5_global.db50_dtype_dict import f_types_vals
 
 def correct_and_validate_dot_info_df(dot_info_df):
     # Correct values: Replace NaN with empty strings in 'comment_di' field
