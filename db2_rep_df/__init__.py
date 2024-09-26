@@ -6,6 +6,7 @@ from .db20_make_df_r import (
 from .db21_make_df_r_sup import (
     insert_blank_rows,
     reorder_dfr_cols_perm,
+    # text_format_justify,
 )
 from .db22_rpt_mg1_mast import (
     field_match_master,
@@ -43,6 +44,7 @@ __all__ = [
     "sort_filter_report_df",
     "insert_blank_rows",
     "reorder_dfr_cols_perm",
+    # "text_format_justify",
     "field_match_master",
     "field_match_1_structure",
     "check_full_match",

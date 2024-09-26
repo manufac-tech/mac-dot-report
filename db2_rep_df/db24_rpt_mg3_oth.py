@@ -44,14 +44,14 @@ def subsystem_docs(report_dataframe):
     ).fillna(False)  # Treat NaN comparisons as False
 
     # Set 'st_docs' based on the condition
-    report_dataframe['st_docs'] = condition.map({True: 'Valid', False: 'Invalid'})
+    report_dataframe['st_docs'] = condition.map({True: 'o', False: 'x'})
 
     return report_dataframe['st_docs']
 
 def subsystem_db_all(report_dataframe):
     """
     Verify DotBot alignment between repo, home, and DotBot YAML.
-    Updates 'st_db_all' with 'Valid' or 'Invalid' based on the match.
+    Updates 'st_db_all' with 'o' or 'x' based on the match.
     """
 
     # Check if repo folder matches the corresponding entry in DotBot YAML
@@ -74,8 +74,8 @@ def subsystem_db_all(report_dataframe):
         (report_dataframe['item_type_hm_db'] == f_types_vals['item_type_hm_db']['default'])
     )
 
-    # Set 'Valid' or 'Invalid' based on name and type match and default check
-    report_dataframe['st_db_all'] = 'Invalid'  # Default to 'Invalid'
-    report_dataframe.loc[repo_name_match & repo_type_match & home_name_match & home_type_match & ~default_check, 'st_db_all'] = 'Valid'
+    # Set 'o' or 'x' based on name and type match and default check
+    report_dataframe['st_db_all'] = 'x'  # Default to 'x'
+    report_dataframe.loc[repo_name_match & repo_type_match & home_name_match & home_type_match & ~default_check, 'st_db_all'] = 'o'
 
     return report_dataframe['st_db_all']

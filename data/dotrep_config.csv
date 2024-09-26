@@ -1,8 +1,8 @@
 item_name_rp_cf,item_name_hm_cf,dot_struc_cf,item_type_rp_cf,item_type_hm_cf,cat_1_cf,cat_1_name_cf,comment_cf,cat_2_cf,no_show_cf
-._dotfiles,._dotfiles,hm_only,none,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,FALSE
+._dotfiles,._dotfiles,hm,none,folder,term,Terminal,~/._dotfiles/._dotfiles_srb_repo,dotfile mgmt,FALSE
 .zshrc,.zshrc,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
-none,.zsh_history,hm_only,none,file,term,Terminal,,zshrc,FALSE
-none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
+none,.zsh_history,hm,none,file,term,Terminal,,zshrc,FALSE
+none,.zsh_history.bak,hm,none,file,term,Terminal,,zshrc,FALSE
 .zshrc_aliases,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_aliases__TESTING,.zshrc_aliases,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zshrc_aliases__TESTING,.zshrc_aliases__TESTING,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
@@ -11,9 +11,9 @@ none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .zshrc_autocomplete1,.zshrc_autocomplete1,rp>hm,file,file_sym,term,Terminal,,zshrc,FALSE
 .zprofile,.zprofile,rp>hm,file,file_sym,term,Terminal,zsh profile file,zsh other,FALSE
 .zsh_sessions,.zsh_sessions,rp>hm,folder,folder_sym,term,Terminal,Command history and state from previous zsh sessions,zsh other,FALSE
-.zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,hm_only,none,file,term,Terminal,zsh completion dump file,zsh other,FALSE
-.zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,hm_only,none,file,term,Terminal,,zsh other,FALSE
-.zcompdump,.zcompdump,hm_only,none,file,term,Terminal,,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9,.zcompdump-srb_mbp23-5.9,hm,none,file,term,Terminal,zsh completion dump file,zsh other,FALSE
+.zcompdump-srb_mbp23-5.9.zwc,.zcompdump-srb_mbp23-5.9.zwc,hm,none,file,term,Terminal,,zsh other,FALSE
+.zcompdump,.zcompdump,hm,none,file,term,Terminal,,zsh other,FALSE
 .oh-my-posh,.oh-my-posh,rp>hm,folder,folder_sym,term,Terminal,,zsh themes,FALSE
 .bashrc,.bashrc,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
 .bash_history,.bash_history,rp>hm,file,file_sym,term,Terminal,,bash,FALSE
@@ -21,7 +21,7 @@ none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .sh_history,.sh_history,rp>hm,file,file_sym,term,Terminal,Shell history file,bash,FALSE
 .iterm2_shell_integration.zsh,.iterm2_shell_integration.zsh,rp>hm,file,file_sym,term,Terminal,iTerm2 shell integration file,other,FALSE
 .iterm2,.iterm2,rp>hm,folder,folder_sym,term,Terminal,iTerm2 configuration files,other,FALSE
-.viminfo,.viminfo,hm_only,none,file,term,Terminal,,other,FALSE
+.viminfo,.viminfo,hm,none,file,term,Terminal,,other,FALSE
 .npm,.npm,rp>hm,folder,folder_sym,swd,Software Development,Node.js package manager,pkg mgrs plus,FALSE
 .npmrc,.npmrc,rp>hm,file,file_sym,swd,Software Development,Node.js package manager configuration file,pkg mgrs plus,FALSE
 .nvm,.nvm,rp>hm,folder,folder_sym,swd,Software Development,Node.js version manager,pkg mgrs plus,FALSE
@@ -55,8 +55,8 @@ none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .android,.android,rp>hm,folder,folder_sym,swd,Software Development,Android SDK,other,FALSE
 .degit,.degit,rp>hm,folder,folder_sym,swd,Software Development,quickly scaffold projects by downloading/extracting a repo,other,FALSE
 .gitignore_global,.gitignore_global,rp>hm,file,file_sym,swd,Software Development,Global .gitignore file,vcs git,FALSE
-.gitignore,.gitignore,rp_only,file,none,swd,Software Development,Repo .gitignore file,vcs git,FALSE
-.git,.git,rp_only,folder,none,swd,Software Development,Repo .git folder,vcs git,FALSE
+.gitignore,.gitignore,rp,file,none,swd,Software Development,Repo .gitignore file,vcs git,FALSE
+.git,.git,rp,folder,none,swd,Software Development,Repo .git folder,vcs git,FALSE
 .gitflow_export,.gitflow_export,rp>hm,file,file_sym,swd,Software Development,GitFlow configuration file,vcs git,FALSE
 .gitconfig,.gitconfig,rp>hm,file,file_sym,swd,Software Development,Git configuration file,vcs git,FALSE
 .hgignore_global,.hgignore_global,rp>hm,file,file_sym,swd,Software Development,Global .hgignore file,vcs other,FALSE
@@ -66,13 +66,13 @@ none,.zsh_history.bak,hm_only,none,file,term,Terminal,,zshrc,FALSE
 .local,.local,rp>hm,folder,folder_sym,sys,System,,general,FALSE
 .IdentityService,.IdentityService,rp>hm,folder,folder_sym,sys,System,,macos,FALSE
 .DS_Store,.DS_Store,rp>hm,file,file_sym,sys,System,,macos,TRUE
-.Trash,.Trash,hm_only,none,folder,sys,System,,macos,TRUE
+.Trash,.Trash,hm,none,folder,sys,System,,macos,TRUE
 .CFUserTextEncoding,.CFUserTextEncoding,rp>hm,file,file_sym,sys,System,macOS - stores the user’s preferred text encoding settings,macos,FALSE
 .netrc,.netrc,rp>hm,file,file_sym,sys,System,Unix file stores login & init info for connecting to remote systems,unix,FALSE
 .thumbnails,.thumbnails,rp>hm,folder,folder_sym,sys,System,Thumbnail cache,unix,FALSE
 .ssh,.ssh,rp>hm,folder,folder_sym,sys,System,Unix SSH configuration files,unix,FALSE
 .fontconfig,.fontconfig,rp>hm,folder,folder_sym,sys,System,Unix font configuration,unix,FALSE
-.lesshst,.lesshst,hm_only,none,file,sys,System,command history file for the Unix less text viewer command,unix,FALSE
+.lesshst,.lesshst,hm,none,file,sys,System,command history file for the Unix less text viewer command,unix,FALSE
 .cups,.cups,rp>hm,folder,folder_sym,sys,System,Common Unix Printing System,unix,FALSE
 .Xencelabs,.Xencelabs,rp>hm,folder,folder_sym,apps,Applications,Xencelabs dedicated controller config,regular,FALSE
 .adobe,.adobe,rp>hm,folder,folder_sym,apps,Applications,,regular,FALSE

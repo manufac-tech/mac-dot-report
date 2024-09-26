@@ -59,7 +59,7 @@ def check_full_match(report_dataframe, valid_types_repo, valid_types_home):
 def check_repo_only(report_dataframe):
     # Repo-only logic
     repo_only_condition = (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != '')
-    report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp_only'
+    report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp'
 
     return report_dataframe
 
@@ -67,7 +67,7 @@ def check_repo_only(report_dataframe):
 def check_home_only(report_dataframe):
     # Home-only logic
     home_only_condition = (report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == '')
-    report_dataframe.loc[home_only_condition, 'dot_struc'] = 'hm_only'
+    report_dataframe.loc[home_only_condition, 'dot_struc'] = 'hm'
 
     # Update st_alert field for home-only items
     for index, row in report_dataframe[home_only_condition].iterrows():

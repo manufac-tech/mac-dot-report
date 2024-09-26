@@ -69,7 +69,7 @@ def get_field_merge_rules(report_dataframe, field_merge_rules_dyna):
             }
         },
         'repo_only': {
-            'condition': report_dataframe['dot_struc'] == 'rp_only',
+            'condition': report_dataframe['dot_struc'] == 'rp',
             'actions': {
                 'item_name_repo': 'item_name_rp',
                 'item_type_repo': 'item_type_rp',
@@ -81,7 +81,7 @@ def get_field_merge_rules(report_dataframe, field_merge_rules_dyna):
             }
         },
         'home_only': {
-            'condition': report_dataframe['dot_struc'] == 'hm_only',
+            'condition': report_dataframe['dot_struc'] == 'hm',
             'actions': {
                 'item_name_home': 'item_name_hm',
                 'item_type_home': 'item_type_hm',
