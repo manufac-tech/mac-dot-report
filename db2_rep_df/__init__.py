@@ -2,6 +2,8 @@ from .db20_make_df_r import (
     build_report_dataframe,
     post_build_nan_replace,
     sort_filter_report_df,
+    detect_status_master,
+    # status_checks_config,
 )
 from .db21_make_df_r_sup import (
     insert_blank_rows,
@@ -42,6 +44,8 @@ __all__ = [
     "build_report_dataframe",
     "post_build_nan_replace",
     "sort_filter_report_df",
+    "detect_status_master",
+    # "status_checks_config",
     "insert_blank_rows",
     "reorder_dfr_cols_perm",
     # "text_format_justify",

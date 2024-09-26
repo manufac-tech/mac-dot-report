@@ -35,14 +35,14 @@ def build_report_dataframe(main_df_dict):
     report_dataframe['sort_out'] = report_dataframe['sort_out'].fillna(-1)
 
     # Apply field matching and consolidation
-    report_dataframe, field_merge_rules = field_match_master(report_dataframe)
-    report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
-    
-    report_dataframe = post_build_nan_replace(report_dataframe)  # Ensure blank handling is applied
+    # report_dataframe, field_merge_rules = field_match_master(report_dataframe)
+    # report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
+
+    report_dataframe = post_build_nan_replace(report_dataframe)
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
-    report_dataframe = reorder_dfr_cols_perm(report_dataframe)
+    # report_dataframe = reorder_dfr_cols_perm(report_dataframe) # REMOVING COLUMNS - UNWAANTED
     
     # Reorder columns for CLI display
     report_dataframe = reorder_dfr_cols_for_cli(
@@ -55,6 +55,11 @@ def build_report_dataframe(main_df_dict):
     numeric_cols = report_dataframe.select_dtypes(include=['Int64']).columns  # Identify numeric columns for reconversion in line below
     report_dataframe[numeric_cols] = report_dataframe[numeric_cols].astype('Int64')  # RECONVERTS NUMERIC COLUMNS (blank line workaround) TO INT64
 
+    # Print the current columns of the DataFrame
+    print("Current columns in the DataFrame:", report_dataframe.columns.tolist())
+
+    # Apply the detect_status_master function with the status_checks_config
+    report_dataframe = detect_status_master(report_dataframe) # TEMP TEST
     return report_dataframe
 
 def post_build_nan_replace(df):
@@ -101,3 +106,167 @@ def sort_filter_report_df(df, unhide_hidden):
     df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key'])
     
     return df
+
+# def detect_status_master(report_dataframe):
+#     for index, row in report_dataframe.iterrows():
+#         # DotBot matching logic
+#         match_logic = (
+#             (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+#             (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+#         ) and (
+#             (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+#             (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+#         )
+        
+#         # Apply the match result to the 'st_db_all' and 'st_alert' fields
+#         if match_logic:
+#             row['st_db_all'] = 'o'  # Success case
+#             row['st_alert'] = None   # No alert if matched
+#             print(f"Row {index} matched: st_db_all set to {row['st_db_all']}")
+#         else:
+#             row['st_db_all'] = 'x'  # Failure case
+#             row['st_alert'] = 'DotBot mismatch'
+#             print(f"Row {index} did not match: st_db_all set to {row['st_db_all']}")
+    
+    # return report_dataframe
+
+
+# def detect_status_master(report_dataframe):
+#     for index, row in report_dataframe.iterrows():
+#         # Instead of actual logic, simply set both fields to "TEST"
+#         report_dataframe.loc[index, 'st_db_all'] = 'TEST'
+#         report_dataframe.loc[index, 'st_alert'] = 'TEST'
+        
+#         # Debugging: Print the test result
+#         print(f"Row {index}: st_db_all and st_alert set to 'TEST'")
+    
+#     return report_dataframe
+
+
+# def detect_status_master(report_dataframe, config):
+#     for index, row in report_dataframe.iterrows():
+#         # Apply the DotBot status check based on the configuration
+#         dotbot_rule = config['subsys_dotbot']
+#         match_logic = dotbot_rule['match_logic']
+        
+#         # Debugging: Print the row being processed
+#         print(f"Processing row {index}: {row.to_dict()}")
+        
+#         if match_logic(row):
+#             report_dataframe.loc[index, 'st_db_all'] = dotbot_rule['output']['st_db_all']
+#             report_dataframe.loc[index, 'st_alert'] = dotbot_rule['output']['st_alert']
+#             # Debugging: Print the match result
+#             print(f"Row {index} matched: st_db_all set to {report_dataframe.loc[index, 'st_db_all']}")
+#         else:
+#             report_dataframe.loc[index, 'st_db_all'] = 'x'
+#             report_dataframe.loc[index, 'st_alert'] = 'DotBot mismatch'
+#             # Debugging: Print the mismatch result
+#             print(f"Row {index} did not match: st_db_all set to {report_dataframe.loc[index, 'st_db_all']}")
+    
+#     return report_dataframe
+
+# status_checks_config = {
+#     'subsys_dotbot': {
+#         'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp', 'item_name_hm'],
+#         'match_logic': lambda row: (
+#             (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+#             (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+#         ) and (
+#             (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+#             (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+#         ),
+#         'output': {
+#             'st_db_all': 'o',  # Success case
+#             'st_alert': None   # No alert if matched
+#         }
+#     }
+# }
+
+# def detect_status_master(report_dataframe):
+#     for index, row in report_dataframe.iterrows():
+#         # DotBot matching logic
+#         match_logic = (
+#             (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+#             (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+#         ) and (
+#             (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+#             (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+#         )
+        
+#         # Apply the match result to the 'st_db_all' and 'st_alert' fields
+#         if match_logic:
+#             row['st_db_all'] = 'o'  # Success case
+#             row['st_alert'] = 'TEST'   # No alert if matched
+#             print(f"Row {index} matched: st_db_all set to {row['st_db_all']}")
+#         else:
+#             row['st_db_all'] = 'x'  # Failure case
+#             row['st_alert'] = 'DotBot mismatch'
+#             print(f"Row {index} did not match: st_db_all set to {row['st_db_all']}")
+    
+#     return report_dataframe
+
+# def detect_status_master(report_dataframe):
+#     for index, row in report_dataframe.iterrows():
+#         # DotBot matching logic
+#         match_logic = (
+#             (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+#             (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+#         ) and (
+#             (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+#             (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+#         )
+        
+#         # Apply the match result to the 'st_db_all' and 'st_alert' fields
+#         if match_logic:
+#             report_dataframe.loc[index, 'st_db_all'] = 'o'  # Success case
+#             report_dataframe.loc[index, 'st_alert'] = 'TEST'   # No alert if matched
+#         else:
+#             report_dataframe.loc[index, 'st_db_all'] = 'x'  # Failure case
+#             report_dataframe.loc[index, 'st_alert'] = 'DotBot mismatch'
+    
+#     return report_dataframe
+
+
+
+
+def detect_status_master(report_dataframe):
+    # Get the configuration dictionary
+    config = get_status_checks_config()
+    
+    for index, row in report_dataframe.iterrows():
+        for subsystem, rules in config.items():
+            # Extract input fields and match logic
+            input_fields = rules['input_fields']
+            match_logic = rules['match_logic'](row)
+            
+            # Apply the match result to the output fields
+            if match_logic:
+                for field, value in rules['output'].items():
+                    report_dataframe.loc[index, field] = value
+            else:
+                for field, value in rules['failure_output'].items():
+                    report_dataframe.loc[index, field] = value
+    
+    return report_dataframe
+
+def get_status_checks_config():
+    return {
+        'subsys_dotbot': {
+            'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp', 'item_name_hm'],
+            'match_logic': lambda row: (
+                (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+                (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+            ) and (
+                (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+                (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+            ),
+            'output': {
+                'st_db_all': 'o',  # Success case
+                'st_alert': None   # No alert if matched
+            },
+            'failure_output': {
+                'st_db_all': 'x',  # Failure case
+                'st_alert': 'DotBot mismatch'
+            }
+        }
+    }
