@@ -136,7 +136,6 @@ def get_field_merge_rules(report_dataframe, field_merge_rules_dyna):
 
 
 
-
 def detect_status_master(report_dataframe):
     # Get the configuration dictionary
     config = get_status_checks_config()
