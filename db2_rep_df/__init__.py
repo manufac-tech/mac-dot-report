@@ -34,9 +34,11 @@ from .db25_rpt_mg5_finish import (
     consolidate_fields,
     get_field_merge_rules,
     detect_status_master,  # Added here
-    get_status_checks_config,  # Added here
 )
-from .db26_rpt_mg6_fsup import (
+from .db27_mrg8_b import (
+    get_status_checks_config,  # Moved here
+)
+from .db28_rpt_mrg_c import (
     remove_consolidated_columns,
     reorder_dfr_cols_for_cli,
     print_dataframe_section,
@@ -68,7 +70,7 @@ __all__ = [
     "consolidate_fields",
     "get_field_merge_rules",
     "detect_status_master",  # Added here
-    "get_status_checks_config",  # Added here
+    "get_status_checks_config",  # Moved here
     "remove_consolidated_columns",
     "reorder_dfr_cols_for_cli",
     "print_dataframe_section",

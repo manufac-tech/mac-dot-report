@@ -7,9 +7,9 @@ from db5_global.db52_dtype_dict import (
 def write_st_alert_value(report_dataframe, index, new_status):
     current_status = report_dataframe.at[index, 'st_alert']
     
-    # If there is already a status, overwrite it and add the red emoji
+    # If there is already a status, overwrite it and add the red circle emoji as a flag
     if not pd.isna(current_status) and current_status != '':
-        report_dataframe.at[index, 'st_alert'] = f" {new_status}"
+        report_dataframe.at[index, 'st_alert'] = f"🔴 {new_status}"
     else:
         report_dataframe.at[index, 'st_alert'] = new_status
     

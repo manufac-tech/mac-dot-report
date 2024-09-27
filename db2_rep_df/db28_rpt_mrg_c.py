@@ -44,13 +44,13 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
 
         'git_rp',
         'st_db_all', 'st_docs',
-        'cat_2_cf',
+        # 'cat_2_cf',
         # 'comment_cf',
 
         'st_misc',
 
         'sort_orig', 'sort_out',
-        'match_dict'
+        # 'match_dict'
     ]
 
     # Field Merge Group
@@ -69,7 +69,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'git_rp',
         'item_name_rp',
         # 'item_type_rp',
-        'item_name_hm',
+        # 'item_name_hm',
         # 'item_type_hm',
         'item_name_hm_db',
         # 'item_type_hm_db',
@@ -86,10 +86,10 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'comment_cf',
         # 'no_show_cf',
         # 'sort_orig',
-        # 'unique_id_rp',
-        # 'unique_id_db',
-        # 'unique_id_hm',
-        # 'unique_id_cf',
+        'unique_id_rp',
+        'unique_id_db',
+        'unique_id_hm',
+        'unique_id_cf',
         'item_name_repo',
         'item_type_repo',
         'item_name_home',
@@ -100,7 +100,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'dot_struc',
         # 'st_db_all',
         # 'st_misc',
-        # 'match_dict'
+        'match_dict'
     ]
 
     # Display Complete Report_Dataframe

@@ -1,7 +1,8 @@
 import pandas as pd
 
 from .db24_rpt_mg3_oth import write_st_alert_value
-from .db26_rpt_mg6_fsup import remove_consolidated_columns
+from .db27_mrg8_b import get_status_checks_config
+from .db28_rpt_mrg_c import remove_consolidated_columns
 
 def consolidate_fields(report_dataframe, field_merge_rules):
     # Apply field merge rules to update DataFrame based on conditions and actions
@@ -134,8 +135,6 @@ def get_field_merge_rules(report_dataframe, field_merge_rules_dyna):
 
     return field_merge_rules
 
-
-
 def detect_status_master(report_dataframe):
     # Get the configuration dictionary
     config = get_status_checks_config()
@@ -164,68 +163,3 @@ def detect_status_master(report_dataframe):
                             report_dataframe.loc[index, field] = value
     
     return report_dataframe
-
-
-def get_status_checks_config():
-    return {
-        # Subsystem - DotBot
-        'subsys_dotbot': {
-            'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp', 'item_name_hm'],
-            'match_logic': lambda row: (
-                (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
-                (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
-            ) and (
-                (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
-                (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
-            ),
-            'output': {
-                'st_db_all': '-',  # Success case
-                'st_alert': None   # No alert if matched
-            },
-            'failure_output': {
-                'st_db_all': 'n',  # Failure case
-                'st_alert': 'DotBot mismatch'
-            }
-        },
-
-        # Subsystem - Docs (Checks if DotBot yaml and dotrep_config.csv match each other)
-        'subsys_docs': {
-            'input_fields': ['item_name_rp_db', 'item_name_rp_cf', 'item_name_hm_db', 'item_name_hm_cf'],
-            'match_logic': lambda row: (
-                (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp_cf'])) or
-                (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp_cf']) and row['item_name_rp_db'] == row['item_name_rp_cf'])
-            ) and (
-                (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm_cf'])) or
-                (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm_cf']) and row['item_name_hm_db'] == row['item_name_hm_cf'])
-            ),
-            'output': {
-                'st_docs': '-',  # Success case
-                'st_alert': None   # No alert if matched
-            },
-            'failure_output': {
-                'st_docs': 'n',  # Failure case
-                'st_alert': 'Docs mismatch'
-            }
-        },
-
-        # Alert - Doc but no FS (Checks if any name exists in the document but not in the file system)
-        'alert_doc_no_fs': {
-            'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp_cf', 'item_name_hm_cf', 'item_name_rp', 'item_name_hm'],
-            'match_logic': lambda row: (
-                any([pd.notna(row['item_name_rp_db']), pd.notna(row['item_name_hm_db']), pd.notna(row['item_name_rp_cf']), pd.notna(row['item_name_hm_cf'])]) and
-                pd.isna(row['item_name_rp']) and pd.isna(row['item_name_hm'])
-            ),
-            'output': {
-                'st_misc': 'doc_no_fs',  # Alert case
-                'st_alert': 'Doc No FS'
-            },
-            'failure_output': {
-                'st_misc': None,  # No alert needed
-                'st_alert': None   # No alert if matched
-            }
-        }
-    }
-
-    # def resolve_fields_master(report_dataframe): 
-    #     pass
-
