@@ -4,7 +4,8 @@ from db5_global.db52_dtype_dict import f_types_vals
 
 from .db21_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
 from .db22_rpt_mg1_mast import field_match_master
-from .db25_rpt_mg5_finish import consolidate_fields
+from .db25_rpt_mg5_finish import consolidate_fields, detect_status_master
+# , resolve_fields_master
 from .db26_rpt_mg6_fsup import reorder_dfr_cols_for_cli
 
 def build_report_dataframe(main_df_dict):
@@ -43,6 +44,9 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
     # report_dataframe = reorder_dfr_cols_perm(report_dataframe) # REMOVING COLUMNS - UNWAANTED
+
+    # Apply the detect_status_master function with the status_checks_config
+    report_dataframe = detect_status_master(report_dataframe) # TEMP TEST
     
     # Reorder columns for CLI display
     report_dataframe = reorder_dfr_cols_for_cli(
@@ -50,16 +54,15 @@ def build_report_dataframe(main_df_dict):
         show_all_fields=False,
         show_main_fields=True,
         show_status_fields=False,
+        show_setup_group=True,
     )
 
     numeric_cols = report_dataframe.select_dtypes(include=['Int64']).columns  # Identify numeric columns for reconversion in line below
     report_dataframe[numeric_cols] = report_dataframe[numeric_cols].astype('Int64')  # RECONVERTS NUMERIC COLUMNS (blank line workaround) TO INT64
 
     # Print the current columns of the DataFrame
-    print("Current columns in the DataFrame:", report_dataframe.columns.tolist())
+    # print("Current columns in the DataFrame:", report_dataframe.columns.tolist())
 
-    # Apply the detect_status_master function with the status_checks_config
-    report_dataframe = detect_status_master(report_dataframe) # TEMP TEST
     return report_dataframe
 
 def post_build_nan_replace(df):
@@ -229,44 +232,44 @@ def sort_filter_report_df(df, unhide_hidden):
 
 
 
-def detect_status_master(report_dataframe):
-    # Get the configuration dictionary
-    config = get_status_checks_config()
+# def detect_status_master(report_dataframe):
+#     # Get the configuration dictionary
+#     config = get_status_checks_config()
     
-    for index, row in report_dataframe.iterrows():
-        for subsystem, rules in config.items():
-            # Extract input fields and match logic
-            input_fields = rules['input_fields']
-            match_logic = rules['match_logic'](row)
+#     for index, row in report_dataframe.iterrows():
+#         for subsystem, rules in config.items():
+#             # Extract input fields and match logic
+#             input_fields = rules['input_fields']
+#             match_logic = rules['match_logic'](row)
             
-            # Apply the match result to the output fields
-            if match_logic:
-                for field, value in rules['output'].items():
-                    report_dataframe.loc[index, field] = value
-            else:
-                for field, value in rules['failure_output'].items():
-                    report_dataframe.loc[index, field] = value
+#             # Apply the match result to the output fields
+#             if match_logic:
+#                 for field, value in rules['output'].items():
+#                     report_dataframe.loc[index, field] = value
+#             else:
+#                 for field, value in rules['failure_output'].items():
+#                     report_dataframe.loc[index, field] = value
     
-    return report_dataframe
+#     return report_dataframe
 
-def get_status_checks_config():
-    return {
-        'subsys_dotbot': {
-            'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp', 'item_name_hm'],
-            'match_logic': lambda row: (
-                (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
-                (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
-            ) and (
-                (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
-                (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
-            ),
-            'output': {
-                'st_db_all': 'o',  # Success case
-                'st_alert': None   # No alert if matched
-            },
-            'failure_output': {
-                'st_db_all': 'x',  # Failure case
-                'st_alert': 'DotBot mismatch'
-            }
-        }
-    }
+# def get_status_checks_config():
+#     return {
+#         'subsys_dotbot': {
+#             'input_fields': ['item_name_rp_db', 'item_name_hm_db', 'item_name_rp', 'item_name_hm'],
+#             'match_logic': lambda row: (
+#                 (pd.isna(row['item_name_rp_db']) and pd.isna(row['item_name_rp'])) or
+#                 (not pd.isna(row['item_name_rp_db']) and not pd.isna(row['item_name_rp']) and row['item_name_rp_db'] == row['item_name_rp'])
+#             ) and (
+#                 (pd.isna(row['item_name_hm_db']) and pd.isna(row['item_name_hm'])) or
+#                 (not pd.isna(row['item_name_hm_db']) and not pd.isna(row['item_name_hm']) and row['item_name_hm_db'] == row['item_name_hm'])
+#             ),
+#             'output': {
+#                 'st_db_all': 'o',  # Success case
+#                 'st_alert': None   # No alert if matched
+#             },
+#             'failure_output': {
+#                 'st_db_all': 'x',  # Failure case
+#                 'st_alert': 'DotBot mismatch'
+#             }
+#         }
+#     }

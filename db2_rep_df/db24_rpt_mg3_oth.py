@@ -4,8 +4,6 @@ from db5_global.db52_dtype_dict import (
     get_valid_item_types
 )
 
-import pandas as pd
-
 def write_st_alert_value(report_dataframe, index, new_status):
     current_status = report_dataframe.at[index, 'st_alert']
     
