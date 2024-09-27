@@ -2,7 +2,7 @@ import pandas as pd
 # from colorama import init, Fore, Style
 from db5_global.db52_dtype_dict import f_types_vals, get_valid_item_types
 from .db24_rpt_mg3_oth import write_st_alert_value
-from .db25_rpt_mg5_finish import get_field_merge_rules
+from .db25_mrg_match import get_field_merge_rules
 
 def field_match_2_alert(report_dataframe, field_merge_rules_dyna):
     
