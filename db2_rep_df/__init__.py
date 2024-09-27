@@ -35,7 +35,7 @@ from .db25_mrg_match import (
     get_field_merge_rules,
     detect_status_master,  # Added here
 )
-from .db27_status_config import (
+from .db26_status_config import (
     get_status_checks_config,  # Moved here
 )
 from .db28_term_disp import (

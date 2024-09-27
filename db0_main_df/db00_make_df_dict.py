@@ -7,7 +7,7 @@ from db2_rep_df.db20_make_df_r import build_report_dataframe
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', 40)
 pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', None)
+pd.set_option('display.max_colwidth', 30)
 
 def build_full_output_dict():
     output_df_dict = {}

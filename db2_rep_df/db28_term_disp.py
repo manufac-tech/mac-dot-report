@@ -65,7 +65,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
     setup_group_columns = [
         'item_name',
         # 'item_type',
-        # 'unique_id',
+        'unique_id',
         # 'git_rp',
         'item_name_rp',
         # 'item_type_rp',
