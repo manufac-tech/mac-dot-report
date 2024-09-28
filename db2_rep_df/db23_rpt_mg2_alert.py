@@ -6,41 +6,41 @@ from .db25_mrg_match import get_field_merge_rules
 
 def field_match_2_alert(report_dataframe, field_merge_rules_dyna):
     
-    valid_types_repo, valid_types_home = get_valid_item_types()
+    # valid_types_repo, valid_types_home = get_valid_item_types()
 
-    try: # Check for Symlink Overwrite condition: rp/hm match but same (actual) type. (ALERT)
-        report_dataframe = fm_fm_alert_sym_overwrite(report_dataframe)
-    except Exception as e:
-        print(f"Error in fm_alert_sym_overwrite: {e}")
+    # try: # Check for Symlink Overwrite condition: rp/hm match but same (actual) type. (ALERT)
+    #     report_dataframe = fm_fm_alert_sym_overwrite(report_dataframe)
+    # except Exception as e:
+    #     print(f"Error in fm_alert_sym_overwrite: {e}")
 
-    try: # Check for items in any doc, but not in filesystem
-        report_dataframe = check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna)
-    except Exception as e:
-        print(f"Error in check_doc_no_fs: {e}")
+    # try: # Check for items in any doc, but not in filesystem
+    #     report_dataframe = check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna)
+    # except Exception as e:
+    #     print(f"Error in check_doc_no_fs: {e}")
 
 
     return report_dataframe
 
 def fm_fm_alert_sym_overwrite(report_dataframe):
     # Check if item names match between repo and home
-    name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
+    # name_match = (report_dataframe['item_name_rp'] == report_dataframe['item_name_hm'])
 
-    # Check if home item is not a symlink and repo item is a file or folder
-    valid_repo_file = report_dataframe['item_type_rp'] == 'file'
-    valid_repo_folder = report_dataframe['item_type_rp'] == 'folder'
+    # # Check if home item is not a symlink and repo item is a file or folder
+    # valid_repo_file = report_dataframe['item_type_rp'] == 'file'
+    # valid_repo_folder = report_dataframe['item_type_rp'] == 'folder'
 
-    home_is_not_file_sym = report_dataframe['item_type_hm'].notna() & (report_dataframe['item_type_hm'] != 'file_sym')
-    home_is_not_folder_sym = report_dataframe['item_type_hm'].notna() & (report_dataframe['item_type_hm'] != 'folder_sym')
+    # home_is_not_file_sym = report_dataframe['item_type_hm'].notna() & (report_dataframe['item_type_hm'] != 'file_sym')
+    # home_is_not_folder_sym = report_dataframe['item_type_hm'].notna() & (report_dataframe['item_type_hm'] != 'folder_sym')
 
-    # Check if types differ in a way that suggests a symlink has been overwritten
-    type_mismatch = (valid_repo_file & home_is_not_file_sym) | (valid_repo_folder & home_is_not_folder_sym)
+    # # Check if types differ in a way that suggests a symlink has been overwritten
+    # type_mismatch = (valid_repo_file & home_is_not_file_sym) | (valid_repo_folder & home_is_not_folder_sym)
 
-    # Combine name match with type mismatch
-    condition = name_match & type_mismatch
+    # # Combine name match with type mismatch
+    # condition = name_match & type_mismatch
 
-    # Append 'SymLink Overwrite' if names match but types differ as described above
-    for index in report_dataframe[condition].index:
-        report_dataframe = write_st_alert_value(report_dataframe, index, 'SymLink Overwrite')
+    # # Append 'SymLink Overwrite' if names match but types differ as described above
+    # for index in report_dataframe[condition].index:
+    #     report_dataframe = write_st_alert_value(report_dataframe, index, 'SymLink Overwrite')
 
     return report_dataframe
 

@@ -59,7 +59,10 @@ def reorder_dfr_cols_perm(df):
         'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
         'sort_orig', 'sort_out',
         'no_show_cf', 'unique_id',
-        'match_dict'
+        'm_consol_dict',
+        'm_status_dict',
+        'm_status_result',
+        'm_consol_result'
     ]
     
     # Ensure all columns in desired_order are in the DataFrame

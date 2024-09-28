@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def get_valid_item_types():
     valid_types_repo = {
         'file': ['file', 'file_alias'],
@@ -13,7 +12,6 @@ def get_valid_item_types():
     }
 
     return valid_types_repo, valid_types_home
-
 
 f_types_vals = {
     # Unique ID Fields
@@ -63,5 +61,11 @@ f_types_vals = {
     'st_docs': {'dtype': 'string', 'default': np.nan},
     'st_misc': {'dtype': 'string', 'default': np.nan},
 
-    'match_dict': {'dtype': 'object', 'default': {}}
+    # 'match_dict': {'dtype': 'object', 'default': {}},
+    
+    'm_status_dict': {'dtype': 'object', 'default': {}},
+    'm_consol_dict': {'dtype': 'object', 'default': {}},
+
+    'm_status_result': {'dtype': 'bool', 'default': np.nan},
+    'm_consol_result': {'dtype': 'bool', 'default': np.nan},
 }

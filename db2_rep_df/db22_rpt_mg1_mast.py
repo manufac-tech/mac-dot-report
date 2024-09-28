@@ -31,56 +31,56 @@ def field_match_master(report_dataframe): # TO DELETE
 
 
 def field_match_1_structure(report_dataframe):
-    valid_types_repo, valid_types_home = get_valid_item_types()
+    # valid_types_repo, valid_types_home = get_valid_item_types()
 
-    # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
-    report_dataframe = check_full_match(report_dataframe, valid_types_repo, valid_types_home)
+    # # Confirm Full System Match. rp: Items, hm: Symlinks, and both YAML & CSV matching FS rp/hm.
+    # report_dataframe = check_full_match(report_dataframe, valid_types_repo, valid_types_home)
 
-    try:  # Check for Repo-only items
-        report_dataframe = check_repo_only(report_dataframe)
-    except Exception as e:
-        print(f"Error in check_repo_only: {e}")
+    # try:  # Check for Repo-only items
+    #     report_dataframe = check_repo_only(report_dataframe)
+    # except Exception as e:
+    #     print(f"Error in check_repo_only: {e}")
 
-    try:  # Check for Home-only items. If New Home Item (ALERT).
-        report_dataframe = check_home_only(report_dataframe)
-    except Exception as e:
-        print(f"Error in check_home_only: {e}")
+    # try:  # Check for Home-only items. If New Home Item (ALERT).
+    #     report_dataframe = check_home_only(report_dataframe)
+    # except Exception as e:
+    #     print(f"Error in check_home_only: {e}")
 
 
     return report_dataframe
 
 
 def check_full_match(report_dataframe, valid_types_repo, valid_types_home):
-    report_dataframe.loc[
-        (report_dataframe['item_name_hm'] != '') &
-        (report_dataframe['item_name_rp'] != '') &
-        (
-            ((report_dataframe['item_type_rp'].isin(valid_types_repo['file'])) & (report_dataframe['item_type_hm'] == valid_types_home['file'])) |
-            ((report_dataframe['item_type_rp'].isin(valid_types_repo['folder'])) & (report_dataframe['item_type_hm'] == valid_types_home['folder']))
-        ),
-        'dot_struc'
-    ] = 'rp>hm'
+    # report_dataframe.loc[
+    #     (report_dataframe['item_name_hm'] != '') &
+    #     (report_dataframe['item_name_rp'] != '') &
+    #     (
+    #         ((report_dataframe['item_type_rp'].isin(valid_types_repo['file'])) & (report_dataframe['item_type_hm'] == valid_types_home['file'])) |
+    #         ((report_dataframe['item_type_rp'].isin(valid_types_repo['folder'])) & (report_dataframe['item_type_hm'] == valid_types_home['folder']))
+    #     ),
+    #     'dot_struc'
+    # ] = 'rp>hm'
     return report_dataframe
 
 
 def check_repo_only(report_dataframe):
-    # Repo-only logic
-    repo_only_condition = (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != '')
-    report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp'
+    # # Repo-only logic
+    # repo_only_condition = (report_dataframe['item_name_hm'] == '') & (report_dataframe['item_name_rp'] != '')
+    # report_dataframe.loc[repo_only_condition, 'dot_struc'] = 'rp'
 
     return report_dataframe
 
 
 def check_home_only(report_dataframe):
-    # Home-only logic
-    home_only_condition = (report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == '')
-    report_dataframe.loc[home_only_condition, 'dot_struc'] = 'hm'
+    # # Home-only logic
+    # home_only_condition = (report_dataframe['item_name_hm'] != '') & (report_dataframe['item_name_rp'] == '')
+    # report_dataframe.loc[home_only_condition, 'dot_struc'] = 'hm'
 
-    # Update st_alert field for home-only items
-    for index, row in report_dataframe[home_only_condition].iterrows():
-        if not ((row['item_name_hm'] == row['item_name_hm_cf']) and
-                (row['item_type_hm'] == row['item_type_hm_cf'])):
-            report_dataframe = write_st_alert_value(report_dataframe, index, 'New Home Item')
+    # # Update st_alert field for home-only items
+    # for index, row in report_dataframe[home_only_condition].iterrows():
+    #     if not ((row['item_name_hm'] == row['item_name_hm_cf']) and
+    #             (row['item_type_hm'] == row['item_type_hm_cf'])):
+    #         report_dataframe = write_st_alert_value(report_dataframe, index, 'New Home Item')
 
     return report_dataframe
 

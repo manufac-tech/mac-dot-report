@@ -50,7 +50,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'st_misc',
 
         'sort_orig', 'sort_out',
-        # 'match_dict'
+        # 'm_consol_dict'
     ]
 
     # Field Merge Group
@@ -58,7 +58,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'item_name_repo', 'item_name_home',
         'st_misc', 'st_alert', 'st_db_all', 'st_docs', 'dot_struc',
         'sort_out', 'sort_orig',
-        'match_dict'
+        'm_consol_dict'
     ]
 
     # Setup Group
@@ -100,7 +100,10 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'dot_struc',
         # 'st_db_all',
         # 'st_misc',
-        'match_dict'
+        'm_consol_dict',
+        'm_status_dict',
+        'm_status_result',
+        'm_consol_result',
     ]
 
     # Display Complete Report_Dataframe

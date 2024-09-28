@@ -1,5 +1,6 @@
-from .db20_make_df_r import (
+from .db20_make_rpt_df import (
     build_report_dataframe,
+    add_report_fields,
     post_build_nan_replace,
     sort_filter_report_df,
     # detect_status_master,  # Moved to db25_mrg_match
@@ -46,6 +47,7 @@ from .db28_term_disp import (
 
 __all__ = [
     "build_report_dataframe",
+    'add_report_fields',
     "post_build_nan_replace",
     "sort_filter_report_df",
     # "detect_status_master",  # Moved to db25_mrg_match
