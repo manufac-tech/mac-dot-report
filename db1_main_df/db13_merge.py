@@ -112,7 +112,7 @@ def reorder_dfm_cols_perm(df):
 #         # print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
 
 #     except Exception as e:
-#         raise RuntimeError(f"Error during merge: {e}")
+#         raise RuntimeError(f"Error during merge: {e}") 
 
 #     if merge_step == 'b':
 #         merge_step = 'a'

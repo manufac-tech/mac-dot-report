@@ -51,7 +51,7 @@ def insert_blank_rows(df):
 
 def reorder_dfr_cols_perm(df): # Defines both order and PRESENCE of columns
     desired_order = [
-        # 'item_name',
+        'item_name',
         'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp',
         'cat_1_cf', 'cat_1_name_cf', 'cat_2_cf', 'comment_cf',
         'dot_struc_cf',
