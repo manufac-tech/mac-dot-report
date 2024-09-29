@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 from db1_main_df.db14_merge_sup import get_next_unique_id
-from db1_main_df.db12_get_type import determine_item_type
+from .db05_get_filetype import determine_item_type
 from db5_global.db52_dtype_dict import f_types_vals
 
 def load_hm_dataframe():

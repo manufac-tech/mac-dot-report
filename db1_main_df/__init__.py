@@ -6,16 +6,16 @@ from .db11_make_main_df import (
     build_main_dataframe,
 )
 
-from .db12_get_type import (
-    determine_item_type,
-    is_symlink,
-    is_alias,
-    get_file_type,
-    get_folder_type,
-    resolve_item_type,
-    detect_alias_type,
-    detect_symlink_target_type,
-)
+# from .db05_get_filetype import (
+#     determine_item_type,
+#     is_symlink,
+#     is_alias,
+#     get_file_type,
+#     get_folder_type,
+#     resolve_item_type,
+#     detect_alias_type,
+#     detect_symlink_target_type,
+# )
 
 from .db13_merge import (
     df_merge,
@@ -35,14 +35,14 @@ __all__ = [
     "build_full_output_dict",
     "build_main_dataframe",
     "f_types_vals",
-    "determine_item_type",
-    "is_symlink",
-    "is_alias",
-    "get_file_type",
-    "get_folder_type",
-    "resolve_item_type",
-    "detect_alias_type",
-    "detect_symlink_target_type",
+    # "determine_item_type",
+    # "is_symlink",
+    # "is_alias",
+    # "get_file_type",
+    # "get_folder_type",
+    # "resolve_item_type",
+    # "detect_alias_type",
+    # "detect_symlink_target_type",
     "df_merge",
     "df_merge_sequence",
     "get_next_unique_id",

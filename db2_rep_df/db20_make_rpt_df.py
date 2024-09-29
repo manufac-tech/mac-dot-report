@@ -18,26 +18,26 @@ def build_report_dataframe(main_df_dict):
     # report_dataframe, field_merge_rules = field_match_master(report_dataframe)
     # report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
 
-    report_dataframe = post_build_nan_replace(report_dataframe)
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
-    # report_dataframe = reorder_dfr_cols_perm(report_dataframe) # REMOVING COLUMNS - UNWAANTED
+    report_dataframe = reorder_dfr_cols_perm(report_dataframe)
 
     # Apply the detect_status_master function with the status_checks_config
     report_dataframe = detect_status_master(report_dataframe) 
-    report_dataframe = resolve_fields_master(report_dataframe) # NEW
+    report_dataframe = resolve_fields_master(report_dataframe)
+    report_dataframe = post_build_nan_replace(report_dataframe)
     
     # Print the result to the console
-    print("🟪 DEBUG: Full Report DataFrame")
-    print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
+    # print("🟪 DEBUG: Full Report DataFrame")
+    # print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
     
     report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
         report_dataframe,
         show_all_fields=False,
         show_main_fields=True,
         show_status_fields=False,
-        show_setup_group=False,
+        show_setup_group=True,
     )
 
     return report_dataframe
@@ -94,7 +94,7 @@ def post_build_nan_replace(df): # Replace NaN vals
     return df
 
 def sort_filter_report_df(df, unhide_hidden):
-    df = df[df['no_show_cf'] == False].copy()  # Filter out rows where 'no_show_cf' is set to True
+    # df = df[df['no_show_cf'] == False].copy()  # Filter out rows where 'no_show_cf' is set to True
     if unhide_hidden:
         df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
 

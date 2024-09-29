@@ -3,6 +3,10 @@
     ".gitignore": true,
     ".venv": true,
     ".vscode": true,
-    "README.md": true
+    "README.md": true,
+    "db0_load/__pycache__": true,
+    "db5_global/__pycache__": true,
+    "db2_rep_df/__pycache__": true,
+    "db1_main_df/__pycache__": true
   }
 }

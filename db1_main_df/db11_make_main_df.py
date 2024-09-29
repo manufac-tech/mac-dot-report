@@ -14,7 +14,7 @@ def build_main_dataframe():
     repo_df = load_rp_dataframe()
     home_df = load_hm_dataframe()
     dotbot_df = load_dotbot_yaml_dataframe()
-    dot_info_df = load_cf_dataframe()
+    user_config_df = load_cf_dataframe()
     main_df = repo_df.copy() # Initialize the main_dataframe from the REPO FOLDER
 
     # Create global fields
@@ -26,7 +26,7 @@ def build_main_dataframe():
     print_debug_info(section_name='initialize', section_dict={'dataframe': main_df}, print_df=print_df)
 
     # THE MERGE
-    main_df = df_merge_sequence(main_df, home_df, dotbot_df, dot_info_df, print_df) # Perform the merges
+    main_df = df_merge_sequence(main_df, home_df, dotbot_df, user_config_df, print_df) # Perform the merges
 
     # POST-MERGE OPERATIONS
 

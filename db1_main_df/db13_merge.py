@@ -4,7 +4,7 @@ import logging
 from db5_global.db52_dtype_dict import f_types_vals
 from .db14_merge_sup import consolidate_post_merge1, consolidate_post_merge3, print_main_df_build_hist
 
-def df_merge_sequence(main_df, home_df, dotbot_df, dot_info_df, print_df):
+def df_merge_sequence(main_df, home_df, dotbot_df, user_config_df, print_df):
     left_merge_field = 'item_name' # Only declared once; it remains the "left input" for all merges
 
     # First merge: repo and home
@@ -18,7 +18,7 @@ def df_merge_sequence(main_df, home_df, dotbot_df, dot_info_df, print_df):
 
     # Third merge: repo+home+dotbot and dot_info R+H
     right_merge_field = 'item_name_rp_cf'
-    main_df = df_merge(main_df, dot_info_df, left_merge_field, right_merge_field)  # Merge the DataFrames
+    main_df = df_merge(main_df, user_config_df, left_merge_field, right_merge_field)  # Merge the DataFrames
     main_df = consolidate_post_merge3(main_df)
 
     return main_df
@@ -35,7 +35,7 @@ def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type=
         ).copy()
 
         main_df_build_hist["df3"] = merged_dataframe.copy()
-        # print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
+        print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
 
     except Exception as e:
         raise RuntimeError(f"Error during merge: {e}")
@@ -69,3 +69,54 @@ def reorder_dfm_cols_perm(df):
     df = df[desired_order]
     
     return df
+
+
+# def handle_duplicates(df):
+#     # Identify duplicates based on 'item_name'
+#     duplicates = df[df.duplicated(subset=['item_name'], keep=False)]
+
+#     # Prioritize filesystem sources over configuration documents
+#     for item_name in duplicates['item_name'].unique():
+#         duplicate_rows = duplicates[duplicates['item_name'] == item_name]
+#         if len(duplicate_rows) > 1:
+#             # Prioritize row with non-null 'item_name_home'
+#             priority_row = duplicate_rows[duplicate_rows['item_name_home'].notna()]
+#             if not priority_row.empty:
+#                 df = df.drop(duplicate_rows.index)
+#                 df = df.append(priority_row)
+    
+#     # Remove any remaining duplicates
+#     df = df.drop_duplicates(subset=['item_name', 'item_type'], keep='first')
+#     return df
+
+
+
+# def df_merge(main_df, input_df, left_merge_field, right_merge_field, merge_type='outer'):
+#     main_df_build_hist = {"df1": main_df.copy(), "df2": input_df.copy()}
+
+
+#     if merge_step == 'b': 
+#         left_merge_field = right_merge_field
+#         right_merge_field = left_merge_field
+#         merge_type == 'inner'
+
+#     try:
+#         merged_dataframe = pd.merge(
+#             main_df, input_df,
+#             left_on=left_merge_field,
+#             right_on=right_merge_field,
+#             how=merge_type
+#         ).copy()
+
+#         main_df_build_hist["df3"] = merged_dataframe.copy()
+#         # print_main_df_build_hist(main_df_build_hist) # Print the build history 🟡
+
+#     except Exception as e:
+#         raise RuntimeError(f"Error during merge: {e}")
+
+#     if merge_step == 'b':
+#         merge_step = 'a'
+#     elif merge_step == 'a':
+#         merge_step = 'b'
+    
+#     return merged_dataframe
