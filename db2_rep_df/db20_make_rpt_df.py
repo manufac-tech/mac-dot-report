@@ -4,8 +4,9 @@ from db5_global.db52_dtype_dict import f_types_vals
 
 from .db21_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
 from .db22_rpt_mg1_mast import field_match_master
-from .db25_mrg_match import consolidate_fields, detect_status_master, resolve_fields_master
-from .db28_term_disp import reorder_dfr_cols_for_cli
+from .db25_mrg_match import consolidate_fields, resolve_fields_master
+from .db26_status import detect_status_master
+from .db40_term_disp import reorder_dfr_cols_for_cli
 
 # Opt-in to the future behavior for downcasting
 pd.set_option('future.no_silent_downcasting', True)

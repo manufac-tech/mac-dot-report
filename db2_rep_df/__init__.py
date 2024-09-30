@@ -34,12 +34,16 @@ from .db24_rpt_mg3_oth import (
 from .db25_mrg_match import (
     consolidate_fields,
     get_field_merge_rules,
-    detect_status_master,  # Added here
 )
-from .db26_status_config import (
-    get_status_checks_config,  # Moved here
+
+from .db26_status import (
+    detect_status_master,
 )
-from .db28_term_disp import (
+
+from .db27_status_config import (
+    get_status_checks_config,
+)
+from .db40_term_disp import (
     remove_consolidated_columns,
     reorder_dfr_cols_for_cli,
     print_dataframe_section,
@@ -71,8 +75,8 @@ __all__ = [
     "subsystem_db_all",
     "consolidate_fields",
     "get_field_merge_rules",
-    "detect_status_master",  # Added here
-    "get_status_checks_config",  # Moved here
+    "detect_status_master",
+    "get_status_checks_config",
     "remove_consolidated_columns",
     "reorder_dfr_cols_for_cli",
     "print_dataframe_section",
