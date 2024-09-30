@@ -1,41 +1,29 @@
 import pandas as pd
-
-from .db24_rpt_mg3_oth import write_st_alert_value
 from .db27_status_config import get_status_checks_config
-from .db40_term_disp import remove_consolidated_columns
-
 
 
 def detect_status_master(report_dataframe):
-    # Get the configuration dictionary
-    config = get_status_checks_config()
-    
+    status_checks_config = get_status_checks_config()
+    # print("Status Checks Configuration:", status_checks_config)  # Debug: Print the configuration
+
     for index, row in report_dataframe.iterrows():
-        # Skip rows that have already been processed
-        if report_dataframe.at[index, 'm_status_result']:
-            continue
-        
-        for subsystem, rules in config.items():
-            # Extract input fields and match logic
-            match_logic = rules['match_logic'](row)
-            
-            # Apply the match result to the output fields
-            if match_logic:
-                report_dataframe.at[index, 'm_status_result'] = True
-                for field, value in rules['output'].items():
-                    # If value is None, do not overwrite the field
-                    if value is not None:
-                        if field == 'st_alert':
-                            report_dataframe = write_st_alert_value(report_dataframe, index, value)
-                        else:
-                            report_dataframe.loc[index, field] = value
+        # print(f"Processing row {index}: {row.to_dict()}")  # Debug: Print the row being processed
+
+        for check_name, check_config in status_checks_config.items():
+            match_logic = check_config['match_logic']
+            output = check_config['output']
+            failure_output = check_config['failure_output']
+
+            match_result = match_logic(row)
+            # print(f"Check: {check_name}, Match Result: {match_result}")  # Debug: Print the match result
+
+            if match_result:
+                dot_struc_value = output.get('dot_struc')
             else:
-                for field, value in rules['failure_output'].items():
-                    # If value is None, do not overwrite the field
-                    if value is not None:
-                        if field == 'st_alert':
-                            report_dataframe = write_st_alert_value(report_dataframe, index, value)
-                        else:
-                            report_dataframe.loc[index, field] = value
-    
+                dot_struc_value = failure_output.get('dot_struc')
+
+            if dot_struc_value is not None:
+                # print(f"Updating dot_struc to {dot_struc_value} for row {index}")  # Debug: Print the update
+                report_dataframe.at[index, 'dot_struc'] = dot_struc_value
+
     return report_dataframe

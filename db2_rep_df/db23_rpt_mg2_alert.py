@@ -55,54 +55,54 @@ def check_name_consistency(row):
     return 'Multiple Names' if len(set(names)) > 1 else 'consistent'
 
 def doc_no_fs_merge_logic(row):
-    # For repo, we prioritize db over di
-    if pd.notna(row['item_name_rp_db']):
-        row['item_name_repo'] = row['item_name_rp_db']
-    else:
-        row['item_name_repo'] = row['item_name_rp_cf']
+    # # For repo, we prioritize db over di
+    # if pd.notna(row['item_name_rp_db']):
+    #     row['item_name_repo'] = row['item_name_rp_db']
+    # else:
+    #     row['item_name_repo'] = row['item_name_rp_cf']
     
-    # For home, we prioritize db over di
-    if pd.notna(row['item_name_hm_db']):
-        row['item_name_home'] = row['item_name_hm_db']
-    else:
-        row['item_name_home'] = row['item_name_hm_cf']
+    # # For home, we prioritize db over di
+    # if pd.notna(row['item_name_hm_db']):
+    #     row['item_name_home'] = row['item_name_hm_db']
+    # else:
+    #     row['item_name_home'] = row['item_name_hm_cf']
     
     return row
 
 def check_doc_names_no_fs(report_dataframe, field_merge_rules_dyna):
     # Check for document names without corresponding file system names
-    doc_names_no_fs_condition = (
-        ((report_dataframe['item_name_rp_db'].notna()) | (report_dataframe['item_name_hm_db'].notna()) |
-         (report_dataframe['item_name_rp_cf'].notna()) | (report_dataframe['item_name_hm_cf'].notna())) &
-        (report_dataframe['item_name_rp'].isna()) & (report_dataframe['item_name_hm'].isna())
-    )
+    # doc_names_no_fs_condition = (
+    #     ((report_dataframe['item_name_rp_db'].notna()) | (report_dataframe['item_name_hm_db'].notna()) |
+    #      (report_dataframe['item_name_rp_cf'].notna()) | (report_dataframe['item_name_hm_cf'].notna())) &
+    #     (report_dataframe['item_name_rp'].isna()) & (report_dataframe['item_name_hm'].isna())
+    # )
 
-    # Set the st_misc field to 'doc_no_fs' for any row that matches the condition
-    report_dataframe.loc[doc_names_no_fs_condition, 'st_misc'] = 'doc_no_fs'
+    # # Set the st_misc field to 'doc_no_fs' for any row that matches the condition
+    # report_dataframe.loc[doc_names_no_fs_condition, 'st_misc'] = 'doc_no_fs'
 
-    # Check name consistency and update st_alert field
-    for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():
-        name_consistency_status = check_name_consistency(row)
-        if name_consistency_status == 'Multiple Names':
-            report_dataframe = write_st_alert_value(report_dataframe, index, name_consistency_status)
+    # # Check name consistency and update st_alert field
+    # for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():
+    #     name_consistency_status = check_name_consistency(row)
+    #     if name_consistency_status == 'Multiple Names':
+    #         report_dataframe = write_st_alert_value(report_dataframe, index, name_consistency_status)
 
-    # Apply merge logic to populate item_name_repo and item_name_home
-    report_dataframe = report_dataframe.apply(doc_no_fs_merge_logic, axis=1)
+    # # Apply merge logic to populate item_name_repo and item_name_home
+    # report_dataframe = report_dataframe.apply(doc_no_fs_merge_logic, axis=1)
 
-    # Dynamically update the field_merge_rules_dyna dictionary
-    for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():
-        field_merge_rules_dyna[f'in_doc_not_fs_{index}'] = {
-            'condition': report_dataframe.index == index,
-            'actions': {
-                'item_name_repo': row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) else row['item_name_rp_cf'],
-                'item_type_repo': row['item_type_rp_db'] if pd.notna(row['item_type_rp_db']) else row['item_type_rp_cf'],
-                'item_name_home': row['item_name_hm_db'] if pd.notna(row['item_name_hm_db']) else row['item_name_hm_cf'],
-                'item_type_home': row['item_type_hm_db'] if pd.notna(row['item_type_hm_db']) else row['item_type_hm_cf'],
-                'unique_id': row['unique_id_rp'],
-                'sort_out': 25,
-                'st_alert': 'In Doc Not FS'
-            }
-        }
+    # # Dynamically update the field_merge_rules_dyna dictionary
+    # for index, row in report_dataframe[doc_names_no_fs_condition].iterrows():
+    #     field_merge_rules_dyna[f'in_doc_not_fs_{index}'] = {
+    #         'condition': report_dataframe.index == index,
+    #         'actions': {
+    #             'item_name_repo': row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) else row['item_name_rp_cf'],
+    #             'item_type_repo': row['item_type_rp_db'] if pd.notna(row['item_type_rp_db']) else row['item_type_rp_cf'],
+    #             'item_name_home': row['item_name_hm_db'] if pd.notna(row['item_name_hm_db']) else row['item_name_hm_cf'],
+    #             'item_type_home': row['item_type_hm_db'] if pd.notna(row['item_type_hm_db']) else row['item_type_hm_cf'],
+    #             'unique_id': row['unique_id_rp'],
+    #             'sort_out': 25,
+    #             'st_alert': 'In Doc Not FS'
+    #         }
+    #     }
 
     # Print the dynamic conditions to the terminal
     # print("Dynamic Conditions:")
