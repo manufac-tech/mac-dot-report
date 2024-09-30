@@ -1,4 +1,3 @@
-import os
 import logging
 import pandas as pd
 from db1_main_df.db14_merge_sup import get_next_unique_id
@@ -39,11 +38,10 @@ def load_cf_dataframe():
 
         # Add the new merge key column
         user_config_df['item_name_cf_m_key'] = user_config_df.apply(
-            lambda row: row['item_name_rp_cf'] if row['item_name_rp_cf'] else row['item_name_hm_cf'], axis=1
+            lambda row: row['item_name_rp_cf'] if pd.notna(row['item_name_rp_cf']) and row['item_name_rp_cf'] != "none" else row['item_name_hm_cf'], axis=1
         )
 
         user_config_df["item_name_cf_m_key"] = user_config_df["item_name_cf_m_key"].astype(f_types_vals["item_name_rp_cf"]['dtype'])
-
 
         # Input dataframe display toggle
         show_output = False

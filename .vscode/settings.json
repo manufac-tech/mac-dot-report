@@ -9,6 +9,7 @@
     "db2_rep_df/__pycache__": true,
     "db1_main_df/__pycache__": true,
     "db0_main_df/__pycache__": true,
-    "db1_load/__pycache__": true
+    "db1_load/__pycache__": true,
+    "__pycache__": true
   }
 }

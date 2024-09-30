@@ -21,11 +21,11 @@ def build_report_dataframe(main_df_dict):
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
-    report_dataframe = reorder_dfr_cols_perm(report_dataframe)
+    # report_dataframe = reorder_dfr_cols_perm(report_dataframe)
 
     # Apply the detect_status_master function with the status_checks_config
-    report_dataframe = detect_status_master(report_dataframe) 
-    report_dataframe = resolve_fields_master(report_dataframe)
+    # report_dataframe = detect_status_master(report_dataframe) 
+    # report_dataframe = resolve_fields_master(report_dataframe)
     report_dataframe = post_build_nan_replace(report_dataframe)
     
     # Print the result to the console
@@ -35,9 +35,9 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
         report_dataframe,
         show_all_fields=False,
-        show_main_fields=True,
+        show_main_fields=False,
         show_status_fields=False,
-        show_setup_group=True,
+        show_setup_group=False,
     )
 
     return report_dataframe

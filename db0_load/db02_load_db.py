@@ -43,7 +43,7 @@ def load_dotbot_yaml_dataframe():
 
     # Add the new merge key column
     dotbot_yaml_df['item_name_db_m_key'] = dotbot_yaml_df.apply(
-        lambda row: row['item_name_rp_db'] if row['item_name_rp_db'] else row['item_name_hm_db'], axis=1
+        lambda row: row['item_name_rp_db'] if pd.notna(row['item_name_rp_db']) and row['item_name_rp_db'] else row['item_name_hm_db'], axis=1
     )
 
     # Explicitly set data types using the f_types_vals dictionary

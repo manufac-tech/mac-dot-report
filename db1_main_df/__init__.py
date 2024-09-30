@@ -4,6 +4,8 @@ from .db10_make_df_dict import (
 
 from .db11_make_main_df import (
     build_main_dataframe,
+    apply_output_grouping,
+    reorder_dfm_cols_perm,
 )
 
 # from .db05_get_filetype import (
@@ -21,8 +23,6 @@ from .db13_merge import (
     df_merge_sequence,
     df_merge,
     create_merge_key_post_merge1,
-    apply_output_grouping,
-    reorder_dfm_cols_perm,
 )
 
 from .db14_merge_sup import (
@@ -44,11 +44,11 @@ __all__ = [
     # "resolve_item_type",
     # "detect_alias_type",
     # "detect_symlink_target_type",
+    "apply_output_grouping",
+    "reorder_dfm_cols_perm",
     "df_merge_sequence",
     "df_merge",
     'create_merge_key_post_merge1,'
-    "apply_output_grouping",
-    "reorder_dfm_cols_perm",
     "get_next_unique_id",
     "consolidate_post_merge1",
     "consolidate_post_merge3",
