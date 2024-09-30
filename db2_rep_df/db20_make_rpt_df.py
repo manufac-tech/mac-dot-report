@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 from db5_global.db52_dtype_dict import f_types_vals
 
 from .db21_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
@@ -7,17 +7,17 @@ from .db22_rpt_mg1_mast import field_match_master
 from .db25_mrg_match import consolidate_fields, detect_status_master, resolve_fields_master
 from .db28_term_disp import reorder_dfr_cols_for_cli
 
+# Opt-in to the future behavior for downcasting
+pd.set_option('future.no_silent_downcasting', True)
+
 def build_report_dataframe(main_df_dict):
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
 
     report_dataframe = add_report_fields(report_dataframe)
 
-
-
     # Apply field matching and consolidation
     # report_dataframe, field_merge_rules = field_match_master(report_dataframe)
     # report_dataframe = consolidate_fields(report_dataframe, field_merge_rules).copy()
-
 
     report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=False)
     report_dataframe = insert_blank_rows(report_dataframe)
@@ -41,8 +41,6 @@ def build_report_dataframe(main_df_dict):
     )
 
     return report_dataframe
-
-
 
 def add_report_fields(report_dataframe):
     df = report_dataframe
@@ -75,7 +73,7 @@ def add_report_fields(report_dataframe):
 def post_build_nan_replace(df): # Replace NaN vals
     # Replace NaN values in string columns with empty strings
     string_columns = df.select_dtypes(include=['object', 'string']).columns # ...with ""
-    df[string_columns] = df[string_columns].fillna('')
+    df[string_columns] = df[string_columns].fillna('').infer_objects(copy=False)
 
     numeric_columns = df.select_dtypes(include=['number']).columns # ...with 0
     df[numeric_columns] = df[numeric_columns].fillna(0)
@@ -107,5 +105,3 @@ def sort_filter_report_df(df, unhide_hidden):
     
     df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key']) # Drop the Git sort TEMP NEW COL    
     return df
-
-
