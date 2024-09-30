@@ -69,6 +69,7 @@ def reorder_dfr_cols_perm(df): # Defines both order and PRESENCE of columns
         'm_status_dict',
         'm_status_result',
         'm_consol_result'
+        'item_name_m_key'
     ]
 
     # Ensure all columns in desired_order are in the DataFrame

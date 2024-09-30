@@ -41,12 +41,18 @@ def load_dotbot_yaml_dataframe():
     dotbot_yaml_df = pd.DataFrame(dotbot_entries, columns=[
         'item_name_hm_db', 'item_name_rp_db', 'item_type_hm_db', 'item_type_rp_db', 'unique_id_db']).copy()
 
+    # Add the new merge key column
+    dotbot_yaml_df['item_name_db_m_key'] = dotbot_yaml_df.apply(
+        lambda row: row['item_name_rp_db'] if row['item_name_rp_db'] else row['item_name_hm_db'], axis=1
+    )
+
     # Explicitly set data types using the f_types_vals dictionary
     dotbot_yaml_df["item_name_hm_db"] = dotbot_yaml_df["item_name_hm_db"].astype(f_types_vals["item_name_hm_db"]['dtype'])
     dotbot_yaml_df["item_name_rp_db"] = dotbot_yaml_df["item_name_rp_db"].astype(f_types_vals["item_name_rp_db"]['dtype'])
     dotbot_yaml_df["item_type_hm_db"] = dotbot_yaml_df["item_type_hm_db"].astype(f_types_vals["item_type_hm_db"]['dtype'])
     dotbot_yaml_df["item_type_rp_db"] = dotbot_yaml_df["item_type_rp_db"].astype(f_types_vals["item_type_rp_db"]['dtype'])
     dotbot_yaml_df["unique_id_db"] = dotbot_yaml_df["unique_id_db"].astype(f_types_vals["unique_id_db"]['dtype'])
+    dotbot_yaml_df["item_name_db_m_key"] = dotbot_yaml_df["item_name_db_m_key"].astype(f_types_vals["item_name_rp_db"]['dtype'])
 
     # Input dataframe display toggle
     show_output = False  # Change to False to disable output

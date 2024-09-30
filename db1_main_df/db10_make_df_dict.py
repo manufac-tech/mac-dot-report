@@ -14,10 +14,10 @@ def build_full_output_dict():
 
     full_main_dataframe = build_main_dataframe()
     output_df_dict['full_main_dataframe'] = full_main_dataframe
-    # print("\n FROM DB00: Full Main DataFrame:\n", full_main_dataframe)
+    print("\n FROM DB00: Full Main DataFrame:\n", full_main_dataframe)
 
     report_dataframe = build_report_dataframe(output_df_dict)
     output_df_dict['report_dataframe'] = report_dataframe
-    # print("\n FROM DB00: Report DataFrame:\n", report_dataframe)
+    print("\n FROM DB00: Report DataFrame:\n", report_dataframe)
 
     return output_df_dict

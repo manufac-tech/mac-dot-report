@@ -12,7 +12,7 @@ USER_PATH_MD = os.path.join(USER_MAIN_PATH, "Documents_SRB iCloud/Filespace cont
 USER_PATH_CSV = os.path.join(USER_MAIN_PATH, "Documents_SRB iCloud/Filespace control/FS Ctrl - LOGS/Info Reports + Logs IN")
 
 # Define input and output paths
-DOT_INFO_CSV_PATH = 'data'
+USER_CONFIG_CSV_PATH = 'data'
 REPORT_TEMPLATE_J2 = 'report_md.jinja2'
 OUTPUT_BASE_NAME = "mac-dot-report"
 
@@ -32,7 +32,7 @@ def export_to_markdown(output_file, df=None, fs_not_in_di=None, di_not_in_fs=Non
             raise ValueError("DataFrame 'df' must be provided")
 
         env = Environment(
-            loader=FileSystemLoader(DOT_INFO_CSV_PATH),
+            loader=FileSystemLoader(USER_CONFIG_CSV_PATH),
             trim_blocks=True,
             lstrip_blocks=True
         )

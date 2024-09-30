@@ -11,10 +11,10 @@ def correct_and_validate_user_config_df(user_config_df):
 
 def load_cf_dataframe():
     try:
-        dot_info_file_path = "./data/dotrep_config.csv"
+        user_config_file_path = "./data/dotrep_config.csv"
         
         # Load the CSV with explicit data types for the columns using the 'dtype' value from f_types_vals
-        user_config_df = pd.read_csv(dot_info_file_path, dtype={
+        user_config_df = pd.read_csv(user_config_file_path, dtype={
             "item_name_rp_cf": f_types_vals["item_name_rp_cf"]['dtype'],
             "item_name_hm_cf": f_types_vals["item_name_hm_cf"]['dtype'],
             "dot_struc_cf": f_types_vals["dot_struc_cf"]['dtype'],
@@ -37,17 +37,25 @@ def load_cf_dataframe():
         # Apply the correction and validation function
         user_config_df = correct_and_validate_user_config_df(user_config_df)
 
+        # Add the new merge key column
+        user_config_df['item_name_cf_m_key'] = user_config_df.apply(
+            lambda row: row['item_name_rp_cf'] if row['item_name_rp_cf'] else row['item_name_hm_cf'], axis=1
+        )
+
+        user_config_df["item_name_cf_m_key"] = user_config_df["item_name_cf_m_key"].astype(f_types_vals["item_name_rp_cf"]['dtype'])
+
+
         # Input dataframe display toggle
         show_output = False
         show_full_df = False
 
         if show_output:
             if show_full_df:
-                print("7️⃣ dot_info DataFrame:\n", user_config_df)
+                print("7️⃣ user_config DataFrame:\n", user_config_df)
             else:
-                print("7️⃣ dot_info DataFrame (First 5 rows):\n", user_config_df.head())
+                print("7️⃣ user_config DataFrame (First 5 rows):\n", user_config_df.head())
 
         return user_config_df
     except Exception as e:
-        logging.error(f"Error loading dot_info CSV: {e}")
+        logging.error(f"Error loading user_config CSV: {e}")
         return pd.DataFrame()

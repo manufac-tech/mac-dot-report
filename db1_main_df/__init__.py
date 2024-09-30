@@ -18,8 +18,9 @@ from .db11_make_main_df import (
 # )
 
 from .db13_merge import (
-    df_merge,
     df_merge_sequence,
+    df_merge,
+    create_merge_key_post_merge1,
     apply_output_grouping,
     reorder_dfm_cols_perm,
 )
@@ -43,12 +44,13 @@ __all__ = [
     # "resolve_item_type",
     # "detect_alias_type",
     # "detect_symlink_target_type",
-    "df_merge",
     "df_merge_sequence",
+    "df_merge",
+    'create_merge_key_post_merge1,'
+    "apply_output_grouping",
+    "reorder_dfm_cols_perm",
     "get_next_unique_id",
     "consolidate_post_merge1",
     "consolidate_post_merge3",
     "print_main_df_build_hist",
-    "apply_output_grouping",
-    "reorder_dfm_cols_perm",
 ]
