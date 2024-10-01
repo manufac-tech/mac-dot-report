@@ -64,20 +64,16 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
 
     # Setup Group
     setup_group_columns = [
-        'unique_id',
-        'st_alert',
-        'st_misc',
-        'item_name_repo',
-        'dot_struc',
-        'dot_struc_cf',
-        'item_name_home',
-        'item_type_repo',
-        'item_type_home',
         'item_name',
+        'item_name_repo',
+        'item_name_home',
+        # 'item_type_repo',
+        # 'item_type_home',
         # 'item_type',
-        # 'git_rp',
+        # 'unique_id',
         'item_name_rp',
         # 'item_type_rp',
+        # 'git_rp',
         'item_name_hm',
         # 'item_type_hm',
         'item_name_hm_db',
@@ -88,6 +84,8 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'item_type_rp_cf',
         'item_name_hm_cf',
         # 'item_type_hm_cf',
+        'dot_struc',
+        'dot_struc_cf',
         # 'cat_1_cf',
         # 'cat_1_name_cf',
         # 'cat_2_cf',
@@ -100,11 +98,13 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'unique_id_cf',
         # 'sort_out',
         # 'st_docs',
+        # 'st_alert',
         # 'st_db_all',
+        'st_misc',
         'm_status_dict',
-        'm_status_result',
         'm_consol_dict',
-        'm_consol_result',
+        'm_status_result',
+        'm_consol_result'
     ]
 
     # Display Complete Report_Dataframe

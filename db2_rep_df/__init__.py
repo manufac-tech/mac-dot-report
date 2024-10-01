@@ -1,3 +1,10 @@
+
+
+from .db18_match_B1 import (
+    detect_full_domain_match,
+)
+
+
 from .db20_make_rpt_df import (
     build_report_dataframe,
     add_report_fields,
@@ -38,11 +45,12 @@ from .db25_mrg_match import (
 
 from .db26_status import (
     detect_status_master,
-)
-
-from .db27_status_config import (
     get_status_checks_config,
 )
+
+# from .db27_status_config import (
+# )
+
 from .db40_term_disp import (
     remove_consolidated_columns,
     reorder_dfr_cols_for_cli,
@@ -50,6 +58,7 @@ from .db40_term_disp import (
 )
 
 __all__ = [
+    "detect_full_domain_match",
     "build_report_dataframe",
     'add_report_fields',
     "post_build_nan_replace",

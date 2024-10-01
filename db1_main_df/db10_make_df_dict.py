@@ -5,7 +5,7 @@ from db2_rep_df.db20_make_rpt_df import build_report_dataframe
 
 # Set pandas display options globally
 pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', 50)
+pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', 30)
 
@@ -18,6 +18,6 @@ def build_full_output_dict():
 
     report_dataframe = build_report_dataframe(output_df_dict)
     output_df_dict['report_dataframe'] = report_dataframe
-    print("\n FROM DB00: Report DataFrame:\n", report_dataframe)
+    # print("\n FROM DB00: Report DataFrame:\n", report_dataframe)
 
     return output_df_dict

@@ -52,28 +52,47 @@ def insert_blank_rows(df):
 def reorder_dfr_cols_perm(df):  # Defines both order and PRESENCE of columns
     desired_order = [
         'item_name',
-        # 'st_alert', 'item_name_home', 'item_type_home', 'item_name_repo', 'item_type_repo', 'git_rp',
-        # 'cat_1_cf', 'cat_1_name_cf', 'cat_2_cf', 'comment_cf',
-        # 'dot_struc_cf',
-        # 'dot_struc', 'st_db_all', 'st_docs', 'st_misc',
-        # 'sort_orig', 'sort_out',
-        # 'no_show_cf', 'unique_id',
-
-        # # Catch-all for any remaining columns
-        # 'item_name', 'item_type', 'item_name_rp', 'item_type_rp', 'item_name_hm', 'item_type_hm', 
-        # 'item_name_hm_db', 'item_type_hm_db', 'item_name_rp_db', 'item_type_rp_db', 
-        # 'item_name_rp_cf', 'item_type_rp_cf', 'item_name_hm_cf', 'item_type_hm_cf', 
-        # 'unique_id_rp', 'unique_id_db', 'unique_id_hm', 'unique_id_cf',
-
-        # # Additional fields
-        # # 'item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home',
-        # 'm_consol_dict',
-        # 'm_status_dict',
-        # 'm_status_result',
-        # 'm_consol_result',
-        # # 'item_name_m_key'
+        'item_type',
+        'unique_id',
+        'item_name_rp',
+        'item_type_rp',
+        'git_rp',
+        'item_name_hm',
+        'item_type_hm',
+        'item_name_hm_db',
+        'item_type_hm_db',
+        'item_name_rp_db',
+        'item_type_rp_db',
+        'item_name_rp_cf',
+        'item_type_rp_cf',
+        'item_name_hm_cf',
+        'item_type_hm_cf',
+        'dot_struc_cf',
+        'cat_1_cf',
+        'cat_1_name_cf',
+        'cat_2_cf',
+        'comment_cf',
+        'no_show_cf',
+        'sort_orig',
+        'unique_id_rp',
+        'unique_id_db',
+        'unique_id_hm',
+        'unique_id_cf',
+        'item_name_repo',
+        'item_type_repo',
+        'item_name_home',
+        'item_type_home',
+        'sort_out',
+        'st_docs',
+        'st_alert',
+        'dot_struc',
+        'st_db_all',
+        'st_misc',
+        'm_status_dict',
+        'm_consol_dict',
+        'm_status_result',
+        'm_consol_result'
     ]
-
     # Ensure all columns in desired_order are in the DataFrame
     for col in desired_order:
         if col not in df.columns:
