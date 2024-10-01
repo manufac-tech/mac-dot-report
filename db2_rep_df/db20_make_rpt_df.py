@@ -82,7 +82,6 @@ def post_build_nan_replace(df): # Replace NaN vals
     for column in df.columns:
         if column in f_types_vals:
             default_value = f_types_vals[column]['default']
-            print(f"Filling NaN in column '{column}' with default value from dictionary: {default_value}")
             df[column] = df[column].fillna(default_value)
         else:
             print(f"Column '{column}' not found in dictionary")
@@ -90,35 +89,6 @@ def post_build_nan_replace(df): # Replace NaN vals
 
     # First, attempt to fill NaN values using the dictionary
     df = fill_na_with_defaults(df)
-
-    # Replace NaN values in string columns with empty strings
-    string_columns = df.select_dtypes(include=['object', 'string']).columns # ...with ""
-    print(f"String columns: {string_columns}")
-    df[string_columns] = df[string_columns].fillna('').infer_objects(copy=False)
-
-    # Replace NaN values in numeric columns with 0
-    numeric_columns = df.select_dtypes(include=['number']).columns # ...with 0
-    print(f"Numeric columns: {numeric_columns}")
-    df[numeric_columns] = df[numeric_columns].fillna(0)
-
-    # Replace NaN values in boolean columns with False
-    boolean_columns = df.select_dtypes(include=['bool']).columns # ...with False
-    print(f"Boolean columns: {boolean_columns}")
-    df[boolean_columns] = df[boolean_columns].fillna(False)
-
-    # Replace NaN values in nullable integer columns with 0
-    nullable_int_columns = df.select_dtypes(include=['Int64', 'Int32', 'Int16']).columns # ...with 0
-    print(f"Nullable integer columns: {nullable_int_columns}")
-    df[nullable_int_columns] = df[nullable_int_columns].fillna(0)
-
-    # Replace NaN values in nullable boolean columns with False
-    nullable_bool_columns = df.select_dtypes(include=['boolean']).columns # ...with False
-    print(f"Nullable boolean columns: {nullable_bool_columns}")
-    df[nullable_bool_columns] = df[nullable_bool_columns].fillna(False)
-
-    # Catch-all: Replace any remaining NaN values with empty strings
-    print("Replacing any remaining NaN values with empty strings")
-    df = df.fillna('') # ...with ""
 
     return df
 
