@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
 
+# Introduce a debug flag
+DEBUG = False
+
 def normalize_missing_values(df, columns):
     for col in columns:
         # Convert to string and strip whitespace
@@ -79,9 +82,10 @@ def apply_matching_logic(repo_name, home_name, repo_name_cf, home_name_cf, repo_
     return dot_struc_value, debug_status
 
 def print_debug_info(index, repo_name, home_name, repo_name_db, home_name_db, dot_struc_value, debug_status):
-    print(f"Index {index} - repo_name: {repo_name}, home_name: {home_name}, "
-          f"repo_name_db: {repo_name_db}, home_name_db: {home_name_db}, "
-          f"dot_struc: {dot_struc_value}, st_misc: {debug_status}")
+    if DEBUG:
+        print(f"Index {index} - repo_name: {repo_name}, home_name: {home_name}, "
+              f"repo_name_db: {repo_name_db}, home_name_db: {home_name_db}, "
+              f"dot_struc: {dot_struc_value}, st_misc: {debug_status}")
 
 def detect_full_domain_match(report_dataframe):
     # [Normalization code remains the same]
@@ -118,9 +122,6 @@ def detect_full_domain_match(report_dataframe):
             # Assign the dot_struc value if applicable
             if dot_struc_value is not None:
                 report_dataframe.at[index, 'dot_struc'] = dot_struc_value
-
-            # Update the st_misc field with the debug status
-            report_dataframe.at[index, 'st_misc'] = debug_status
 
             # Print debug information
             print_debug_info(index, repo_name, home_name, repo_name_db, home_name_db, dot_struc_value, debug_status)
