@@ -16,7 +16,6 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = main_df_dict['full_main_dataframe'].copy()
     report_dataframe = add_report_fields(report_dataframe)
 
-    report_dataframe = sort_filter_report_df(report_dataframe, unhide_hidden=True)
     # report_dataframe = insert_blank_rows(report_dataframe)
     report_dataframe = reorder_dfr_cols_perm(report_dataframe)
 
@@ -25,6 +24,12 @@ def build_report_dataframe(main_df_dict):
 
     # report_dataframe = resolve_fields_master(report_dataframe)
     report_dataframe = post_build_nan_replace(report_dataframe)
+    report_dataframe = sort_filter_report_df(
+        report_dataframe, 
+        hide_no_shows=False, 
+        hide_full_matches=False, 
+        hide_full_and_only=False,
+        )
     
     # Print the result to the console
     # print("🟪 DEBUG: Full Report DataFrame")
@@ -88,17 +93,23 @@ def post_build_nan_replace(df): # Replace NaN vals
 
 
 
-def sort_filter_report_df(df, unhide_hidden):
-    # df = df[df['no_show_cf'] == False].copy()  # Filter out rows where 'no_show_cf' is set to True
-    if unhide_hidden:
-        df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
+def filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only):
+    if hide_no_shows:
+        df = df[df['no_show_cf'] == False].copy()
+    if hide_full_matches:
+        df = df[~df['dot_struc'].str.contains('rp>hm', na=False)].copy()
+    if hide_full_and_only:
+        df = df[~df['dot_struc'].str.contains('rp>hm|rp|hm', na=False)].copy()
+    return df
 
-    df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0) # TEMP NEW COL for sort 2 (git)
-
-    df['tertiary_sort_key'] = df['sort_orig'] # The tertiary sort key is the original sort order
-    
-    # Sort the DataFrame by 'sort_out', 'secondary_sort_key', and 'tertiary_sort_key'
+def sort_report_df(df):
+    df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
+    df['tertiary_sort_key'] = df['sort_orig']
     df = df.sort_values(by=['sort_out', 'secondary_sort_key', 'tertiary_sort_key'], ascending=[True, True, True])
-    
-    df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key']) # Drop the Git sort TEMP NEW COL    
+    df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key'])
+    return df
+
+def sort_filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only):
+    df = filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only)
+    df = sort_report_df(df)
     return df

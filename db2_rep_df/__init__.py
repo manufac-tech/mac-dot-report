@@ -3,6 +3,8 @@ from .db20_make_rpt_df import (
     add_report_fields,
     post_build_nan_replace,
     sort_filter_report_df,
+    # sort_report_df,
+    # filter_report_df,
 )
 from .db21_make_df_r_sup import (
     insert_blank_rows,
@@ -44,6 +46,8 @@ __all__ = [
     "add_report_fields",
     "post_build_nan_replace",
     "sort_filter_report_df",
+    # "sort_report_df",
+    # "filter_report_df",
     "insert_blank_rows",
     "reorder_dfr_cols_perm",
     "detect_full_domain_match",

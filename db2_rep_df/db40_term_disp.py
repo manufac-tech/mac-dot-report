@@ -1,7 +1,6 @@
 import pandas as pd
 
 
-
 def remove_consolidated_columns(report_dataframe):
     # Remove extra unique_id fields
 
@@ -73,7 +72,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'unique_id',
         'item_name_rp',
         'item_type_rp',
-        # 'git_rp',
+        'git_rp',
         'item_name_hm',
         'item_type_hm',
         'item_name_hm_db',
@@ -91,7 +90,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         # 'cat_1_name_cf',
         # 'cat_2_cf',
         # 'comment_cf',
-        # 'no_show_cf',
+        'no_show_cf',
         # 'sort_orig',
         # 'unique_id_rp',
         # 'unique_id_db',

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 DEBUG = True
-VERBOSE_DEBUG = True  # Set to True to enable verbose dictionary debug output
+VERBOSE_DEBUG = False  # Set to True to enable verbose dictionary debug output
 USE_EMOJI_DEBUG = False  # Toggle this to switch between emoji and text debug output
 
 def make_status_match_log_dict(index, row, repo_name, home_name, repo_name_cf, home_name_cf, repo_name_db, home_name_db, dot_struc_value, m_status_result, st_match_emo):
@@ -75,7 +75,7 @@ def print_debug_info(index, repo_name, home_name, repo_name_db, home_name_db, do
 def convert_to_text_debug(debug_string):
     return debug_string.replace('⚫️', '_').replace('🟢', 'O').replace('🟡', 'o').replace('❌', 'X').replace('❓', '?')
 
-def detect_full_domain_match(report_dataframe, filter_full_matches=False, filter_any_matches=False):
+def detect_full_domain_match(report_dataframe):
     # Initialize the new column
     report_dataframe['st_match_emo'] = ''
 
@@ -176,11 +176,5 @@ def detect_full_domain_match(report_dataframe, filter_full_matches=False, filter
 
         except Exception as e:
             print(f"Error processing index {index}: {e}")
-
-    # Apply filters if needed
-    if filter_full_matches:
-        report_dataframe = report_dataframe[report_dataframe['dot_struc'] != 'rp>hm']
-    if filter_any_matches:
-        report_dataframe = report_dataframe[~report_dataframe['dot_struc'].isin(['rp>hm', 'rp', 'hm'])]
 
     return report_dataframe
