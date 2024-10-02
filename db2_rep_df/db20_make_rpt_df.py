@@ -27,8 +27,8 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = post_build_nan_replace(report_dataframe)
     
     # Print the result to the console
-    print("🟪 DEBUG: Full Report DataFrame")
-    print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
+    # print("🟪 DEBUG: Full Report DataFrame")
+    # print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
     
     report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
         report_dataframe,
@@ -58,6 +58,7 @@ def add_report_fields(report_dataframe):
         'm_consol_dict': f_types_vals['m_consol_dict'],
         'm_status_result': f_types_vals['m_status_result'],
         'm_consol_result': f_types_vals['m_consol_result'],
+        'st_match_emo': f_types_vals['st_match_emo'],
     }
     
     for column, properties in new_columns.items(): # Create the new columns ( + types & vals)

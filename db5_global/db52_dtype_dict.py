@@ -68,4 +68,5 @@ f_types_vals = {
 
     'm_status_result': {'dtype': 'bool', 'default': np.nan},
     'm_consol_result': {'dtype': 'bool', 'default': np.nan},
+    'st_match_emo': {'dtype': 'string', 'default': ""},
 }

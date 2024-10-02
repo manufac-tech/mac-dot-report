@@ -85,6 +85,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'item_name_hm_cf',
         'item_type_hm_cf',
         'dot_struc',
+        'st_match_emo',
         'dot_struc_cf',
         # 'cat_1_cf',
         # 'cat_1_name_cf',
@@ -104,7 +105,7 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'm_status_dict',
         'm_consol_dict',
         'm_status_result',
-        'm_consol_result'
+        'm_consol_result',
     ]
 
     # Display Complete Report_Dataframe

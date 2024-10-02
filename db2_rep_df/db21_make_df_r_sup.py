@@ -91,7 +91,8 @@ def reorder_dfr_cols_perm(df):  # Defines both order and PRESENCE of columns
         'm_status_dict',
         'm_consol_dict',
         'm_status_result',
-        'm_consol_result'
+        'm_consol_result',
+        'st_match_emo',
     ]
     # Ensure all columns in desired_order are in the DataFrame
     for col in desired_order:
