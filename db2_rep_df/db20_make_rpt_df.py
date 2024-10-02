@@ -3,6 +3,7 @@ import numpy as np
 
 from db5_global.db52_dtype_dict import f_types_vals
 from .db18_match_B1 import detect_full_domain_match
+from .db18_match_B2 import detect_alerts  # Import the new function
 from .db21_make_df_r_sup import (insert_blank_rows, 
   reorder_dfr_cols_perm,
   )
@@ -28,7 +29,7 @@ def build_report_dataframe(main_df_dict):
     # report_dataframe = detect_status_master(report_dataframe) 
 
     report_dataframe = detect_full_domain_match(report_dataframe)
-
+    report_dataframe = detect_alerts(report_dataframe) # NEW
 
     # report_dataframe = resolve_fields_master(report_dataframe)
     report_dataframe = post_build_nan_replace(report_dataframe)

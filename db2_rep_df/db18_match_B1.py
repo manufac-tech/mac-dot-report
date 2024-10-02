@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 
-# Introduce a debug flag
+from .db18_match_utils import normalize_missing_values, get_consistent_name
+
+
 DEBUG = False
 
 
@@ -30,28 +32,28 @@ def make_status_match_log_dict(index, row, repo_name, home_name, repo_name_cf, h
     return m_status_dict
 
 
-def normalize_missing_values(df, columns):
-    for col in columns:
-        # Convert to string and strip whitespace
-        df[col] = df[col].astype(str).str.strip()
-        # Replace common missing value representations with np.nan
-        df[col] = df[col].replace(
-            to_replace=['nan', '<NA>', 'NaN', 'None', 'NoneType', ''],
-            value=np.nan
-        )
-    return df
+# def normalize_missing_values(df, columns):
+#     for col in columns:
+#         # Convert to string and strip whitespace
+#         df[col] = df[col].astype(str).str.strip()
+#         # Replace common missing value representations with np.nan
+#         df[col] = df[col].replace(
+#             to_replace=['nan', '<NA>', 'NaN', 'None', 'NoneType', ''],
+#             value=np.nan
+#         )
+#     return df
 
-def get_consistent_name(names):
-    # Remove NaNs
-    names_filtered = [x for x in names if pd.notna(x)]
-    # If list is empty after removing NaNs, return None
-    if not names_filtered:
-        return None
-    # Check if all non-NaN values are equal
-    if all(x == names_filtered[0] for x in names_filtered):
-        return names_filtered[0]  # Return the consistent name
-    else:
-        return None  # Names are inconsistent within the domain
+# def get_consistent_name(names):
+#     # Remove NaNs
+#     names_filtered = [x for x in names if pd.notna(x)]
+#     # If list is empty after removing NaNs, return None
+#     if not names_filtered:
+#         return None
+#     # Check if all non-NaN values are equal
+#     if all(x == names_filtered[0] for x in names_filtered):
+#         return names_filtered[0]  # Return the consistent name
+#     else:
+#         return None  # Names are inconsistent within the domain
 
 def apply_matching_logic(repo_name, home_name, repo_name_cf, home_name_cf, repo_name_db, home_name_db):
     # Initialize debug status and m_status_result
@@ -119,7 +121,7 @@ def print_debug_info(index, repo_name, home_name, repo_name_db, home_name_db, do
               f"dot_struc: {dot_struc_value}, st_misc: {debug_status}")
 
 
-def detect_full_domain_match(report_dataframe, filter_full_matches=False, filter_any_matches=True):
+def detect_full_domain_match(report_dataframe, filter_full_matches=False, filter_any_matches=False):
 
     for index, row in report_dataframe.iterrows():
         try:

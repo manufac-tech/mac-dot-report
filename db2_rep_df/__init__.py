@@ -1,9 +1,17 @@
 
 
 from .db18_match_B1 import (
-    detect_full_domain_match,
+    detect_full_domain_match,   
 )
 
+from .db18_match_B2 import (
+    detect_alerts,
+)
+
+from .db18_match_utils import (
+    normalize_missing_values,
+    get_consistent_name,
+)
 
 from .db20_make_rpt_df import (
     build_report_dataframe,
