@@ -2,15 +2,11 @@ import pandas as pd
 import numpy as np
 
 from db5_global.db52_dtype_dict import f_types_vals
-from .db18_match_B1 import detect_full_domain_match
-from .db18_match_B2 import detect_alerts  # Import the new function
-from .db21_make_df_r_sup import (insert_blank_rows, 
-  reorder_dfr_cols_perm,
-  )
-# from .db22_rpt_mg1_mast import field_match_master
-# from .db25_mrg_match import consolidate_fields
-# from .db26_status import detect_status_master
-# from .db29_resolve_config import resolve_fields_master
+
+from .db21_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
+from .db22_match_reg import detect_full_domain_match
+from .db23_match_alert import detect_alerts
+
 from .db40_term_disp import reorder_dfr_cols_for_cli
 
 # Opt-in to the future behavior for downcasting
@@ -24,10 +20,6 @@ def build_report_dataframe(main_df_dict):
     # report_dataframe = insert_blank_rows(report_dataframe)
     report_dataframe = reorder_dfr_cols_perm(report_dataframe)
 
-    # Apply the detect_status_master function with the status_checks_config
-
-    # report_dataframe = detect_status_master(report_dataframe) 
-
     report_dataframe = detect_full_domain_match(report_dataframe)
     report_dataframe = detect_alerts(report_dataframe) # NEW
 
@@ -35,8 +27,8 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = post_build_nan_replace(report_dataframe)
     
     # Print the result to the console
-    # print("🟪 DEBUG: Full Report DataFrame")
-    # print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
+    print("🟪 DEBUG: Full Report DataFrame")
+    print(report_dataframe[['item_name_repo', 'item_type_repo', 'item_name_home', 'item_type_home', 'm_consol_dict']])
     
     report_dataframe = reorder_dfr_cols_for_cli( # Reorder columns for CLI display
         report_dataframe,
