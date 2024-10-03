@@ -1,4 +1,3 @@
-# db18_match_B2.py
 
 import pandas as pd
 import numpy as np
@@ -47,13 +46,13 @@ def detect_alerts(report_dataframe):
                     if pd.notna(item_name_rp_db) or pd.notna(item_name_hm_db) or pd.notna(item_name_rp_cf) or pd.notna(item_name_hm_cf):
                         alert = 'Doc Only No FS'
 
-                # Check for Symlink Overwrite
+                # Check for Symlink Overwrite (FS Repo and Home match but same type)
                 elif pd.notna(item_name_rp) and pd.notna(item_name_hm):
                     if item_name_rp == item_name_hm:
                         if item_type_rp in ['file', 'folder'] and item_type_hm in ['file', 'folder']:
                             alert = 'Symlink Overwrite'
 
-                # Check for YAML Inconsistency
+                # Check for YAML Inconsistency (YAML Repo and Home match but different names(?))
                 if pd.notna(item_name_hm) and pd.notna(item_name_hm_db):
                     if item_name_hm != item_name_hm_db:
                         alert = 'YAML Inconsistency'

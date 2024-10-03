@@ -1,5 +1,5 @@
 import pandas as pd
-# from .db27_status_config import get_status_checks_config
+# from .db38_status_config import get_status_checks_config
 
 
 def detect_status_master(report_dataframe):

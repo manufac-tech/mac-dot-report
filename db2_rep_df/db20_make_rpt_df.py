@@ -3,9 +3,10 @@ import numpy as np
 
 from db5_global.db52_dtype_dict import f_types_vals
 
-from .db21_make_df_r_sup import insert_blank_rows, reorder_dfr_cols_perm
-from .db22_match_reg import detect_full_domain_match
-from .db23_match_alert import detect_alerts
+from .db21_format_rows import insert_blank_rows, sort_filter_report_df
+from .db22_format_cols import reorder_dfr_cols_perm
+from .db24_match_reg import detect_full_domain_match
+from .db26_match_alert import detect_alerts
 
 from .db40_term_disp import reorder_dfr_cols_for_cli
 
@@ -20,7 +21,7 @@ def build_report_dataframe(main_df_dict):
     report_dataframe = reorder_dfr_cols_perm(report_dataframe)
 
     report_dataframe = detect_full_domain_match(report_dataframe)
-    report_dataframe = detect_alerts(report_dataframe) # NEW
+    report_dataframe = detect_alerts(report_dataframe)
 
     # report_dataframe = resolve_fields_master(report_dataframe)
     report_dataframe = post_build_nan_replace(report_dataframe)
@@ -29,6 +30,8 @@ def build_report_dataframe(main_df_dict):
         hide_no_shows=False, 
         hide_full_matches=False, 
         hide_full_and_only=False,
+        show_mstat_f=False, # m_status_result = False (Not: Full, rp-only or hm-only match)
+        show_mstat_t=False, # m_status_result = True (Full, rp-only or hm-only match)
         )
     
     # Print the result to the console
@@ -63,7 +66,7 @@ def add_report_fields(report_dataframe):
         'm_consol_dict': f_types_vals['m_consol_dict'],
         'm_status_result': f_types_vals['m_status_result'],
         'm_consol_result': f_types_vals['m_consol_result'],
-        'st_match_emo': f_types_vals['st_match_emo'],
+        'st_match_symb': f_types_vals['st_match_symb'],
     }
     
     for column, properties in new_columns.items(): # Create the new columns ( + types & vals)
@@ -92,24 +95,3 @@ def post_build_nan_replace(df): # Replace NaN vals
     return df
 
 
-
-def filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only):
-    if hide_no_shows:
-        df = df[df['no_show_cf'] == False].copy()
-    if hide_full_matches:
-        df = df[~df['dot_struc'].str.contains('rp>hm', na=False)].copy()
-    if hide_full_and_only:
-        df = df[~df['dot_struc'].str.contains('rp>hm|rp|hm', na=False)].copy()
-    return df
-
-def sort_report_df(df):
-    df['secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
-    df['tertiary_sort_key'] = df['sort_orig']
-    df = df.sort_values(by=['sort_out', 'secondary_sort_key', 'tertiary_sort_key'], ascending=[True, True, True])
-    df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key'])
-    return df
-
-def sort_filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only):
-    df = filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only)
-    df = sort_report_df(df)
-    return df

@@ -63,16 +63,16 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
 
     # Setup Group
     setup_group_columns = [
-        'item_name',
-        'item_name_repo',
-        'item_name_home',
+        # 'item_name',
+        # 'item_name_repo',
+        # 'item_name_home',
         # 'item_type_repo',
         # 'item_type_home',
         # 'item_type',
         # 'unique_id',
         'item_name_rp',
         'item_type_rp',
-        'git_rp',
+        # 'git_rp',
         'item_name_hm',
         'item_type_hm',
         'item_name_hm_db',
@@ -84,14 +84,12 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'item_name_hm_cf',
         'item_type_hm_cf',
         'dot_struc',
-        'st_match_emo',
+        'st_match_symb',
         'dot_struc_cf',
         # 'cat_1_cf',
         # 'cat_1_name_cf',
         # 'cat_2_cf',
         # 'comment_cf',
-        'no_show_cf',
-        # 'sort_orig',
         # 'unique_id_rp',
         # 'unique_id_db',
         # 'unique_id_hm',
@@ -105,6 +103,9 @@ def reorder_dfr_cols_for_cli(report_dataframe, show_all_fields, show_main_fields
         'm_consol_dict',
         'm_status_result',
         'm_consol_result',
+        
+        # 'no_show_cf',
+        # 'sort_orig',
     ]
 
     # Display Complete Report_Dataframe

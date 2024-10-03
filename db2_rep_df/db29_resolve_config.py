@@ -1,7 +1,7 @@
 import pandas as pd
 
-from .db24_rpt_mg3_oth import write_st_alert_value
-# from .db27_status_config import get_status_checks_config
+from .db36_rpt_mg3_oth import write_st_alert_value
+# from .db38_status_config import get_status_checks_config
 from .db40_term_disp import remove_consolidated_columns
 
 

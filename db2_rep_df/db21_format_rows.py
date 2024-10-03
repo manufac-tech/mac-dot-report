@@ -1,3 +1,6 @@
+
+
+
 import pandas as pd
 from db5_global.db52_dtype_dict import f_types_vals
 
@@ -49,58 +52,27 @@ def insert_blank_rows(df):
     
     return new_df
 
-def reorder_dfr_cols_perm(df):  # Defines both order and PRESENCE of columns
-    desired_order = [
-        'item_name',
-        'item_type',
-        'unique_id',
-        'item_name_rp',
-        'item_type_rp',
-        'git_rp',
-        'item_name_hm',
-        'item_type_hm',
-        'item_name_hm_db',
-        'item_type_hm_db',
-        'item_name_rp_db',
-        'item_type_rp_db',
-        'item_name_rp_cf',
-        'item_type_rp_cf',
-        'item_name_hm_cf',
-        'item_type_hm_cf',
-        'dot_struc_cf',
-        'cat_1_cf',
-        'cat_1_name_cf',
-        'cat_2_cf',
-        'comment_cf',
-        'no_show_cf',
-        'sort_orig',
-        'unique_id_rp',
-        'unique_id_db',
-        'unique_id_hm',
-        'unique_id_cf',
-        'item_name_repo',
-        'item_type_repo',
-        'item_name_home',
-        'item_type_home',
-        'sort_out',
-        'st_docs',
-        'st_alert',
-        'dot_struc',
-        'st_db_all',
-        'st_misc',
-        'm_status_dict',
-        'm_consol_dict',
-        'm_status_result',
-        'm_consol_result',
-        'st_match_emo',
-    ]
-    # Ensure all columns in desired_order are in the DataFrame
-    for col in desired_order:
-        if col not in df.columns:
-            print(f"Warning: Column {col} not found in DataFrame. Adding it with default values.")
-            df[col] = None  # Add the missing column with default values
-    
-    # Reorder columns
-    df = df[desired_order]
-    
+def filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only, show_mstat_f, show_mstat_t):
+    if hide_no_shows:
+        df = df[df['no_show_cf'] == False].copy()
+    if hide_full_matches:
+        df = df[~df['dot_struc'].str.contains('rp>hm', na=False)].copy()
+    if hide_full_and_only:
+        df = df[~df['dot_struc'].str.contains('rp>hm|rp|hm', na=False)].copy()
+    if show_mstat_f:
+        df = df[df['m_status_result'] == False].copy()  # Corrected to filter boolean values
+    if show_mstat_t:
+        df = df[df['m_status_result'] == True].copy()   # Corrected to filter boolean values
+    return df
+
+def sort_report_df(df):
+    df.loc[:, 'secondary_sort_key'] = df['git_rp'].apply(lambda x: 1 if x == False else 0)
+    df.loc[:, 'tertiary_sort_key'] = df['sort_orig']
+    df = df.sort_values(by=['sort_out', 'secondary_sort_key', 'tertiary_sort_key'], ascending=[True, True, True])
+    df = df.drop(columns=['secondary_sort_key', 'tertiary_sort_key'])
+    return df
+
+def sort_filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only, show_mstat_f, show_mstat_t):
+    df = filter_report_df(df, hide_no_shows, hide_full_matches, hide_full_and_only, show_mstat_f, show_mstat_t)
+    df = sort_report_df(df)
     return df
