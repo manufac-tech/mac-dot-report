@@ -18,9 +18,17 @@ from .db24_match_reg import (
 )
 from .db26_match_alert import (
     detect_alerts,
+)
+
+from .db27_match_utils import (
     normalize_missing_values,
     get_consistent_name,
 )
+
+# from .db35_status import (
+#     detect_status_master,
+#     get_status_checks_config,
+# )
 from .db36_rpt_mg3_oth import (
     write_st_alert_value,
     field_match_3_subsys,
@@ -30,11 +38,6 @@ from .db36_rpt_mg3_oth import (
 from .db39_mrg_match import (
     consolidate_fields,
     get_field_merge_rules,
-)
-
-from .db35_status import (
-    detect_status_master,
-    get_status_checks_config,
 )
 
 from .db40_term_disp import (
